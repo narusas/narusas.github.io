@@ -52,7 +52,7 @@
 <p>2018-03-12</p>
 </div>
 <div class="paragraph">
-<p>Markdown이 간단한 블로깅을 하기에 좋은 도구입니다만, 문법의 혼란과 github에서 지원하는 플러그인의 제한등이 다른 해결책을 찾아 헤메게 만듭니다.</p>
+<p>Markdown이 간단한 블로깅을 하기에 좋은 도구입니다만, 문법의 혼란과 github에서 지원하는 플러그인의 제한등이 다른 해결책을 찾아 헤메다 보면  asciidoc 에 오게 됩니다.</p>
 </div>
 </div>
 </div>
@@ -69,13 +69,20 @@
 <p>draft repository:</p>
 </li>
 <li>
-<p>대표 페이지  repository: username.github.io</p>
+<p>대표 페이지 repository: username.github.io</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
 <p>작성  PC</p>
+<div class="ulist">
+<ul>
+<li>
+<p>jekyll 구동환경</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -102,14 +109,26 @@
 <pre>rmv(ruby version manager)를 설치합니다.</pre>
 </div>
 </div>
+<div class="literalblock">
+<div class="content">
+<pre>\curl -sSL https://get.rvm.io | bash -s stable
+rvm reload
+rvm list known 으로 확인</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>rvm install ruby-2.4
+rvm use 2.4
+which ruby
+ /Users/narusas/.rvm/rubies/ruby-2.4.1/bin/ruby</pre>
+</div>
+</div>
 <div class="paragraph">
-<p>\curl -sSL <a href="https://get.rvm.io" class="bare">https://get.rvm.io</a> | bash -s stable
- rvm reload
- rvm list known 으로 확인
- rvm install ruby-2.4
- rvm use 2.4
- which ruby
-  /Users/narusas/.rvm/rubies/ruby-2.4.1/bin/ruby 짜잔 루비가 바뀌었어요</p>
+<p>짜잔 rvm 버전으로 루비가 바뀌었어요</p>
+</div>
+<div class="paragraph">
+<p>이제 필요한 gem 을 설치합니다.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -122,14 +141,24 @@ gem install travis</pre>
 <div class="sect2">
 <h3 id="작업용_repo_생성">작업용 repo 생성</h3>
 <div class="paragraph">
-<p>github에서 저장소 생성. 이때   <a href="https://github.com/asciidoctor/jekyll-asciidoc-quickstart" class="bare">https://github.com/asciidoctor/jekyll-asciidoc-quickstart</a> 를 fork 받는게 빠르다.</p>
+<p>github에서 저장소 생성.</p>
+</div>
+<div class="paragraph">
+<p>이때 <a href="https://github.com/asciidoctor/jekyll-asciidoc-quickstart" class="bare">https://github.com/asciidoctor/jekyll-asciidoc-quickstart</a> 를 fork 받는게 빠르다.</p>
+</div>
+<div class="paragraph">
+<p>fork 받은 프로젝트의 이름을 변경한다.</p>
 </div>
 <div class="paragraph">
 <p>blogdraft 정도로 이름을 변경한다</p>
 </div>
 <div class="paragraph">
-<p>소스를 내려받는다
-git clone [repo_url]</p>
+<p>소스를 내려받는다</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>git clone [repo_url]</pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -155,14 +184,141 @@ end</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>변경한후에
-bundle install  하면 설치된다.</p>
+<p>아마도  jekyll-plantuml, jekyll-diagrams, asciidoctor-diagram 정도가 빠져있을 것이다</p>
+</div>
+<div class="paragraph">
+<p>변경한후에 설치를 수행한다
+  bundle install</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="글_작성">글 작성</h3>
+<div class="paragraph">
+<p>이 이후에  글 작성은  _posts   폴더에 만들면 된다. 일반적인  jekyll 문서처럼 만들되 확장자만  .adoc  으로 주면 된다.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="퍼블리싱용_repo_생성">퍼블리싱용 repo 생성</h3>
 <div class="paragraph">
-<p>github에서 저장소 생성. 이때   username.github.io 로 생성하면 독립적인 도메인을 받아서  <a href="http://username.github.io" class="bare">http://username.github.io</a>  로 접속할수 있게 된다.</p>
+<p>github에서 저장소 생성.</p>
+</div>
+<div class="paragraph">
+<p>이때 username.github.io 로 생성하면 독립적인 도메인을 받아서  <a href="http://username.github.io" class="bare">http://username.github.io</a>  로 접속할수 있게 된다.</p>
+</div>
+<div class="paragraph">
+<p>세팅에 가서 github pages  설정을 활성화 시킨다</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="github_token_생성">github token  생성</h3>
+<div class="paragraph">
+<p>github가 asciidoc 을 지원하지 않기 때문에 travis 를 통해 빌드 하기 위해서는  github 에 푸시할 권한이 필요하다. 이를 위해 인증 토큰을 만들어야 한다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Profie &#8594; Settings &#8594; Developer settings &#8594; Personal access tokens에 가서</p>
+</li>
+<li>
+<p>Generate new token  을 누르고</p>
+</li>
+<li>
+<p>public_repo  에 체크한후</p>
+</li>
+<li>
+<p>적당한 이름을 주고 생성한다</p>
+</li>
+<li>
+<p>생성된 인증 토큰은 잘 보관할것(두번다시 못봄)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="travis_설정">travis 설정</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://travis-ci.org" class="bare">https://travis-ci.org</a>   에 가서  계정을 만든다</p>
+</li>
+<li>
+<p>프로필 페이지로 간다</p>
+</li>
+<li>
+<p>드래프트 저장소를 찾아 스위치를 켠다.</p>
+</li>
+<li>
+<p>저장소를 클릭해서 들어간 페이지에서  settings에 들어간다</p>
+</li>
+<li>
+<p>“Build only if .travis.yml is present.” 를 활성화한다.</p>
+</li>
+<li>
+<p>환경변수를 추가한다.</p>
+</li>
+<li>
+<p>gh_repo  퍼블리싱용 저장소 URL</p>
+</li>
+<li>
+<p>gh_user  github 계정</p>
+</li>
+<li>
+<p>gh_pw  아까 발행한 github token</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="draft_저장소에_파일_추가">draft 저장소에 파일 추가</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>다음 두 파일은 최상단 폴더에 추가한다</p>
+</div>
+<div class="listingblock">
+<div class="title">travis.yml 추가</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>language: ruby
+sudo: false
+script: chmod +x sync.sh &amp;&amp; ./sync.sh
+addons:
+  apt:
+    packages:
+    - graphviz</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">sync.sh  추가</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>bundle exec jekyll build
+
+rm -fR /tmp/publish
+mkdir -p /tmp/publish
+cp -r _site/* /tmp/publish
+
+rm -fR /tmp/master
+mkdir -p /tmp/master
+cd /tmp/master
+
+git clone https://${gh_user}:${gh_pw}@github.com/${gh_user}/${gh_repo}
+cd ${gh_repo}
+git rm . -r
+cp -r /tmp/publish/* ./
+git add .
+git commit -m "updated"
+git push</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>두파일을 커밋하고 푸시한다.</p>
+</div>
+<div class="sect2">
+<h3 id="travis_가서_동작하는지_확인">travis 가서 동작하는지 확인</h3>
+<div class="paragraph">
+<p>빌드에 문제가 없으면  <a href="http://username.github.io" class="bare">http://username.github.io</a>  를 방문해서 정상적으로 나오는지 확인해본다</p>
 </div>
 </div>
 </div>
