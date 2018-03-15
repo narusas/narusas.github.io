@@ -1,0 +1,6 @@
+= narusas's blog
+:showtitle:
+:page-title: narusas's blog
+:page-description: SW, IT에 대해 적습니다
+
+SW, IT 에 대해 이것 저것 적는 사이트 입니다.
