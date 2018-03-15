@@ -1,0 +1,740 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue Event hook</title>
+<meta name="description" content="SW,IT에 대해 끄적입니다">
+<meta name="author" content="Your name goes here">
+<meta name="copyright" content="Maybe consider a Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Vue Event hook</h1>
+<div class="sect1">
+<h2 id="what">What</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>vue를 이용해서 이용해서 SPA(Single Page Application) 을 개발 하다보면 Event Hook이 실행 순서에 대해 알고 싶어집니다.</p>
+</div>
+<div class="paragraph">
+<p>내가 파악하 이벤트 훅에 대해 기술하고 각 이벤트 훅을 언제 쓰는게 좋을것인지 고민한 내용도 기술해보도록 합시다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="대상">대상</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>일반적인 SPA는 크게 보아 다음 구조를 가집니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;transition&gt;</span>
+  <span class="tag">&lt;keep-alive&gt;</span>
+    <span class="tag">&lt;router-view&gt;</span>
+  <span class="tag">&lt;/keep-alive&gt;</span>
+<span class="tag">&lt;/transition&gt;</span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition">transition</h3>
+<div class="paragraph">
+<p>transition은 기본적으로 child root element가 변경될때 사라지는(leaving) element와 나타나는(entering) element에 대해 css transition&amp;animation 또는 js animation을 추가하는 역활을 수행합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="keep_alive">keep-alive</h3>
+<div class="paragraph">
+<p>keep-alive는 <code><code>&lt;component is="name"/&gt;</code></code> 의 변종이라고 볼수 있다. <code>`&lt;component is="name"&gt;</code>`에서는 하위 컴포넌트가 변경될때 매번 하위 컴포넌트의 인스턴스를 생성하고 beforeCreate, created 등의 콜백을 호출합니다</p>
+</div>
+<div class="paragraph">
+<p>동적 컴포넌트를 감싸는 경우 <code>`&lt;keep-alive&gt;</code>`는 비활성 컴포넌트 인스턴스를 파괴하지 않고 캐시하애 재사용 하는데요,
+그렇기에 beforeCreate, created 등이 호출되지 않습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="router_link">router-link</h3>
+<div class="paragraph">
+<p>SPA에서 페이지 다시읽기 없이 이동하기 위해서는 크게 두가지 메커니즘 hash, history가 사용됩니다. 어느 메커니즘을 사용하던지 지정된 메커니즘을 이용해 링크를 만들어 이동하기 위해서는 router-link 또는 이에 준하는 api를 사용해야 합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="router_view">router-view</h3>
+<div class="paragraph">
+<p>router-link에 의해 route path가 결졍되고 나면 route path에서 지정된 component를 화면에 표시해야 하는데 이는 router-view 를 이용해 표시 위치를 지정하게 됩니다.
+근본적으로 router-view 도 <code><code>&lt;component&gt;</code></code> 로 동적 컴포넌트인 셈이죠</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="이벤트_발생_순서">이벤트 발생 순서</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이벤트의 발생이 매우 많기 때문에 router-link 를 클릭했을때 어떤 순서대로 이벤트가 발생하는지 표시하도록 한다</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Leaving Component route guard</p>
+</li>
+<li>
+<p>Router global Guard</p>
+</li>
+<li>
+<p>Route Path guard</p>
+</li>
+<li>
+<p>Entering Component Route guard</p>
+</li>
+<li>
+<p>Global Resolve guard</p>
+</li>
+<li>
+<p>Change Router-view</p>
+</li>
+<li>
+<p>Change keep-alive</p>
+</li>
+<li>
+<p>Change transition</p>
+</li>
+<li>
+<p>Transition beforeLeave Hook</p>
+</li>
+<li>
+<p>Transition leave Hook</p>
+</li>
+<li>
+<p>Transition afterLeave Hook</p>
+</li>
+<li>
+<p>keep-alive deactivated</p>
+</li>
+<li>
+<p>Entering component beforeCreate</p>
+</li>
+<li>
+<p>Entering component created</p>
+</li>
+<li>
+<p>Entering component beforeMount</p>
+</li>
+<li>
+<p>transition beforeEnter Hook</p>
+</li>
+<li>
+<p>Entering component mounted</p>
+</li>
+<li>
+<p>transition enter Hook</p>
+</li>
+<li>
+<p>transition afterEnter Hook</p>
+</li>
+<li>
+<p>keep-alive activated</p>
+</li>
+<li>
+<p>router scrollBehavior</p>
+</li>
+<li>
+<p>router scrollToPosition</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-47191f3e0809d16da6597526db82f60c.png" alt="diag 47191f3e0809d16da6597526db82f60c" width="952" height="819">
+</div>
+</div>
+<div class="sect2">
+<h3 id="leaving_component_route_guard">Leaving Component route guard</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Source: route-link</p>
+</li>
+<li>
+<p>Target: leaving component</p>
+</li>
+<li>
+<p>event: beforeRouteLeave</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>route-link를 클릭하면, 현재 전시되고 있는 컴포넌트(leaving compoment)에게 이제 새로운 라우팅 path로 가려고 한다는 이벤트 전달한다.</p>
+</div>
+<div class="paragraph">
+<p>페이지 이동전에 데이터를 저장하거나, 편집중인 내용이 있을때 사용자에 편집중인 내용을 포기할것인지, 아니라면 네비게이션을 중단 할수 있게 하는 hook 이다</p>
+</div>
+<div class="paragraph">
+<p>인자로 주어진 next 콜백을 호출하면 네이게이션이 진행된다</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="router_global_guard">Router global Guard</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Source: Router</p>
+</li>
+<li>
+<p>Target: global route Guard</p>
+</li>
+<li>
+<p>Event: beforeEach</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>vue-router를 이용해 전역적인 네비게이션 가드를 등록할수 있다.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```javascript
+router.beforeEach(function(to, from, next){
+  ...
+  next();
+});
+```</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>여러 컴포넌트나 모듈에서 필요한 전역 가드를 등록 할수 있으며 이 이런 가드 콜백들을 모두 호출한다.</p>
+</div>
+<div class="paragraph">
+<p>각 가드 콜백들은 next의 호출 여부에 따라 네비게이션을 막을수 있다. <code><code>next()</code>`를 호출하면 진행하고 <code>`next(false)</code>`를 호출하면 네비게이션이 중단된다. 또는 <code>`next('/login')</code></code> 처럼 다른 path로 리다이렉트 시킬수도 있다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="route_path_guard">Route Path guard</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: Router</p>
+</li>
+<li>
+<p>Target: Router path guards</p>
+</li>
+<li>
+<p>Event: beforeEach</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>vue-router에 지정한 path 설정을 통해 네비게이션 가드를 등록할수 있다.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```javascript
+export default new Router({
+  routes: [
+    {
+      path: '/hello1',
+      beforeEnter(to, from, next) {
+        ...
+        next();
+     },
+    }
+  ],
+});
+```</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>route-link 를 클릭했을때 적합한 path가 있을때 해당 path들(!!)에 대해 네비게이션 가드 콜백을 호출한다.</p>
+</div>
+<div class="paragraph">
+<p>각 개별 path에 대해 가드 할수도 있고 <code><code>{path:'/secure/*'}</code></code> 처럼 특정 path 이하에 대해 가드를 할수도 있다.</p>
+</div>
+<div class="paragraph">
+<p>전역 가드와 마찬가지로 <code>`next()</code>`의 호출 방식에 따라 네비게이션을 조정할수 있다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entering_component_route_guard">Entering Component Route guard</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: Router</p>
+</li>
+<li>
+<p>Target: Entering Component Definition</p>
+</li>
+<li>
+<p>Event: beforeRouteEnter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>라우터 입장에서는 네비게이션의 결과로 보여지게 될 새로운 컴포넌트 인스턴스를 만들기 전에, 해당 컴포넌트 인스턴스를 만들어도 되는지 여부를 알 필요가 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>상품 상세 페이지로 들어가려고 하는데 해당 상품이 존재 하지 않으면 아예 들어갈 필요도 없겠죠. 그냥 경고 정도만 보여주고 네비게이션을 취소 할수도 있습니다. (그런 설계를 할수도 있다는 겁니다 ^^)</p>
+</div>
+<div class="paragraph">
+<p>따라서 해당 컴포넌트가 생성되기 전에 컴포넌트 선언에 기술된 beforeRouteEnter 가드 함수를 호출하여 해당 컴포넌트가 사용가능한지 여부를 확인합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
+  beforeRouteEnter (to, from, next) {
+    <span class="comment">// 이 컴포넌트를 렌더링하는 라우트 앞에 호출됩니다.</span>
+   <span class="comment">// 이 가드가 호출 될 때 아직 생성되지 않았기 때문에</span>
+   <span class="comment">// `this` 컴포넌트 인스턴스에 접근 할 수 없습니다!</span>
+  }
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>!! 주의 할점은 아직 새로운 라우팅 컴포넌트 인스턴스가 생성된게 아니기 때문에 beforeRouteEnter 에서는 this에 접근할수 없습니다.</p>
+</div>
+<div class="paragraph">
+<p>이렇게 beforeRouteEnter에서 this에 접근할수 없긴하지만 <a href="https://router.vuejs.org/kr/advanced/navigation-guards.html" class="bare">https://router.vuejs.org/kr/advanced/navigation-guards.html</a> 를 참고해서 보듯이 next에 콜백을 넘길수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">beforeRouteEnter (to, from, next) {
+  next(vm =&gt; {
+    <span class="comment">// `vm`을 통한 컴포넌트 인스턴스 접근</span>
+  })
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="global_resolve_guard">Global Resolve guard</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: Router</p>
+</li>
+<li>
+<p>Target: global resolve guard</p>
+</li>
+<li>
+<p>Event: beforeResolve</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>성격적으로는 전역 라우터가드인 beforeEach 와 비슷합니다.
+다만 앞서 설명한 전역 라우터 가드와 경로 가드, 컴포넌트 가드 까지 통과한후 에 호출되는 추가적인 가드입니다.</p>
+</div>
+<div class="paragraph">
+<p>vue-router를 이용해 전역적인 네비게이션 가드를 등록할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">router.beforeResolve(<span class="keyword">function</span>(to, from, next){
+  ...
+  next();
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이 가드까지 지나고 나면 url이 변경되고 네비게이션이 결정됩니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="change_router_view">Change Router-view</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: Router</p>
+</li>
+<li>
+<p>Target: router-view</p>
+</li>
+<li>
+<p>Event: props 'name' changed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>router-view 컴포넌트는 주어진 라우트에 대해 일치하는 컴포넌트를 렌더링하는 함수형 컴포넌트입니다.</p>
+</div>
+<div class="paragraph">
+<p>이제 네비게이션이 결정되었기 때문에 컴포넌트에 대해 변경을 시도합니다.</p>
+</div>
+<div class="paragraph">
+<p>vue에서 모든 변경은 reactive 하기 때문에 실제로는 data가 변경된것이고 이 변경은 상위 컴포넌트에게 이벤트로 전달됩니다.</p>
+</div>
+<div class="paragraph">
+<p>여기에서 상위 컴포넌트는 keep-alive 죠</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="change_keep_alive">change keep-alive</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: router-view</p>
+</li>
+<li>
+<p>Target: router-view</p>
+</li>
+<li>
+<p>Event: props 'name', 'key' changed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>router-view의 변경은 keep-alive의 변경으로 이어집니다. 아직 상세하게 설명할 타이밍이 아닙니다. 왜냐하면 keep-aive의 변경도 상위 컴포넌트인 transition으로 이벤트로 전달되기 때문입니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="change_transition">change transition</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: router-view</p>
+</li>
+<li>
+<p>Target: router-view</p>
+</li>
+<li>
+<p>Event: props 'name', 'key' changed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>transition은 하위 동적 컴포넌트의 사라지는 컴포넌트와 보여지는 컴포넌트의 transition을 담당합니다.</p>
+</div>
+<div class="paragraph">
+<p>(transition은 하위 컴포넌트가 추상 컴포넌트(keep-alive등) 일 경우 더 하위를 바라보고 동작합니다. transition.js:32 참고. 여기에서는 router-view가 되겠죠. 하지만 너무 상세한 내용은 저도 모르니 생략!)</p>
+</div>
+<div class="paragraph">
+<p>암튼 중요한것은 트랜지션에서도 이벤트 훅이 실행된다는 것이죠</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">&lt;transition mode=<span class="string"><span class="delimiter">&quot;</span><span class="content">out-in</span><span class="delimiter">&quot;</span></span>
+      v-on:before-enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeEnter</span><span class="delimiter">&quot;</span></span>
+      v-on:enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">enter</span><span class="delimiter">&quot;</span></span>
+      v-on:after-enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterEnter</span><span class="delimiter">&quot;</span></span>
+      v-on:enter-cancelled=<span class="string"><span class="delimiter">&quot;</span><span class="content">enterCancelled</span><span class="delimiter">&quot;</span></span>
+
+      v-on:before-leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeLeave</span><span class="delimiter">&quot;</span></span>
+      v-on:leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">leave</span><span class="delimiter">&quot;</span></span>
+      v-on:after-leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterLeave</span><span class="delimiter">&quot;</span></span>
+      v-on:leave-cancelled=<span class="string"><span class="delimiter">&quot;</span><span class="content">leaveCancelled</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>위의 코드 처럼 트랜지션의 각 단계에서 훅을 받을수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>appear, leave, enter 등 받을수 있는데 여기에서는 leave와 enter만 설명하도록 하겠습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_beforeleave_hook">transition beforeLeave Hook</h3>
+<div class="paragraph">
+<p>leave 트랜지션이 시작하기 전에 호출됩니다.</p>
+</div>
+<div class="paragraph">
+<p>트랜지션 전에 준비할 내용이 있으면 호출됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">beforeLeave(el) {
+  el.style.opacity = <span class="integer">0</span>;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>여기에서 주어지는 el은 현재 화면에 보이고 있는 component의 root element입니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_leave_hook">transition leave Hook</h3>
+<div class="paragraph">
+<p>트랜지션을 수행하는 곳입니다.
+leave 콜백은  두개의 인자를 받습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">&lt;tempalte&gt;
+&lt;transition name=<span class="string"><span class="delimiter">&quot;</span><span class="content">fade</span><span class="delimiter">&quot;</span></span>
+  v-on:leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">leave</span><span class="delimiter">&quot;</span></span>
+&gt;
+...
+&lt;<span class="regexp"><span class="delimiter">/</span><span class="content">template&gt;
+
+&lt;script&gt;
+...
+
+leave(el, done) {
+  done();
+}
+
+...
+&lt;</span><span class="delimiter">/</span></span>script&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2018.03.09 현재 leave는 오류가 있는것으로 보입니다. 위 코드처럼  transition에 name을 지정하여 css 트랜지션을 요청함과 동시에 leave 콜백을 요청하면 css 애니메이션이 끝나도 종료되지 않습니다.  반드시 done을 호출해 줘야 트랜지션이 넘어가게 되는데요, 문제는 done을 호출하면 css 트랜지션이 꼬인다는 겁니다. 정상적인 타이밍에 fade가 되어야 하는데 done 호출때문에 fade 전환이 되지 않고 다음 component 트랜지션 에 뒤늦게 css 가 반영되어 화면이 사라지는 현상이 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>정리하면 css 트랜지션 과 leave 콜백은 같이 사용하면 않됩니다.</p>
+</div>
+<div class="paragraph">
+<p>어쨌든 leave에서 done이 호출 되면 다음으로 넘어갑니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_afterleave_hook">transition afterLeave Hook</h3>
+<div class="paragraph">
+<p>트랜지션후 정리할게 있으면 여기에서 하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">&lt;tempalte&gt;
+&lt;transition name=<span class="string"><span class="delimiter">&quot;</span><span class="content">fade</span><span class="delimiter">&quot;</span></span>
+  v-on:after-leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterLeave</span><span class="delimiter">&quot;</span></span>
+&gt;
+...
+&lt;<span class="regexp"><span class="delimiter">/</span><span class="content">template&gt;
+
+&lt;script&gt;
+...
+
+afterLeave(el) {
+  done();
+}
+
+...
+&lt;</span><span class="delimiter">/</span></span>script&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="keep_alive_deactivated">keep-alive deactivated</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: keep-alive</p>
+</li>
+<li>
+<p>Target: leaving component</p>
+</li>
+<li>
+<p>Event: deactivated</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>우리는 keep-alive를 사용하고 있습니다!!</p>
+</div>
+<div class="paragraph">
+<p>그렇다는 이야기는 route-view에 보여지는 컴포넌트가 변경되어도, 사라진 컴포넌트가 destory 되지 않는 다는 이야기죠. 그럼 destory를 대신할 이벤트 콜백이 필요합니다. 그게 바로 deactivated  입니다.</p>
+</div>
+<div class="paragraph">
+<p>사라지기 전에 데이터를 보관하거나 scroll position등을 보관해둘수 있겠죠.
+하지만 deactivated 콜백에 주어지는 인자는 없으니 보관 메커니즘을 별도로 구성해야 합니다.
+메모리상에서 컴포넌트 인스턴스가 남아 있는 상태이니 data나 로컬 변수등에 저장해두고 activated 콜백에서 복구하면 될거 같네요</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entering_component_beforecreate">Entering component beforeCreate</h3>
+<div class="paragraph">
+<p>새로운 컴포넌트 인스턴스가 만들어집니다!!
+물론 keep-alive에 동일한 이름의 컴포넌트가 존재하면 그걸 쓰겠죠. (beforeCreate가 호출되지 않는다는 겁니다)</p>
+</div>
+<div class="paragraph">
+<p>key가 없으면 컴포넌트의 name 속성만 가지고 비교해서 재사용하게 됩니다.
+그래서 각 컴포넌트의 데이터를 구분할수 있는 key를 주는게 중요합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entering_component_created">Entering component created</h3>
+<div class="paragraph">
+<p>새로운 컴포넌트 인스턴스가 만들어졌습니다!!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entering_component_beforemount">Entering component beforeMount</h3>
+<div class="paragraph">
+<p>새로 만들어진 컴포넌트 인스턴스를 트랜지션때문에 마운트 하려고 합니다!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_beforeenter_hook">transition beforeEnter Hook</h3>
+<div class="paragraph">
+<p>새로운 컴포넌트를 트랜지션 하기 전에 준비할 내용을 준비합니다.</p>
+</div>
+<div class="paragraph">
+<p>여기 까지 새로운 컴포넌트는 dom 노드가 만들지긴 했지만, 그래서 el을 다룰수는 있지만, document에 마운트 되지 않있기 때문에 눈에 보이는 상태는 아닙니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entering_component_mounted">Entering component mounted</h3>
+<div class="paragraph">
+<p>드디어 새로운 컴포넌트가 document에 마운트 되었습니다. 그래서 눈에 보이죠</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_enter_hook">transition enter Hook</h3>
+<div class="paragraph">
+<p>여기서도 leave와 마찬가지로 css 트랜지션과 충돌이 있을수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>js로 애니매이션이 필요할때만 사용하면 될듯 합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="transition_afterenter_hook">transition afterEnter Hook</h3>
+<div class="paragraph">
+<p>트랜지션이 끝났습니다!!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="keep_alive_activated">keep-alive activated</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Souce: keep-alive</p>
+</li>
+<li>
+<p>Target: entering component</p>
+</li>
+<li>
+<p>Event: activated</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>우리는 keep-alive를 사용하고 있습니다!!</p>
+</div>
+<div class="paragraph">
+<p>그래서 매번 beforeCreate, created가 호출되는게 아닙니다. 호출 될수도 있고, keep-alive의 max 설정에 따른 캐시에 캐싱되어 있던 컴포넌트 인스턴스를 재사용할수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>따라서 created 대신 들어서는 컴포넌트를 초기화할 콜백이 필요합니다. 그게 바로 activated 입니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="router_scrollbehavior">router scrollBehavior</h3>
+<div class="paragraph">
+<p>뜬금없습니다만, 새로 들어선 컴포넌트가 만약 스크롤 되는 컨텐츠라면 스크롤 위치를 지정할 필요가 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Router({
+  scrollBehavior(to, from, savedPosition) {
+    <span class="keyword">if</span> (savedPosition) {
+      <span class="keyword">return</span> savedPosition;
+    }
+    <span class="keyword">return</span> { <span class="key">x</span>: <span class="integer">0</span>, <span class="key">y</span>: <span class="integer">0</span> };
+  },
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>위 코드는 간단하게 사용할수 있는 설정입니다.</p>
+</div>
+<div class="paragraph">
+<p>하지만 스크롤 위치는 생각보다 복잡한 이슈입니다. 이 부분은 나중에 다뤄보기로 하죠</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="router_scrolltoposition">router scrollToPosition</h3>
+<div class="paragraph">
+<p>이것은 vue-router 내부적으로 실행됩니다. 우리가 scrollBehavior에서 반환한 값으로 스크롤시켜줍니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="complete">Complete</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이제 페이지 네비게이션이 끝났습니다.</p>
+</div>
+<div class="paragraph">
+<p>화면안의 컴포넌트들은 알아서 동작하겠죠 뭐</p>
+</div>
+<div class="openblock">
+<div class="content">
+
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
