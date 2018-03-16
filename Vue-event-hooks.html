@@ -227,14 +227,12 @@
 <div class="paragraph">
 <p>vue-router를 이용해 전역적인 네비게이션 가드를 등록할수 있다.</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>```javascript
-router.beforeEach(function(to, from, next){
-  ...
-  next();
-});
-```</pre>
+<pre class="CodeRay highlight"><code data-lang="javascript"> router.beforeEach(<span class="keyword">function</span>(to, from, next){
+   ...
+   next();
+ });</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -262,21 +260,19 @@ router.beforeEach(function(to, from, next){
 <div class="paragraph">
 <p>vue-router에 지정한 path 설정을 통해 네비게이션 가드를 등록할수 있다.</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>```javascript
-export default new Router({
-  routes: [
-    {
-      path: '/hello1',
-      beforeEnter(to, from, next) {
-        ...
-        next();
-     },
-    }
-  ],
-});
-```</pre>
+<pre class="CodeRay highlight"><code data-lang="javascript"> <span class="reserved">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Router({
+   <span class="key">routes</span>: [
+     {
+       <span class="key">path</span>: <span class="string"><span class="delimiter">'</span><span class="content">/hello1</span><span class="delimiter">'</span></span>,
+       beforeEnter(to, from, next) {
+         ...
+         next();
+      },
+     }
+   ],
+ });</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -447,16 +443,16 @@ export default new Router({
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">&lt;transition mode=<span class="string"><span class="delimiter">&quot;</span><span class="content">out-in</span><span class="delimiter">&quot;</span></span>
-      v-on:before-enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeEnter</span><span class="delimiter">&quot;</span></span>
-      v-on:enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">enter</span><span class="delimiter">&quot;</span></span>
-      v-on:after-enter=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterEnter</span><span class="delimiter">&quot;</span></span>
-      v-on:enter-cancelled=<span class="string"><span class="delimiter">&quot;</span><span class="content">enterCancelled</span><span class="delimiter">&quot;</span></span>
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;transition</span> <span class="attribute-name">mode</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">out-in</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:before-enter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeEnter</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:enter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">enter</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:after-enter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterEnter</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:enter-cancelled</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">enterCancelled</span><span class="delimiter">&quot;</span></span>
 
-      v-on:before-leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeLeave</span><span class="delimiter">&quot;</span></span>
-      v-on:leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">leave</span><span class="delimiter">&quot;</span></span>
-      v-on:after-leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterLeave</span><span class="delimiter">&quot;</span></span>
-      v-on:leave-cancelled=<span class="string"><span class="delimiter">&quot;</span><span class="content">leaveCancelled</span><span class="delimiter">&quot;</span></span></code></pre>
+      <span class="attribute-name">v-on:before-leave</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">beforeLeave</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:leave</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">leave</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:after-leave</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">afterLeave</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-on:leave-cancelled</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">leaveCancelled</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -497,17 +493,17 @@ leave 콜백은  두개의 인자를 받습니다.</p>
 &lt;transition name=<span class="string"><span class="delimiter">&quot;</span><span class="content">fade</span><span class="delimiter">&quot;</span></span>
   v-on:leave=<span class="string"><span class="delimiter">&quot;</span><span class="content">leave</span><span class="delimiter">&quot;</span></span>
 &gt;
-...
+
 &lt;<span class="regexp"><span class="delimiter">/</span><span class="content">template&gt;
 
 &lt;script&gt;
-...
+
 
 leave(el, done) {
   done();
 }
 
-...
+
 &lt;</span><span class="delimiter">/</span></span>script&gt;</code></pre>
 </div>
 </div>
@@ -712,6 +708,28 @@ afterLeave(el) {
     <!-- End Sidebar -->
 
 <!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 
 <!-- Footer -->
