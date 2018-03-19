@@ -1,0 +1,413 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Normalized data</title>
+<meta name="description" content="SW,IT에 대해 끄적입니다">
+<meta name="author" content="Your name goes here">
+<meta name="copyright" content="Maybe consider a Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Normalized data</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#정규화_하기">1. 정규화 하기</a></li>
+<li><a href="#vuex">2. Vuex</a></li>
+<li><a href="#normalizr">3. normalizr</a></li>
+</ul>
+</div>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>중첩 구조의 데이터를 정규화하여 중첩구조를 제거하고, 중복된 데이터를 배제 할수 있게 됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="정규화_하기">1. 정규화 하기</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>서버측에서는 비지니스 로직의 처리 용이성을 위해 여러 데이터를 논리적 구조에 따라 중첩 구조로 사용하는 경우가 많습니다.</p>
+</div>
+<div class="paragraph">
+<p>클라이언트에서 이렇게 중첩된 데이터 구조를 기반으로 애플리케이션을 구성하다 보면 복잡한 데이터 구조에 대해 변경을 시도할때 지나치게 많은 변경 처리가 발생하는 경우가 많습니다.</p>
+</div>
+<div class="paragraph">
+<p>다음과 같은 데이터가 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">Article List</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">[
+  {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>:<span class="integer">123</span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">article 1</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">date</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">2018-03-22</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">user123</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John, Smith</span><span class="delimiter">&quot;</span></span>,
+    },
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">comments</span><span class="delimiter">&quot;</span></span>:[
+      {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>:<span class="integer">234</span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Goods article</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">content</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">blah, blah</span><span class="delimiter">&quot;</span></span>
+      },
+      <span class="comment">// more comments</span>
+    ]
+  },
+  <span class="comment">// more article</span>
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이 데이터를 Vuex에 넘겨주면 vuex는 루트 객체인 배열의 변경부터 말단 객체인 comment의 content의 변화까지 모두 모니터링하게 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이런 데이터가 있을때 id가 234인 커멘트의 제목을 변경하려고 하면 어떻게 해야할까요? 모든 아티클의 목록을 순회하며, 중첩된 루프로 아티클의 커멘트를 순회하며 234인 커멘트를 찾고 해당 커멘트의 제목을 수정해야 합니다. 아마도 코딩 중복을 없애기 위해 <code>findComment(userId, commentId)</code> 함수가 만들어지게 될것입니다.</p>
+</div>
+<div class="paragraph">
+<p>보통 화면에 렌더링 되는 시점에서 객체의 id가 주어지기 때문에 id는 언제나 알수 있습니다. 그럼에 불구하고 이런 중첩 객체는 그저 하위 객체를 찾기 온갖 종류의 <code>findXXX</code> 함수로 도배되기 쉽습니다.</p>
+</div>
+<div class="paragraph">
+<p>이런 문제를 해결하기 위해 정규화된 데이터를 사용할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">Articles</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">articles</span><span class="delimiter">&quot;</span></span>: {
+    <span class="integer">123</span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">article 1</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">date</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">2018-03-22</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">user123</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">comments</span><span class="delimiter">&quot;</span></span>: [<span class="integer">234</span>,<span class="integer">245</span>]
+    },
+    <span class="comment">// More article</span>
+  },
+
+
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">articleList</span><span class="delimiter">&quot;</span></span>:[<span class="integer">123</span>,<span class="integer">124</span>,<span class="integer">125</span>], <span class="comment">// 정렬을 유지할수 있음</span>
+
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">authors</span><span class="delimiter">&quot;</span></span>:{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">user123</span><span class="delimiter">&quot;</span></span>:{
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John, Smith</span><span class="delimiter">&quot;</span></span>,
+    },
+    <span class="comment">// more authors</span>
+  },
+
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">comments</span><span class="delimiter">&quot;</span></span>:{
+    <span class="integer">234</span>:{
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Goods article</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">content</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">blah, blah</span><span class="delimiter">&quot;</span></span>
+    },
+    <span class="comment">// more comments</span>
+  },
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이런 데이터 타입이 있을때 <code>data.comments[234]</code> 로 우리가 원하는 커멘트를 바로 얻어올수 있습니다. 아티클도 마찬가지이며 저자(author)도 마찬가지입니다.</p>
+</div>
+<div class="paragraph">
+<p>정렬된 값이 필요하다면 id를 원하는 순서로 정렬시킨 list 배열을 포함하면 됩니다. 또한 list 가 배열이기 때문에 filter, map, reduce등 함수형 명령을 사용할수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>또한 한명의 저자가 여러 아티클을 썼다고 해도 저자 데이터는 단 한번만 나오게 됩니다. (정규화 됩니다)</p>
+</div>
+<div class="paragraph">
+<p>이런 구조에서</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>만약 전체 아티클 목록을 순서대로 얻고 싶다면 다음처럼 간단하게 배열의 map 함수를 사용하면 됩니다.</p>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">articles</span>(){
+    <span class="keyword">return</span> data.articleList.map( articleId =&gt; data.articles[articleId])
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>만약 특정 아티클의 커멘트 객체 목록을 얻고 싶다면</p>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">articleComments</span>(article) {
+  <span class="keyword">return</span> article.comments.map( commentId =&gt; data.comments[commentId])
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>이렇게 정규화된 데이터 구조를 이용해 중첩구조를 제거하고, 중복된 데이터를 배제 할수 있게 됩니다.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+물론 이렇게 요청시마다 검색하는 방식은 데이터의 양이 많지 않을때 사용 해야 하며, 데이터의 양이 아주 많다면 애초에 이런 형태의 JSON을 사용할수 없습니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vuex">2. Vuex</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>vuex 를 사용하는 환경에는 보통 다음과 같이 구성됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">getters</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">getters: {
+  <span class="key">articleSet</span>: (state) =&gt; state.articleList.map( articleId =&gt; state.articles[articleId]);
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">in component</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">computed: {
+  <span class="key">articles</span>: () =&gt; <span class="local-variable">this</span>.<span class="predefined">$store</span>.getters.articleSet,
+  <span class="key">comments</span>: () =&gt; <span class="local-variable">this</span>.<span class="predefined">$store</span>.getters.comments,
+
+},
+<span class="key">methods</span>: {
+  articleComments(article) {
+    <span class="keyword">return</span> article.comments.map( commentId =&gt; <span class="local-variable">this</span>.comments[commentId]);
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이런 함수들은 템플릿에서 다음과 같이 사용할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;div</span> <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">article in articles</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;ul&gt;</span>
+    <span class="tag">&lt;li</span> <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">comment in articleComments(article)</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>{{comment.title}}<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;/ul&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="normalizr">3. normalizr</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>데이터가 중첩구조일때 정규화를 직접 할수도 있습니다만 라이브러리를 이용해서 수행할수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>링크 <a href="https://github.com/paularmstrong/normalizr">normalizr</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>다음과 같은 중첩 데이터가 존재할때</p>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="title">blost posts</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">123</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul</span><span class="delimiter">&quot;</span></span>
+  },
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">My awesome blog post</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">comments</span><span class="delimiter">&quot;</span></span>: [
+    {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">324</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">commenter</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nicole</span><span class="delimiter">&quot;</span></span>
+      }
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>다음과 같이 normalizr 라이브러리를 이용해 데이터 구조에 대한 scheme를 작성하면</p>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> { normalize, schema } from <span class="string"><span class="delimiter">'</span><span class="content">normalizr</span><span class="delimiter">'</span></span>;
+
+<span class="comment">// Define a users schema</span>
+const user = <span class="keyword">new</span> schema.Entity(<span class="string"><span class="delimiter">'</span><span class="content">users</span><span class="delimiter">'</span></span>);
+
+<span class="comment">// Define your comments schema</span>
+const comment = <span class="keyword">new</span> schema.Entity(<span class="string"><span class="delimiter">'</span><span class="content">comments</span><span class="delimiter">'</span></span>, {
+  <span class="key">commenter</span>: user
+});
+
+<span class="comment">// Define your article</span>
+const article = <span class="keyword">new</span> schema.Entity(<span class="string"><span class="delimiter">'</span><span class="content">articles</span><span class="delimiter">'</span></span>, {
+  <span class="key">author</span>: user,
+  <span class="key">comments</span>: [ comment ]
+});
+
+const normalizedData = normalize(originalData, article);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>다음과 같이 정규화된 데이터 객체를 얻을수 있습니다.</p>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key">result</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">123</span><span class="delimiter">&quot;</span></span>,
+  <span class="key">entities</span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">articles</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">123</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key">id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">123</span><span class="delimiter">&quot;</span></span>,
+        <span class="key">author</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>,
+        <span class="key">title</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">My awesome blog post</span><span class="delimiter">&quot;</span></span>,
+        <span class="key">comments</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">324</span><span class="delimiter">&quot;</span></span> ]
+      }
+    },
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>: { <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paul</span><span class="delimiter">&quot;</span></span> },
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span>: { <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nicole</span><span class="delimiter">&quot;</span></span> }
+    },
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">comments</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">324</span><span class="delimiter">&quot;</span></span>: { <span class="key">id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">324</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">commenter</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span> }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
