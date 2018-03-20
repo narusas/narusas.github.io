@@ -1,0 +1,2284 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asciidoc 기본 사용법</title>
+<meta name="description" content="Asciidoc의 기본 문법을 설명한다">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Asciidoc 기본 사용법</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#asciidoctor">1. Asciidoctor</a>
+<ul class="sectlevel2">
+<li><a href="#ruby_설치">1.1. ruby 설치</a></li>
+</ul>
+</li>
+<li><a href="#basic_syntaxt">2. Basic syntaxt</a>
+<ul class="sectlevel2">
+<li><a href="#문단_paragraphs">2.1. 문단 (Paragraphs)</a></li>
+<li><a href="#줄바꿈_line_break">2.2. 줄바꿈(line break)</a></li>
+<li><a href="#경고_admonitions">2.3. 경고(Admonitions)</a></li>
+<li><a href="#text_formating">2.4. Text formating</a></li>
+<li><a href="#치환_방지">2.5. 치환 방지</a></li>
+<li><a href="#목록_list">2.6. 목록(List)</a></li>
+<li><a href="#링크와_이미지">2.7. 링크와 이미지</a></li>
+<li><a href="#제목_titles">2.8. 제목 (Titles)</a></li>
+<li><a href="#block">2.9. Block</a></li>
+<li><a href="#빌딩_블럭">2.10. 빌딩 블럭</a></li>
+<li><a href="#제한_블럭_delimited_block">2.11. 제한 블럭(Delimited block)</a></li>
+<li><a href="#tables">2.12. Tables</a></li>
+<li><a href="#source_code">2.13. Source Code</a></li>
+<li><a href="#replacement">2.14. Replacement</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>asciidoc에 대한 간략한 사용법을 설명합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="asciidoctor">1. Asciidoctor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>지금 보고 있는 문서를 포함하여 문서는 asciidoc(<a href="https://asciidoctor.org/docs/what-is-asciidoc/" class="bare">https://asciidoctor.org/docs/what-is-asciidoc/</a>) 으로 작성됩니다.
+기존에 문서 작성에 사용하던 docbook을 대체하는 도구이며, spring,linux 등 여러 곳에서 적용되고 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>문서를 빌드하면 html,pdf,epub등의 파일이 만들어지며 우리 프로젝트에서는 html 을 생성합니다.</p>
+</div>
+<div class="paragraph">
+<p>asciidoc 은 문서 표준의 이름이고 이 문서를 빌드하기 위한 도구가 asciidoctor  입니다. asciidoctor 는 루비을 기반으로 만들어 졌기 때문에 루비를 설치 해야 합니다.</p>
+</div>
+<div class="sect2">
+<h3 id="ruby_설치">1.1. ruby 설치</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">bundler 설치</div>
+<p>아스키독은 단순 텍스트 일 뿐입니다. 선호하는 텍스트 에디터로 열어서 보고 편집할수 있습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="basic_syntaxt">2. Basic syntaxt</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="문단_paragraphs">2.1. 문단 (Paragraphs)</h3>
+<div class="paragraph">
+<p>문단은 빈줄로 구분됩니다. 빈줄이 없이 쓰여진 문장은 하나의 문단으로 인식 되어 이어써집니다.</p>
+</div>
+<div class="paragraph">
+<p>다음과 같이 작성된 문장은</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">This journey begins one late Monday afternoon in Antwerp.
+Our team desperately needs coffee, but none of us dare open the office door.
+
+To leave means code dismemberment and certain death.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>다음처럼 이어진 문장으로 만들어집니다.
+.출력</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>This journey begins one late Monday afternoon in Antwerp.Our team desperately needs coffee, but none of us dare open the office door.
+
+To leave means code dismemberment and certain death.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="줄바꿈_line_break">2.2. 줄바꿈(line break)</h3>
+<div class="paragraph">
+<p>문단 안에서도 줄바꿈을 쓰고 싶을때가 있습니다. 줄 끝에 <code>+</code>를 붙이면 줄바꿈이 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">Rubies are red, +
+Topazes are blue.</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">출력</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>Rubies are red,
+Topazes are blue.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>또는 문단 앞에 hardbreaks 속성을 줄어도 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[%hardbreaks]
+Ruby is red.
+Java is black.</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">출력</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>Ruby is red.
+Java is black.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>문서 전체에서 소스의 줄바꿈을 출력의 줄바꿈으로 사용하고 싶다면 문서에 <code>hardbreaks</code> 속성을 부여하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= Line Break Doc Title
+:hardbreaks:
+
+Rubies are red,
+Topazes are blue.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="경고_admonitions">2.3. 경고(Admonitions)</h3>
+<div class="paragraph">
+<p>사용자의 주의를 이끌어 내기 위해 경고를 쓰고 싶을때가 있습니다. 이를 위해 다음과 같은 경고구가 준비되어 있습니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NOTE</p>
+</li>
+<li>
+<p>TIP</p>
+</li>
+<li>
+<p>IMPORTANT</p>
+</li>
+<li>
+<p>CAUTION</p>
+</li>
+<li>
+<p>WARNING</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>경고를 주고 싶을때 새로운 문단을 시작하고 대문자로 경고 라벨을 기술한후에 <code>:</code>를 붙이고 한칸 띄고 내용을 기술하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">NOTE: 참고하고 하세요
+
+TIP: 팁입니다
+
+IMPORTANT: 중요합니다.
+
+CAUTION: 주의 하세요
+
+WARNING: 위험합니다.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+참고하고 하세요
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+팁입니다
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+중요합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+주의 하세요
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+위험합니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>문서에  <code>icons</code> 속성을  설정을 이용해 아이콘을 사용할수도 있습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="text_formating">2.4. Text formating</h3>
+<div class="paragraph">
+<p>아스키독은 문장을 강조하기 위해 Quoted text를 사용합니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Quoted text는 어떤 기호로 둘러싸여서 특별한 의미를 전달하는 문장을 의미합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">I can't believe it, we *won*!</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="paragraph">
+<p>I can&#8217;t believe it, we <strong>won</strong>!</p>
+</div>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Bold, italic, and monospace formatting syntax</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">*bold phrase* &amp; **char**acter**s**
+
+_italic phrase_ &amp; __char__acter__s__
+
+*_bold italic phrase_* &amp; **__char__**acter**__s__**
+
+`monospace phrase` &amp; ``char``acter``s``
+
+`*monospace bold phrase*` &amp; ``**char**``acter``**s**``
+
+`_monospace italic phrase_` &amp; ``__char__``acter``__s__``
+
+`*_monospace bold italic phrase_*` &amp;
+``**__char__**``acter``**__s__**``</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="paragraph">
+<p><strong>bold phrase</strong> &amp; <strong>char</strong>acter<strong>s</strong></p>
+</div>
+<div class="paragraph">
+<p><em>italic phrase</em> &amp; <em>char</em>acter<em>s</em></p>
+</div>
+<div class="paragraph">
+<p><strong><em>bold italic phrase</em></strong> &amp; <strong><em>char</em></strong>acter<strong><em>s</em></strong></p>
+</div>
+<div class="paragraph">
+<p><code>monospace phrase</code> &amp; <code>char</code>acter<code>s</code></p>
+</div>
+<div class="paragraph">
+<p><code><strong>monospace bold phrase</strong></code> &amp; <code><strong>char</strong></code>acter<code><strong>s</strong></code></p>
+</div>
+<div class="paragraph">
+<p><code><em>monospace italic phrase</em></code> &amp; <code><em>char</em></code>acter<code><em>s</em></code></p>
+</div>
+<div class="paragraph">
+<p><code><strong><em>monospace bold italic phrase</em></strong></code> &amp;
+<code><strong><em>char</em></strong></code>acter<code><strong><em>s</em></strong></code></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Quoted Text는 prefix형태로 속성을 부여할수 있습니다. 이를 통해 문서 변환 과정에서 해당 quoted text에 추가적인 스타일을 부여할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>예를 들어 다음과 같이 속성을 부여하면</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">​Type the word [.userinput]#asciidoc# into the search bar.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 별도의 속성을 주면 HTML로 변환할때 해당 부분을 <code>&lt;span&gt;</code>으로 감싸고 CSS Class로 부여합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">HTML</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>&lt;span class="userinput"&gt;asciidoc&lt;/span&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이런 방법을 이용해 자유롭게 스타일을 추가 할수 있습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="치환_방지">2.5. 치환 방지</h3>
+<div class="paragraph">
+<p>만약 문장자체가 quoted text에서 사용하는 기호들을 사용하는 것이라면 어떻게 할까요?</p>
+</div>
+<div class="paragraph">
+<p>이스케이프 문자로서 <code>\</code> 를 해당 기호 앞에 기술해 주면 됩니다. 만약 기호가 <code>__</code> 또는 <code>**</code>처럼 두글자로 된 기호 라면 이스케이프 문자도 두번 기술해주어야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">\*Stars* will appear as *Stars*, not as bold text.
+
+\&amp;sect; will appear as an entity, not the &amp;sect; symbol.
+
+\\__func__ will appear as __func__, not as emphasized text.
+
+\{two-semicolons} will appear {two-semicolons}, not resolved as ;;.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="목록_list">2.6. 목록(List)</h3>
+<div class="paragraph">
+<p>목록을 표시하고 싶다면 문단을 새로 시작하고 <code>*</code> 로 시작하는 문장을 작성하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* Edgar Allen Poe
+* Sheri S. Tepper
+* Bill Bryson</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Edgar Allen Poe</p>
+</li>
+<li>
+<p>Sheri S. Tepper</p>
+</li>
+<li>
+<p>Bill Bryson</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>목록에 제목을 기입하고 싶다면 <code>.</code>으로 시작하는 제목을 기입한후에 목록을 작성하면 됩니다. 이때 공백이 없어야 합니다. 있다면 추후 순서형 목록과 혼돈이 발생할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">.Kizmet's Favorite Authors
+* Edgar Allen Poe
+* Sheri S. Tepper
+* Bill Bryson</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<div class="title">Kizmet&#8217;s Favorite Authors</div>
+<ul>
+<li>
+<p>Edgar Allen Poe</p>
+</li>
+<li>
+<p>Sheri S. Tepper</p>
+</li>
+<li>
+<p>Bill Bryson</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>별표<code>*</code> 대신 <code>-</code>를 사용해도 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">- Edgar Allen Poe
+- Sheri S. Tepper
+- Bill Bryson</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Edgar Allen Poe</p>
+</li>
+<li>
+<p>Sheri S. Tepper</p>
+</li>
+<li>
+<p>Bill Bryson</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>서로 다른 목록을 구분 하기 위해서는 주석을 가지는 빈 줄을 넣으면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* Apples
+* Oranges
+
+//-
+
+* Walnuts
+* Almonds</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Apples</p>
+</li>
+<li>
+<p>Oranges</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Walnuts</p>
+</li>
+<li>
+<p>Almonds</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>중첩된 목록을 가지고 싶다면 중첩만큼 <code>*</code>을 입력하면 됩니다. 최대 5단계까지 중첩 가능합니다.
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">.Possible DefOps manual locations
+* West wood maze
+** Maze heart
+*** Reflection pool
+** Secret exit
+* Untracked file in git repository</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<div class="title">Possible DefOps manual locations</div>
+<ul>
+<li>
+<p>West wood maze</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Maze heart</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Reflection pool</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Secret exit</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Untracked file in git repository</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="순서를_가지는_목록">2.6.1. 순서를 가지는 목록</h4>
+<div class="paragraph">
+<p>순서를 가지는 목록을 만들고 싶다면 숫자를 붙이면 됩니다.
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">1. Protons
+2. Electrons
+3. Neutrons</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Protons</p>
+</li>
+<li>
+<p>Electrons</p>
+</li>
+<li>
+<p>Neutrons</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>하지만 숫자가 아직 결정 않되었거나, 자동으로 넣고 싶다면 <code>.</code>으로 시작하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">. Protons
+. Electrons
+. Neutrons</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Protons</p>
+</li>
+<li>
+<p>Electrons</p>
+</li>
+<li>
+<p>Neutrons</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>만약 숫자를 직접 입력하기로 결정했다면, 숫자는 반드시 일련성을 가져야합니다. 또한 새로운 번호에서 시작하고 싶다면 그 숫자로 시작하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">4. Step four
+5. Step five
+6. Step six</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Step four</p>
+</li>
+<li>
+<p>Step five</p>
+</li>
+<li>
+<p>Step six</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><code>.</code>으로 시작하는 목록에서 새로운 번호에서 시작하고 싶다면 start 속성을 주면 됩니다.
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[start=4]
+ . Step four
+ . Step five
+ . Step six</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic" start="4">
+<li>
+<p>Step four</p>
+</li>
+<li>
+<p>Step five</p>
+</li>
+<li>
+<p>Step six</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>역순도 가능합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[%reversed]
+.Parts of an atom
+. Protons
+. Electrons
+. Neutrons</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<div class="title">Parts of an atom</div>
+<ol class="arabic" reversed>
+<li>
+<p>Protons</p>
+</li>
+<li>
+<p>Electrons</p>
+</li>
+<li>
+<p>Neutrons</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>중첩도 가능합니다
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Step 1</p>
+</li>
+<li>
+<p>Step 2</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Step 2a</p>
+</li>
+<li>
+<p>Step 2b</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Step 3</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>넘버링 스타일은 단계별로 다르게 적용됩니다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Level</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Numbering
+Scheme</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exaples</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CSS Class(HTML
+converter)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Arabic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1. 2. 3.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">arabic</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lower Alpha</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a. b. c.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">loweralpha</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lower Roman</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">i. ii. iii.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lowerroman</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Upper Alpha</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A. B. C.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">upperalpha</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Upper Roman</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I. II. III.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">upperroman</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>넘버링 스타일도 변경할수 있습니다.
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[lowerroman, start=5]
+. Five
+. Six
+[loweralpha]
+.. a
+.. b
+.. c
+. Seven</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i" start="5">
+<li>
+<p>Five</p>
+</li>
+<li>
+<p>Six</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>a</p>
+</li>
+<li>
+<p>b</p>
+</li>
+<li>
+<p>c</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Seven</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="이름_붙은_목록_labeled_list">2.6.2. 이름 붙은 목록(Labeled list)</h4>
+<div class="paragraph">
+<p>항목에 대한 설명을 위해서 자주 사용됩니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>구분자</p>
+</li>
+<li>
+<p>공백</p>
+</li>
+<li>
+<p>아이템</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>으로 구성됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.
+Keyboard:: Used to enter text or control items on the screen.
+Mouse:: Used to point to and select items on your computer screen.
+Monitor:: Displays information in visual form using text and graphics.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">CPU</dt>
+<dd>
+<p>The brain of the computer.</p>
+</dd>
+<dt class="hdlist1">Hard drive</dt>
+<dd>
+<p>Permanent storage for operating system and/or user files.</p>
+</dd>
+<dt class="hdlist1">RAM</dt>
+<dd>
+<p>Temporarily stores information the CPU uses during operation.</p>
+</dd>
+<dt class="hdlist1">Keyboard</dt>
+<dd>
+<p>Used to enter text or control items on the screen.</p>
+</dd>
+<dt class="hdlist1">Mouse</dt>
+<dd>
+<p>Used to point to and select items on your computer screen.</p>
+</dd>
+<dt class="hdlist1">Monitor</dt>
+<dd>
+<p>Displays information in visual form using text and graphics.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>설명이 아랫줄이 아니라 옆으로 나오게 할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[horizontal]
+CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+CPU
+</td>
+<td class="hdlist2">
+<p>The brain of the computer.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+Hard drive
+</td>
+<td class="hdlist2">
+<p>Permanent storage for operating system and/or user files.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+RAM
+</td>
+<td class="hdlist2">
+<p>Temporarily stores information the CPU uses during operation.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>하위에 목록을 추가할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">Dairy::
+* Milk
+* Eggs
+Bakery::
+* Bread
+Produce::
+* Bananas</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Dairy</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Milk</p>
+</li>
+<li>
+<p>Eggs</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Bakery</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Bread</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1">Produce</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>Bananas</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>중첩도 가능하고 섞어 쓰는것도 가능합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">Operating Systems::
+  Linux:::
+    . Fedora
+      * Desktop
+    . Ubuntu
+      * Desktop
+      * Server
+  BSD:::
+    . FreeBSD
+    . NetBSD
+
+Cloud Providers::
+  PaaS:::
+    . OpenShift
+    . CloudBees
+  IaaS:::
+    . Amazon EC2
+    . Rackspace</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Operating Systems</dt>
+<dd>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fedora</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Desktop</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ubuntu</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Desktop</p>
+</li>
+<li>
+<p>Server</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">BSD</dt>
+<dd>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>FreeBSD</p>
+</li>
+<li>
+<p>NetBSD</p>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+</dd>
+<dt class="hdlist1">Cloud Providers</dt>
+<dd>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">PaaS</dt>
+<dd>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>OpenShift</p>
+</li>
+<li>
+<p>CloudBees</p>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">IaaS</dt>
+<dd>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Amazon EC2</p>
+</li>
+<li>
+<p>Rackspace</p>
+</li>
+</ol>
+</div>
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="복잡한_목록_내용">2.6.3. 복잡한 목록 내용</h4>
+<div class="paragraph">
+<p>목록에 나와야 하는게 한줄짜리 문장이 전부일리가 없습니다.</p>
+</div>
+<div class="paragraph">
+<p>기본적으로 목록은 문단 취급을 받습니다. 따라서 줄 바꿈을 해도 이어 붙습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* The header in AsciiDoc is optional, but if
+it is used it must start with a document title.
+
+* Optional Author and Revision information
+immediately follows the header title.
+
+* The document header must be separated from
+  the remainder of the document by one or more
+  blank lines and cannot contain blank lines.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The header in AsciiDoc is optional, but if
+it is used it must start with a document title.</p>
+</li>
+<li>
+<p>Optional Author and Revision information
+immediately follows the header title.</p>
+</li>
+<li>
+<p>The document header must be separated from
+the remainder of the document by one or more
+blank lines and cannot contain blank lines.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>목록이 하나 이상의 문단으로 구성될수도 있습니다.
+그때는 다음 문단 전에 <code>+</code>를 넣어줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* The header in AsciiDoc must start with a document title.
++
+The header is optional.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The header in AsciiDoc must start with a document title.</p>
+<div class="paragraph">
+<p>The header is optional.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>문단이 아닌 블럭도 추가할수 있습니다. 각 문단 또는 블럭은 <code>+</code> 로 계속 연결되어야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* The header in AsciiDoc must start with a document title.
++
+----
+= Document Title
+----
++
+Keep in mind that the header is optional.
+
+* Optional Author and Revision information immediately follows the header title.
++
+----
+= Document Title
+Doc Writer &lt;doc.writer@asciidoc.org&gt;
+v1.0, 2013-01-01
+----</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The header in AsciiDoc must start with a document title.</p>
+<div class="listingblock">
+<div class="content">
+<pre>= Document Title</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Keep in mind that the header is optional.</p>
+</div>
+</li>
+<li>
+<p>Optional Author and Revision information immediately follows the header title.</p>
+<div class="listingblock">
+<div class="content">
+<pre>= Document Title
+Doc Writer &lt;doc.writer@asciidoc.org&gt;
+v1.0, 2013-01-01</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 매번 <code>+</code> 붙이는게 불편하다면 오픈 블럭을 사용하면됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* The header in AsciiDoc must start with a document title.
++
+--
+Here's an example of a document title:
+
+----
+= Document Title
+----
+
+NOTE: The header is optional.
+--</code></pre>
+</div>
+</div>
+<div class="ulist">
+<div class="title">출력</div>
+<ul>
+<li>
+<p>The header in AsciiDoc must start with a document title.</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Here&#8217;s an example of a document title:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>= Document Title</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The header is optional.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>오픈 블럭을 이용해 다른 문서를 끼워넣을수도 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">* list item
++
+--
+include::shared-content.adoc[]
+--</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="링크와_이미지">2.7. 링크와 이미지</h3>
+<div class="paragraph">
+<p>URL은 자동 인식됩니다.</p>
+</div>
+<div class="paragraph">
+<p>다음은 자동 인식되는 scheme 목록입니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>http</p>
+</li>
+<li>
+<p>https</p>
+</li>
+<li>
+<p>ftp</p>
+</li>
+<li>
+<p>irc</p>
+</li>
+<li>
+<p>mailto</p>
+</li>
+<li>
+<p><a href="mailto:email@email.com">email@email.com</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>링크는 자동으로 클릭이 걸리는데 이를 막고 싶다면 <code>/</code>를 앞에 붙이면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">\http://a.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Scheme를 보이고 싶지 않다면 hide-uri-scheme 속성을 주면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">:hide-uri-scheme:
+http://a.com</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="paragraph">
+<p><a href="http://a.com" class="bare">a.com</a></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>좀더 강력한 링크를 사용하기 위해서는 <code>link</code>매크로를 사용합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>link:url[optional link text, optional target attribute, optional role attribute]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">search/link:https://ecosia.org[Ecosia]</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="paragraph">
+<p>search/<a href="https://ecosia.org">Ecosia</a></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>아스키독 문서 내부로 링크를하고 싶다면 <code>&lt;&lt;id 또는 섹션 제목&gt;&gt;</code> 로 할수 있습니다.
+.소스</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">The section &lt;&lt;images&gt;&gt; describes how to insert images into your document.</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="paragraph">
+<p>The section <a href="#images">[images]</a> describes how to insert images into your document.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="이미지">2.7.1. 이미지</h4>
+<div class="paragraph">
+<p><code>image::</code>를 이용해 이미지를 포함할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">image::sunset.jpg[]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이미지 제목을 줄수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">image::sunset.jpg[Sunset]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이미지 id, 제목, 크기등에 대한 정보도 줄수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[#img-sunset]
+.A mountain sunset
+[link=http://www.flickr.com/photos/javh/5448336655]
+image::sunset.jpg[Sunset,300,200]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="제목_titles">2.8. 제목 (Titles)</h3>
+<div class="paragraph">
+<p>아스키독은 3가지 타입의 제목을 지원합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>문서 제목</p>
+</li>
+<li>
+<p>섹션 제목</p>
+</li>
+<li>
+<p>블럭 제목</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="문서_제목">2.8.1. 문서 제목</h4>
+<div class="paragraph">
+<p>문서 제목을 만들기 위해서는 문서의 첫 줄을 <code>= </code> 로 시작해야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= Lightweight Markup Languages
+
+According to Wikipedia...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>문서 제목 다음은 문서에 대한 헤더 정보를이 나올수 있습니다.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Line 1</dt>
+<dd>
+<p>저자이름, 이메일 주소</p>
+</dd>
+<dt class="hdlist1">Line 2</dt>
+<dd>
+<p>리비전, 날자, 기타</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= Lightweight Markup Languages
+Doc Writer &lt;doc.writer@asciidoc.org&gt;
+v1.0, 2012-01-01
+
+According to Wikipedia...</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="문서_속성_document_attributes">2.8.2. 문서 속성(Document attributes)</h4>
+<div class="paragraph">
+<p>문서 헤더 다음에는 속성을 기술할수 있습니다. 속성은 <code>:</code>으로 둘러쌓인 이름과 값으로 구성됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= User Guide
+Doc Writer &lt;doc.writer@asciidoc.org&gt;
+2012-01-01
+:appversion: 1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 기술된 속성은 문서 내에서 괄호로 치환될수 있습니다. 이를 이용해 전역 변수 처럼 사용할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">The current version of the application is {appversion}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>문서 속성은 asciidoc의 기능 플래그 설정용으로도 사용됩니다. 예를 들어 목차 기능을 활성하고 싶다면 <code>toc</code> 속성을 주면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">:toc:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>속성을 해제 하고 싶다면 <code>!</code>를 이름 뒤에 붙여서 표기하면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">:linkcss!:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Asciidoctor의 기본 설정값을 변경할때도 사용합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">:imagesdir: ./images
+:iconsdir: ./icons
+:stylesdir: ./styles
+:scriptsdir: ./js</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="섹션_제목">2.8.3. 섹션 제목</h4>
+<div class="paragraph">
+<p>섹션은 <code>=</code>를 이용해 표기할수 있습니다. 중첩 섹션이 될때마다 중첩 레벨이 증가합니다(0-based입니다)</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= Document Title (Level 0)
+
+== Level 1 Section
+
+=== Level 2 Section
+
+==== Level 3 Section
+
+===== Level 4 Section
+
+====== Level 5 Section
+
+== Another Level 1 Section</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>주요한 규칙은 다음과 같습니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>문서 타입이 book일 경우 하나의 문서에는 단 하나의 레벨 0 섹션이 있어야 합니다. (기본 문서 타입은 article입니다 )</p>
+</li>
+<li>
+<p>섹션 중첩 레벨을 뛰어넘기 할수 없습니다.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">= Document Title
+
+= Illegal Level 0 Section (violates rule #1)
+
+== First Section
+
+==== Illegal Nested Section (violates rule #2)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>문서 제목 이후 첫 섹션 사이의 문장은 서문에 해당합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="block">2.9. Block</h3>
+<div class="paragraph">
+<p>다양한 기호가 의미 블럭을 구성합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>&#8230;&#8203;.</code>:  입력한 그대로 문자열이 생성됩니다.</p>
+</li>
+<li>
+<p><code>----</code>:  Source Code 블럭</p>
+</li>
+<li>
+<p><code>|===</code>:  표(Table) 블럭</p>
+</li>
+<li>
+<p><code>--</code>: 위치에 따라 적절한 블럭으로 동작. 단  passthrough, table 제외</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>섹션에 번호를 붙이고 싶다면 <code>setnums</code> 속성을 문서에 줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">:setnums:</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="블럭_제목">2.9.1. 블럭 제목</h4>
+<div class="paragraph">
+<p>블럭 위에 <code>.</code> 으로 시작하는 제목을 줄수 있습니다. (블럭은 문단, 목록, 다른 블럭 요소가 될수 있습니다.)</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">.TODO list
+- Learn the AsciiDoc syntax
+- Install AsciiDoc
+- Write my document in AsciiDoc</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="ulist">
+<div class="title">TODO list</div>
+<ul>
+<li>
+<p>Learn the AsciiDoc syntax</p>
+</li>
+<li>
+<p>Install AsciiDoc</p>
+</li>
+<li>
+<p>Write my document in AsciiDoc</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="빌딩_블럭">2.10. 빌딩 블럭</h3>
+
+</div>
+<div class="sect2">
+<h3 id="제한_블럭_delimited_block">2.11. 제한 블럭(Delimited block)</h3>
+<div class="paragraph">
+<p>블럭의 범위를 지정할수 있습니다. 이미 많이 보셨죠.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">----
+This is an example of a _listing block_.
+The content inside is displayed as &lt;pre&gt; text.
+----</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre>This is an example of a _listing block_.
+The content inside is displayed as &lt;pre&gt; text.</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>이런 블럭 종류는 여러종류가 있습니다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름(스타일)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">줄구분자</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">목적</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">치환</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">////</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">출력되지 않을 설명을 기술하기 위해</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">exmple</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">====</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예제나 경고를 표기하기 위한 블럭</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">literal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">입력하 그대로 출력하기 위한 블럭</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">verbatim</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">listing,source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">----</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소스코드나 키보드입력을 표현하기 위함</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">verbatim</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">open</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">익명 블럭. 다른 블럭 역활을 수행할수 있음.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">varies</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pass</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">raw 문자열을 처리하지 않게한다</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">quote,verse</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>__</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">인용문</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sidebar</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">****</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">문서 본문 옆</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">normal</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">|===</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">테이블</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">varies</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="tables">2.12. Tables</h3>
+<div class="paragraph">
+<p>Table delimiter로 둘러 쌓아 테이블을 표시할수 있다. 각 컬럼은 <code>|</code>로 분기한다. 컬럼수는 속성으로 줄수 있다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[cols=2*]
+|===
+|Firefox
+|Web Browser
+
+|Ruby
+|Programming Language
+
+|TorqueBox
+|Application Server
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Firefox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Web Browser</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ruby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Programming Language</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TorqueBox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application Server</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>헤더를 주고 싶다면 옵션을 줄수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[cols=2*,options=header]
+|===
+|Name
+|Group
+
+|Firefox
+|Web Browser
+
+|Ruby
+|Programming Language
+
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Firefox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Web Browser</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ruby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Programming Language</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>헤더는 많이 사용되기 때문에 단축 사용법을 제공합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[%header,cols=2*]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>셀의 구분자는  <code>|</code> 이기 때문에 줄바꿈과 무관합니다. 줄바꿈을 통해 문단처럼 길게 이어지는 컨텐츠를 추가할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">|===
+|Name |Group |Description
+
+|Firefox
+|Web Browser
+|Mozilla Firefox is an open-source web browser.
+It's designed for standards compliance,
+performance, portability.
+
+|Ruby
+|Programming Language
+|A programmer's best friend.
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Group</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Firefox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Web Browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mozilla Firefox is an open-source web browser.
+It&#8217;s designed for standards compliance,
+performance, portability.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ruby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Programming Language</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A programmer&#8217;s best friend.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>컬럼의 너비조절은 컬럼 <code>cols</code>에 줄수 있습니다</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[cols=&quot;2,3,5&quot;]
+|===
+|Name |Group |Description
+
+|Firefox
+|Web Browser
+|Mozilla Firefox is an open-source web browser.
+It's designed for standards compliance,
+performance and portability.
+
+|Ruby
+|Programming Language
+|A programmer's best friend.
+
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 30%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Group</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Firefox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Web Browser</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mozilla Firefox is an open-source web browser.
+It&#8217;s designed for standards compliance,
+performance and portability.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ruby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Programming Language</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A programmer&#8217;s best friend.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>컬럼안에  asciidoc 컨텐츠를 추가할수 있습니다. <code>cols</code>에 <code>a</code> 옵션을 주면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[cols=&quot;2,3,5a&quot;]
+|===
+|Name |Group |Description
+
+|Firefox
+|Web Browser
+|Mozilla Firefox is an open-source web browser.
+It's designed for:
+
+* standards compliance,
+* performance and
+* portability.
+
+|Ruby
+|Programming Language
+|A programmer's best friend.
+
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 30%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Group</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Firefox</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Web Browser</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>Mozilla Firefox is an open-source web browser.
+It&#8217;s designed for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>standards compliance,</p>
+</li>
+<li>
+<p>performance and</p>
+</li>
+<li>
+<p>portability.</p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ruby</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Programming Language</p></td>
+<td class="tableblock halign-left valign-top"><div><div class="paragraph">
+<p>A programmer&#8217;s best friend.</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>또는 각 셀에 직접 아스키독 지원 여부를 추가할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">a|Mozilla Firefox is an open-source web browser.
+It's designed for:
+
+* standards compliance,
+* performance and
+* portability.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>CSV에서 표를 만들어 낼수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[%header,format=csv]
+|===
+Artist,Track,Genre
+Baauer,Harlem Shake,Hip Hop
+The Lumineers,Ho Hey,Folk Rock
+|===</code></pre>
+</div>
+</div>
+<div class="openblock">
+<div class="title">출력</div>
+<div class="content">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Artist</th>
+<th class="tableblock halign-left valign-top">Track</th>
+<th class="tableblock halign-left valign-top">Genre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Baauer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Harlem Shake</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hip Hop</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Lumineers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ho Hey</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Folk Rock</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p>CSV 파일을 읽어 들일수도 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">소스</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="asciidoc">[%header,format=csv]
+|===
+include::tracks.csv[]
+|===</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="source_code">2.13. Source Code</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>[source] 블럭을 이용해 소스코드를 제공할수 있습니다.</p>
+</li>
+<li>
+<p>[source,javascript] 블럭을 이용해 문법강조할 언어를 지정할수 있습니다.</p>
+</li>
+<li>
+<p>[source,javascript,linenums] 블럭을 이용해 줄번호를 보여줄수 있습니다.</p>
+</li>
+<li>
+<p>include 매크로를 이용해 파일을 읽어와서 소스를 첨부할수 있습니다.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,ruby]
+----
+include::app.rb[]
+----</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="replacement">2.14. Replacement</h3>
+<div class="paragraph">
+<p>&#8658; &#169; 같은 기호를 표현하기 위해 =&gt; (C)  로 표기 하면 치환 됩니다.  이스케이핑을 위해  \=&gt;  로 표기하면 변환이 되지 않습니다.</p>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
