@@ -1,0 +1,965 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Functional patterns</title>
+<meta name="description" content="함수형 프로그래밍을 위한 기초 패턴 소개">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>JS Functional patterns</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#head">1. Head</a></li>
+<li><a href="#tail">2. tail</a></li>
+<li><a href="#def">3. Def</a></li>
+<li><a href="#undef">4. Undef</a></li>
+<li><a href="#copy">5. Copy</a></li>
+<li><a href="#length">6. Length</a></li>
+<li><a href="#reverse">7. Reverse</a></li>
+<li><a href="#first">8. First</a></li>
+<li><a href="#last">9. Last</a></li>
+<li><a href="#slice">10. Slice</a></li>
+<li><a href="#isarray">11. isArray</a></li>
+<li><a href="#flatten">12. Flatten</a></li>
+<li><a href="#swap">13. Swap</a></li>
+<li><a href="#map">14. Map</a></li>
+<li><a href="#filter">15. Filter</a></li>
+<li><a href="#reject">16. Reject</a></li>
+<li><a href="#partition">17. Partition</a></li>
+<li><a href="#reduce">18. Reduce</a></li>
+<li><a href="#reduceright">19. ReduceRight</a></li>
+<li><a href="#partial">20. Partial</a></li>
+<li><a href="#spreadarg">21. SpreadArg</a></li>
+<li><a href="#reversearg">22. ReverseArg</a></li>
+<li><a href="#pluck">23. Pluck</a></li>
+<li><a href="#flow">24. Flow</a></li>
+<li><a href="#compose">25. Compose</a></li>
+<li><a href="#min">26. Min</a></li>
+<li><a href="#max">27. Max</a></li>
+<li><a href="#factorial">28. Factorial</a></li>
+<li><a href="#fibonacci">29. Fibonacci</a></li>
+<li><a href="#quicksort">30. Quicksort</a></li>
+<li><a href="#reduce_화_하기">31. Reduce 화 하기</a></li>
+</ul>
+</div>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>원문 : <a href="https://medium.com/dailyjs/functional-js-with-es6-recursive-patterns-b7d0813ef9e3" class="bare">https://medium.com/dailyjs/functional-js-with-es6-recursive-patterns-b7d0813ef9e3</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="head">1. Head</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열의 첫번째 아이템을 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const head = ([x]) =&gt; x</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+head(array) <span class="comment">// 1</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tail">2. tail</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>첫번째 아이템을 제외한 나머지 배열을 반환</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const tail = ([, ...xs]) =&gt; xs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>다음 코드와 동일하다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const tail = ([x, ...xs]) =&gt; xs</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+tail(array) <span class="comment">// [2,3,4,5]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="def">3. Def</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진  인자가 정의되어 있는지 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const def = x =&gt; <span class="keyword">typeof</span> x !== <span class="string"><span class="delimiter">'</span><span class="content">undefined</span><span class="delimiter">'</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const defined = <span class="string"><span class="delimiter">'</span><span class="content">this is defined</span><span class="delimiter">'</span></span>
+def(defined) <span class="comment">// true</span>
+def(doesntExist) <span class="comment">// false</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="undef">4. Undef</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진  인자가 정의되어 있지 않은지 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const undef = x =&gt; !def(x)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const defined = <span class="string"><span class="delimiter">'</span><span class="content">this is defined</span><span class="delimiter">'</span></span>
+undef(defined) <span class="comment">// false</span>
+undef(doesntExist) <span class="comment">// true</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="copy">5. Copy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열을 복사한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const copy = array =&gt; [...array]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">let array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+let copied = copy(array)
+copied.push(<span class="integer">6</span>)
+
+array <span class="comment">// [1,2,3,4,5]</span>
+copied <span class="comment">// [1,2,3,4,5,6]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="length">6. Length</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열의 길이를 반환합니다. 배열 순회를 재귀를 통해 수행하는 전형적인 예입니다. 실제로는 array.length를 호출하시면됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const length = ([x, ...xs], len = <span class="integer">0</span>) =&gt; def(x) ? length(xs, len + <span class="integer">1</span>) : len</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+length(array) <span class="comment">// 5</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reverse">7. Reverse</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>역전된 배열을 반환합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reverse = ([x, ...xs]) =&gt; def(x) ? [...reverse(xs), x] : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+reverse(array) <span class="comment">// [5,4,3,2,1]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Array.reverse()도 역전을 시킬수 있습니다만, 원래 배열의 데이터를 변경해버린다는 부작용이 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="first">8. First</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열의 최초 N개만큼 포함하는 새로운 배열을 반환합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const first = ([x, ...xs], n = <span class="integer">1</span>) =&gt; def(x) &amp;&amp; n ? [x, ...first(xs, n - <span class="integer">1</span>)] : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+first(array, <span class="integer">3</span>) <span class="comment">// [1,2,3]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="last">9. Last</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진 배열의 끝 n개를 포함하는 새로운 배열을 반환합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const last = (xs, n = <span class="integer">1</span>) =&gt; reverse(first(reverse(xs), n))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+last(array, <span class="integer">3</span>) <span class="comment">// [3,4,5]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="slice">10. Slice</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진 값을 특정 위치에 추가(Insert)한 새로운 배열을 반환한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const slice = ([x, ...xs], i, y, curr = <span class="integer">0</span>) =&gt; def(x)
+  ? curr === i
+    ? [y, x, ...slice(xs, i, y, curr + <span class="integer">1</span>)]
+    : [x, ...slice(xs, i, y, curr + <span class="integer">1</span>)]
+  : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+slice(array, <span class="integer">2</span>, <span class="integer">99</span>) <span class="comment">// [1,2,99,4,5]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="isarray">11. isArray</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열 여부를 반환한다. Array.isArray를 함수형으로 호출할수 있게 한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const isArray = x =&gt; Array.isArray(x)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+isArray(array) <span class="comment">// true</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="flatten">12. Flatten</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>중첩된 배열을 단일 배열로 변환하여 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const flatten = ([x, ...xs]) =&gt; def(x)
+    ? isArray(x) ? [...flatten(x), ...flatten(xs)] : [x, ...flatten(xs)]
+    : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array1 = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>]
+const array2 = [<span class="integer">4</span>,[<span class="integer">5</span>,[<span class="integer">6</span>]]]
+flatten([array1, array2]) <span class="comment">// [1,2,3,4,5,6]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="swap">13. Swap</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열의 두 값의 Swap된 새로운 배열을 반환한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const swap = (a, i, j) =&gt; (
+  map(a, (x,y) =&gt; {
+    <span class="keyword">if</span>(y === i) <span class="keyword">return</span> a[j]
+    <span class="keyword">if</span>(y === j) <span class="keyword">return</span> a[i]
+    <span class="keyword">return</span> x
+  })
+)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+swap(array, <span class="integer">0</span>, <span class="integer">4</span>) <span class="comment">// [5,2,3,4,1]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="map">14. Map</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진 배열의 값을 순회하여 주어진 함수에 넘기고, 함수의 반환값을 수집하여 배열로 반환한다.  Array.map을 함수형으로 사용할수 있게 한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const map = ([x, ...xs], fn) =&gt; {
+  <span class="keyword">if</span> (undef(x)) <span class="keyword">return</span> []
+  <span class="keyword">return</span> [fn(x), ...map(xs, fn)]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>단순화 버전</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const map = ([x, ...xs], fn) =&gt; def(x) ? [fn(x), ...map(xs, fn)] : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const <span class="reserved">double</span> = x =&gt; x * <span class="integer">2</span>
+map([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>], <span class="reserved">double</span>) <span class="comment">// [2,4,6]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="filter">15. Filter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진 배열을 순회하며 주어진 함수에 넘기고, 함수에서 참이 반환된 값만 수집하여 배열로 반환한다. Array.filter를 함수형으로 사용할수 있게 한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const filter = ([x, ...xs], fn) =&gt; {
+  <span class="keyword">if</span> (undef(x)) <span class="keyword">return</span> []
+  <span class="keyword">if</span> (fn(x)) {
+    <span class="keyword">return</span> [x, ...filter(xs, fn)]
+  } <span class="keyword">else</span> {
+    <span class="keyword">return</span> [...filter(xs, fn)]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>단순화 버전</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const filter = ([x, ...xs], fn) =&gt; def(x)
+    ? fn(x)
+        ? [x, ...filter(xs, fn)] : [...filter(xs, fn)]
+    : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const even = x =&gt; x % <span class="integer">2</span> === <span class="integer">0</span>
+const odd = x = !even(x)
+const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+
+filter(array, even) <span class="comment">// [2,4]</span>
+filter(array, odd) <span class="comment">// [1,3,5]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reject">16. Reject</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Filter의 반대로 거짓이 반환된 값만 배열로 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reject = ([x, ...xs], fn) =&gt; {
+  <span class="keyword">if</span> (undef(x)) <span class="keyword">return</span> []
+  <span class="keyword">if</span> (!fn(x)) {
+    <span class="keyword">return</span> [x, ...reject(xs, fn)]
+  } <span class="keyword">else</span> {
+    <span class="keyword">return</span> [...reject(xs, fn)]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const even = x =&gt; x % <span class="integer">2</span> === <span class="integer">0</span>
+const array = [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+
+reject(array, even) <span class="comment">// [1,3,5]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="partition">17. Partition</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어진 배열을 두개의 배열로 쪼갠다. 하나는 주어진 함수에 인자로 넘겨 참을 반환 받은 값의 배열, 다른 하나는 반대로 거짓을 반환받은 값의 배열이다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const partition = (xs, fn) =&gt; [filter(xs, fn), reject(xs, fn)]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const even = x =&gt; x % <span class="integer">2</span> === <span class="integer">0</span>
+const array = [<span class="integer">0</span>,<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+
+partition(array, even) <span class="comment">// [[0,2,4], [1,3,5]]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reduce">18. Reduce</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열이 주어졌을때  배열 값을 왼쪽에서 오른쪽 방향으로 순회하며 배열값과 accumulator를 함수에 인자로 넘겨 실행하고 최종적으로 단일 값을 반환한다 (배열이 아님)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reduce = ([x, ...xs], fn, memo, i) =&gt; {
+  <span class="keyword">if</span> (undef(x)) <span class="keyword">return</span> memo
+  <span class="keyword">return</span> reduce(xs, fn, fn(memo, x, i), i + <span class="integer">1</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>단순화 버전</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reduce = ([x, ...xs], fn, memo, i = <span class="integer">0</span>) =&gt; def(x)
+    ? reduce(xs, fn, fn(memo, x, i), i + <span class="integer">1</span>) : memo</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const sum = (memo, x) =&gt; memo + x
+reduce([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>], sum, <span class="integer">0</span>) <span class="comment">// 6</span>
+
+const flatten = (memo, x) =&gt; memo.concat(x)
+reduce([<span class="integer">4</span>,<span class="integer">5</span>,<span class="integer">6</span>], flatten, [<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>]) <span class="comment">// [1,2,3,4,5,6]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reduceright">19. ReduceRight</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Reduce와 유사하나 배열을 오른쪽에서 왼쪽으로 순회한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reduceRight = (xs, fn, memo) =&gt; reduce(reverse(xs), fn, memo)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const flatten = (memo, x) =&gt; memo.concat(x)
+
+reduceRight([[<span class="integer">0</span>,<span class="integer">1</span>], [<span class="integer">2</span>,<span class="integer">3</span>], [<span class="integer">4</span>,<span class="integer">5</span>]], flatten, []) <span class="comment">// [4, 5, 2, 3, 0, 1]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="partial">20. Partial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>함수와 인자 일부가 적용된 함수를 반환하여 나머지 인자를 추후에 넘겨받아 함수를 실행한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const partial = (fn, ...args) =&gt; (...newArgs) =&gt; fn(...args, ...newArgs)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const add = (x,y) =&gt; x + y
+const add5to = partial(add, <span class="integer">5</span>)
+
+add5to(<span class="integer">10</span>) <span class="comment">// 15</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spreadarg">21. SpreadArg</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열을 받은 함수를 인자 목록을 받게 변환한다.  Partial등에서 유용하게 사용할수 있다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const spreadArg = (fn) =&gt; (...args) =&gt; fn(args)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const add = ([x, ...xs]) =&gt; def(x) ? parseInt(x + add(xs)) : []
+add([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]) <span class="comment">// 15</span>
+
+const spreadAdd = spreadArg(add)
+spreadAdd(<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>) <span class="comment">// 15</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reversearg">22. ReverseArg</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>인자 순서를 역전시킨다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reverseArgs = (fn) =&gt; (...args) =&gt; fn(...reverse(args))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const divide = (x,y) =&gt; x / y
+divide(<span class="integer">100</span>,<span class="integer">10</span>) <span class="comment">// 10</span>
+
+const reverseDivide = reverseArgs(divide)
+reverseDivide(<span class="integer">100</span>,<span class="integer">10</span>) <span class="comment">// 0.1</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>인자의 순서를 변경하는 것은 인자 부분 적용(Partial)에서 유용할수 있다. 가끔 인자 부분 적용을 최초가 아니고 최후에 적용하고 싶을때도 있을 것이다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const percentToDec = partial(reverseDivide, <span class="integer">100</span>)
+
+percentToDec(<span class="integer">25</span>) <span class="comment">// 0.25</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pluck">23. Pluck</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열에서 속성값을 추출한다. map과 같이 쓰면 유용하다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const pluck = (key, object) =&gt; object[key]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const product = {<span class="key">price</span>: <span class="integer">15</span>}
+pluck(<span class="string"><span class="delimiter">'</span><span class="content">price</span><span class="delimiter">'</span></span>, product) <span class="comment">// 15</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const getPrices = partial(pluck, <span class="string"><span class="delimiter">'</span><span class="content">price</span><span class="delimiter">'</span></span>)
+
+const products = [
+  {<span class="key">price</span>: <span class="integer">10</span>},
+  {<span class="key">price</span>: <span class="integer">5</span>},
+  {<span class="key">price</span>: <span class="integer">1</span>}
+]
+map(products, getPrices) <span class="comment">// [10,5,1]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="flow">24. Flow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>함수 목록이 주어지면, 각 함수가 이전 실행된 함수의 반환값을 인자로 받아 실행된다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const flow = (...args) =&gt; init =&gt; reduce(args, (memo, fn) =&gt; fn(memo), init)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const getPrice = partial(pluck, <span class="string"><span class="delimiter">'</span><span class="content">price</span><span class="delimiter">'</span></span>)
+const discount = x =&gt; x * <span class="float">0.9</span>
+const tax = x =&gt; x + (x * <span class="float">0.075</span>)
+const getFinalPrice = flow(getPrice, discount, tax)
+
+<span class="comment">// looks like: tax(discount(getPrice(x)))</span>
+<span class="comment">// -&gt; get price</span>
+<span class="comment">// -&gt; apply discount</span>
+<span class="comment">// -&gt; apply taxes to discounted price</span>
+
+const products = [
+  {<span class="key">price</span>: <span class="integer">10</span>},
+  {<span class="key">price</span>: <span class="integer">5</span>},
+  {<span class="key">price</span>: <span class="integer">1</span>}
+]
+
+map(products, getFinalPrice) <span class="comment">// [9.675, 4.8375, 0.9675]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="compose">25. Compose</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FLow와 유사하지만 실행순서가 꺼꾸로 수행된다. 좀더 자연스러운 함수 호출처럼 보일수 있다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const compose = (...args) =&gt; flow(...reverse(args))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const getFinalPrice = compose(tax, discount, getPrice)
+
+<span class="comment">// 함수 호출처럼 보인다: tax(discount(getPrice(x)))</span>
+
+map(products, getFinalPrice) <span class="comment">// [9.675, 4.8375, 0.9675]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="min">26. Min</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열에서 최소 값을 반환한다. 빈 배열이 주어지면 Infinity를 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const min = ([x, ...xs], result = <span class="predefined-constant">Infinity</span>) =&gt; def(x)
+    ? x &lt; result
+        ? min(xs, x)
+        : result
+    : result</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">0</span>,<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+
+min(array) <span class="comment">// 0</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="max">27. Max</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열에서 최대 값을 반환한다. 빈 배열이 주어지면 - Infinity가 반환된다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const max = ([x, ...xs], result = -<span class="predefined-constant">Infinity</span>) =&gt; def(x)
+    ? x &gt; result
+        ? max(xs, x)
+        : max(xs, result)
+    : result</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">0</span>,<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>]
+
+max(array) <span class="comment">// 5</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="factorial">28. Factorial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>주어인 수에 해당하는 factorial 을 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const factorial = (x, acum = <span class="integer">1</span>) =&gt; x ? factorial(x - <span class="integer">1</span>, x * acum) : acum</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">factorial(<span class="integer">5</span>) <span class="comment">// 120</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fibonacci">29. Fibonacci</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>피보나치 수열을 반환한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const fib = x =&gt; x &gt; <span class="integer">2</span> ? fib(x - <span class="integer">1</span>) + fib(x - <span class="integer">2</span>) : <span class="integer">1</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">fib(<span class="integer">15</span>) <span class="comment">// 610</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="quicksort">30. Quicksort</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>배열을 정렬한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const quicksort = (xs) =&gt; length(xs)
+  ? flatten([
+    quicksort(filter(tail(xs), x =&gt; x &lt;= head(xs))),
+    head(xs),
+    quicksort(filter(tail(xs), x =&gt; x &gt; head(xs)))
+  ])
+  : []</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const array = [<span class="integer">8</span>,<span class="integer">2</span>,<span class="integer">6</span>,<span class="integer">4</span>,<span class="integer">1</span>]
+
+quicksort(array) <span class="comment">// [1,2,4,6,8]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reduce_화_하기">31. Reduce 화 하기</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>위에서 다룬 모든 함수들은 reduce 함수를 이용해서 구현할수 있다. reduce함수를 사용하면 대부분의 경우 더 나은 성능을 보여준다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const reduce = ([x, ...xs], f, memo, i = <span class="integer">0</span>) =&gt; def(x)
+    ? reduce(xs, f, f(memo, x, i), i + <span class="integer">1</span>) : memo
+
+const reverse = xs =&gt; reduce(xs, (memo, x) =&gt; [x, ...memo], [])
+
+const length = xs =&gt; reduce(xs, (memo, x) =&gt; memo + <span class="integer">1</span>, <span class="integer">0</span>)
+
+const map = (xs, fn) =&gt; reduce(xs, (memo, x) =&gt; [...memo, fn(x)], [])
+
+const filter = (xs, fn) =&gt; reduce(xs, (memo, x) =&gt; fn(x)
+    ? [...memo, x] : [...memo], [])
+
+const reject = (xs, fn) =&gt; reduce(xs, (memo, x) =&gt; fn(x)
+    ? [...memo] : [...memo, x], [])
+
+const first = (xs, n) =&gt; reduce(xs, (memo, x, i) =&gt; i &lt; n
+    ? [...memo, x] : [...memo], [])
+
+const last = (xs, n) =&gt; reduce(xs, (memo, x, i) =&gt; i &gt;= (length(xs) - n)
+    ? [...memo, x] : [...memo], [])
+
+const merge = spreadArg(xs =&gt; reduce(xs, (memo, x) =&gt; [...memo, ...x], []))
+
+const flatten = xs =&gt; reduce(xs, (memo, x) =&gt; x
+    ? isArray(x) ? [...memo, ...flatten(x)] : [...memo, x] : [], [])
+
+const add = spreadArg(([x, ...xs]) =&gt; reduce(xs, (memo, y) =&gt; memo + y, x))
+
+const divide = spreadArg(([x, ...xs]) =&gt; reduce(xs, (memo, y) =&gt; memo / y, x))
+
+const multiply = spreadArg(([x, ...xs]) =&gt; reduce(xs, (memo, y) =&gt; memo * y, x))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">reverse([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>]) <span class="comment">// [3,2,1]</span>
+length([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>]) <span class="comment">// 3</span>
+map([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>], <span class="reserved">double</span>) <span class="comment">// [2,3,4]</span>
+filter([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>], even) <span class="comment">// [2,4]</span>
+reject([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>], even) <span class="comment">// [1,3]</span>
+first([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>], <span class="integer">3</span>) <span class="comment">// [1,2,3]</span>
+last([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>], <span class="integer">2</span>) <span class="comment">// [3,4]</span>
+merge([<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>],[<span class="integer">4</span>,<span class="integer">5</span>,<span class="integer">6</span>]) <span class="comment">// [1,2,3,4,5,6]</span>
+flatten([<span class="integer">1</span>,[<span class="integer">2</span>,<span class="integer">3</span>,[<span class="integer">4</span>,[<span class="integer">5</span>,[[<span class="integer">6</span>]]]]]]) <span class="comment">// [1,2,3,4,5,6]</span>
+add(<span class="integer">1</span>,<span class="integer">2</span>,<span class="integer">3</span>,<span class="integer">4</span>,<span class="integer">5</span>) <span class="comment">// 15</span>
+multiply(<span class="integer">2</span>,<span class="integer">5</span>,<span class="integer">10</span>) <span class="comment">// 100</span>
+divide(<span class="integer">100</span>,<span class="integer">2</span>,<span class="integer">5</span>) <span class="comment">// 10</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
