@@ -49,11 +49,7 @@
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#asciidoctor">1. Asciidoctor</a>
-<ul class="sectlevel2">
-<li><a href="#ruby_설치">1.1. ruby 설치</a></li>
-</ul>
-</li>
+<li><a href="#asciidoctor">1. Asciidoctor</a></li>
 <li><a href="#basic_syntaxt">2. Basic syntaxt</a>
 <ul class="sectlevel2">
 <li><a href="#문단_paragraphs">2.1. 문단 (Paragraphs)</a></li>
@@ -79,6 +75,9 @@
 <div class="paragraph">
 <p>asciidoc에 대한 간략한 사용법을 설명합니다.</p>
 </div>
+<div class="paragraph">
+<p>이 문서는 <a href="https://asciidoctor.org/docs/asciidoc-writers-guide/#a-new-perspective-on-tables" class="bare">https://asciidoctor.org/docs/asciidoc-writers-guide/#a-new-perspective-on-tables</a> 의 내용을 적당히 축약해서 번역한 내용입니다.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -89,22 +88,7 @@
 기존에 문서 작성에 사용하던 docbook을 대체하는 도구이며, spring,linux 등 여러 곳에서 적용되고 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>문서를 빌드하면 html,pdf,epub등의 파일이 만들어지며 우리 프로젝트에서는 html 을 생성합니다.</p>
-</div>
-<div class="paragraph">
-<p>asciidoc 은 문서 표준의 이름이고 이 문서를 빌드하기 위한 도구가 asciidoctor  입니다. asciidoctor 는 루비을 기반으로 만들어 졌기 때문에 루비를 설치 해야 합니다.</p>
-</div>
-<div class="sect2">
-<h3 id="ruby_설치">1.1. ruby 설치</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="title">bundler 설치</div>
 <p>아스키독은 단순 텍스트 일 뿐입니다. 선호하는 텍스트 에디터로 열어서 보고 편집할수 있습니다.</p>
-</div>
 </div>
 </div>
 </div>
@@ -114,7 +98,7 @@
 <div class="sect2">
 <h3 id="문단_paragraphs">2.1. 문단 (Paragraphs)</h3>
 <div class="paragraph">
-<p>문단은 빈줄로 구분됩니다. 빈줄이 없이 쓰여진 문장은 하나의 문단으로 인식 되어 이어써집니다.</p>
+<p>문단은 빈줄로 구분됩니다. 빈줄이 없이 쓰여진 문장은 하나의 문단으로 인식 되어 이어 써집니다.</p>
 </div>
 <div class="paragraph">
 <p>다음과 같이 작성된 문장은</p>
@@ -129,10 +113,10 @@ To leave means code dismemberment and certain death.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>다음처럼 이어진 문장으로 만들어집니다.
-.출력</p>
+<p>다음처럼 이어진 문장으로 만들어집니다.</p>
 </div>
 <div class="listingblock">
+<div class="title">출력</div>
 <div class="content">
 <pre class="CodeRay highlight"><code>This journey begins one late Monday afternoon in Antwerp.Our team desperately needs coffee, but none of us dare open the office door.
 
