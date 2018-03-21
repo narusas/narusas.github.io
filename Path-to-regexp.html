@@ -1,0 +1,297 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue-router의 URL 표기법 path-to-regexp</title>
+<meta name="description" content="Vue-router의 URL 표기법인  path-to-regexp의 문법을 소개합니다.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Vue-router의 URL 표기법 path-to-regexp</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vue router에서 사용하는 URL 표기법은 <a href="https://github.com/pillarjs/path-to-regexp" class="bare">https://github.com/pillarjs/path-to-regexp</a> 를 이용하고 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>감각적으로 알수도 있습니다만, 제공하는 표기법을 간단히 정리 해 보았습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="named_parameters">Named Parameters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>:</code>으로 시작하는 파라메터명을 기술 할 수 있습니다</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>:foo/:bar</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/test/route</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/test/route', 'test', 'route']</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="optional">Optional</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>인자가 옵션이여서 있을수도 없을수도 있다면 <code>?</code>를 이용해 표기할수 있습니다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/:foo/:bar?</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/test</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/test', 'test', undefined]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/:foo/:bar?</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/test/route</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/test', 'test', 'route']</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="zero_or_more">zero or more</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>인자가 0개 또는 복수개를 가질수 있들때 파라메터명 뒤에 <code>*</code>붙여 표기할수 있다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><code>/:foo*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/', undefined]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/bar/baz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/bar/baz', 'bar/baz']</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="one_or_more">one or more</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>인자가 1개 또는 복수개를 가질수 있들때 파라메터명 뒤에 <code>+</code>붙여 표기할수 있다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><code>/:foo+</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/bar/baz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/bar/baz', 'bar/baz']</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="custom_정규표현식_이용하기">Custom 정규표현식 이용하기</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>각 파라메터의 기본 정규표현식은 <code>[^\/]+</code> 입니다. 하지만 직접 정규표현식을 입력할수 있습니다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock"><code>/icon-:foo(\\d+).png</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/icon-123.png</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/icon-123.png', '123']</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/icon-abc.png</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="이름없는_파라메터">이름없는 파라메터</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>파라메터가 이름을 가지지 않을수도 있습니다. 이때는 인덱스 번호로 접근할수 있습니다.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">패턴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">값</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/:foo/(.*)'</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/test/route</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">['/test', 'test', 'route']</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
