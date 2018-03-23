@@ -54,12 +54,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">let o = { <span class="key">message</span>:<span class="string"><span class="delimiter">'</span><span class="content">abc</span><span class="delimiter">'</span></span>, <span class="key">age</span>:<span class="integer">1</span>, <span class="key">gener</span>:<span class="string"><span class="delimiter">'</span><span class="content">Male</span><span class="delimiter">'</span></span>}
+<pre class="CodeRay highlight"><code data-lang="javascript">const o = { <span class="key">message</span>:<span class="string"><span class="delimiter">'</span><span class="content">abc</span><span class="delimiter">'</span></span>, <span class="key">age</span>:<span class="integer">1</span>, <span class="key">gener</span>:<span class="string"><span class="delimiter">'</span><span class="content">Male</span><span class="delimiter">'</span></span>}
 console.log(o)
 {<span class="key">message</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">abc</span><span class="delimiter">&quot;</span></span>, <span class="key">age</span>: <span class="integer">1</span>, <span class="key">gener</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>}
 
 <span class="comment">// 여기에서 ...은 rest parameter operator</span>
-let {message, ...r} = o;
+const {message, ...r} = o;
 
 console.log(message);
 <span class="string"><span class="delimiter">&quot;</span><span class="content">abc</span><span class="delimiter">&quot;</span></span>
@@ -69,7 +69,7 @@ console.log(r)
 
 <span class="comment">// 여기에서...은 spread object operator</span>
 
-o2 = {message, ...r}
+const o2 = {message, ...r}
 console.log(o2)
 {<span class="key">message</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">abc</span><span class="delimiter">&quot;</span></span>, <span class="key">age</span>: <span class="integer">1</span>, <span class="key">gener</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>}</code></pre>
 </div>
@@ -119,7 +119,7 @@ requiredParam 함수는 <a href="https://medium.freecodecamp.org/elegant-pattern
 </div>
 </div>
 <div class="paragraph">
-<p>예외에 다양한 인자를 넘겨주지만 message는 필수값이고 나머지는 옵션일때 사용할수 있습니다.</p>
+<p>예외에 다양한 인자를 넘겨주지만 message는 필수값이고 나머지는 옵션일때 사용할수 있습니다. 위의 예가 예외 안에서 또 예외를 던지는거라 좀 이상해 보이긴합니다만 그부분은 아 그냥 예제니까 그런가 보다 하고 넘어가주세요 ^^</p>
 </div>
 
     </div>
