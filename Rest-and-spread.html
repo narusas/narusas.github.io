@@ -96,10 +96,10 @@ requiredParam 함수는 <a href="https://medium.freecodecamp.org/elegant-pattern
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">requiredParam</span> (param) {
   const requiredParamError = <span class="keyword">new</span> Error(
-   <span class="error">`</span>Required parameter, <span class="string"><span class="delimiter">&quot;</span><span class="content">${param}</span><span class="delimiter">&quot;</span></span> is missing.<span class="error">`</span>
+  <span class="string"><span class="delimiter">'</span><span class="content">Required parameter, &quot;${param}&quot; is missing.</span><span class="delimiter">'</span></span>
   )
  <span class="comment">// preserve original stack trace</span>
-  <span class="keyword">if</span> (<span class="keyword">typeof</span> Error.captureStackTrace === <span class="error">‘</span><span class="keyword">function</span><span class="error">’</span>) {
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> Error.captureStackTrace === <span class="string"><span class="delimiter">'</span><span class="content">function</span><span class="delimiter">'</span></span>) {
     Error.captureStackTrace(
       requiredParamError,
       requiredParam
