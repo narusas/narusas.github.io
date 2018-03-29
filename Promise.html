@@ -1,0 +1,457 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS에서 비동기 프로그래밍</title>
+<meta name="description" content="JS에서 비동기 프로그래밍에 대해 이야기합니다.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>JS에서 비동기 프로그래밍</h1>
+<div class="sect1">
+<h2 id="single_thread">Single Thread</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>javascript는 언어적 차원에서 단일 쓰래드만 지원합니다. 우리가 작성한 코드는 단 한줄만이 실행중인 상태입니다.  단 하나의 쓰래드에 의해서 말이죠.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">var</span> a = <span class="integer">10</span>;
+<span class="keyword">var</span> b = <span class="integer">20</span>;
+
+<span class="keyword">function</span> <span class="function">swap</span>(){
+    <span class="keyword">var</span> swap = a;
+    a = b;
+    b = swap;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>따라서 다른 언어와 달리 JS에서는 위의 코드에서 동시성 문제가 발생하지 않습니다. a와 b 변수에 동시에 접근하여 변경 하는 경우자체가 발생하지 않으니까요.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+네 최근에는 조금 달라졌습니다. ServiceWorker가 등장하며 제한적이나마 멀티 쓰래딩이 가능해졌습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>언어 차원에서 단일 쓰래드로 정의했기 때문에 동시성 문제를 배제하고 프로그래밍 할수 있다는 것은 나쁘지 않습니다만, 이제 성능이 문제가 됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="performance">Performance</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">f</span>(){
+  <span class="keyword">var</span> text = fileUtil.readFile(<span class="string"><span class="delimiter">'</span><span class="content">a.txt</span><span class="delimiter">'</span></span>);
+  <span class="keyword">return</span> parseCsv(text);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>만약 a.txt의 용량이 커서 읽는데 시간이 많이 걸리면 어떻게 될까요? 사실 배치(batch) 작업에서는 크게 문제 되지 않습니다. 그냥 순서대로 실행하면 되니까요. 우리가 bash 쉘 스크립트같은 곳에서 동시성을 요구하지 않는것과 비슷합니다. 순서대로 일련의 작업을 잘 실행해주면됩니다.</p>
+</div>
+<div class="paragraph">
+<p>하지만 JS의 대부분은 웹 브라우저에서 동작합니다. (네 node express  잘 알고 있습니다)</p>
+</div>
+<div class="paragraph">
+<p>웹 브라우저에서 사용자가 원하는 것은 배치 작업이 아닙니다. 사용자가 클릭하고, 편집하고, 스크롤하고, 저장하고&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>동시에 많은 작업을 수행하기를 원할수 있습니다.  하지만, 동시에 시간이 걸리는 작업도 수행해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>이 두가지를 동시에 요청하면 JS로는 답이 나오지 않습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">click1</span>(){
+  <span class="keyword">var</span> text = fileUtil.readFile(<span class="string"><span class="delimiter">'</span><span class="content">a.txt</span><span class="delimiter">'</span></span>);
+  <span class="keyword">return</span> parseCsv(text);
+}
+
+<span class="keyword">function</span> <span class="function">click2</span>() {
+  <span class="keyword">var</span> text = fileUtil.readFile(<span class="string"><span class="delimiter">'</span><span class="content">b.txt</span><span class="delimiter">'</span></span>);
+  <span class="keyword">return</span> parseCsv(text);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>사용자가 버튼을 클릭하여 click1이 수행중인데 용량이 커서 읽어오는데 10초쯤 걸립니다. 그런데 또다른 버튼을 클릭해 click2 를 실행하려고 해도 click1이 실행중이기 때문에 click2는 10초후에 실행될 겁니다.
+순차적으로 시간을 소비하여 수행해야 하니까요.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="asynchronous">Asynchronous</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>따라서 JS가 아닌 다른 수단이 필요해집니다.  JS자체로는 이문제를 해결할수 없습니다. 그래서 js의 실행환경을 제공하는 주변 에서 기능을 제공하게 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>웹브라우저에서는 XmlHttpRequest 을 제공합니다. js에서 xmlHttpRequest를 호출하면 웹브라우저는 이에 대한 실행을 C Posix 쓰래드로 실행합니다! JS 쓰래드가 아니고요. (웹브라우저의 구현 언어와 라이브러리에 따라 다른 언어와 쓰래드 라이브러리를 사용할겁니다)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">var</span> oReq = <span class="keyword">new</span> XMLHttpRequest();
+oReq.addEventListener(<span class="string"><span class="delimiter">&quot;</span><span class="content">load</span><span class="delimiter">&quot;</span></span>, <span class="keyword">function</span> <span class="function">callback</span>(response){
+    console.log(<span class="string"><span class="delimiter">'</span><span class="content">load</span><span class="delimiter">'</span></span>+response); <span class="comment">// </span><i class="conum" data-value="1"></i><b>(1)</b>
+});
+oReq.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">GET</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.example.org/example.txt</span><span class="delimiter">&quot;</span></span>);
+oReq.send();  <span class="comment">// </span><i class="conum" data-value="2"></i><b>(2)</b>
+console.log(<span class="string"><span class="delimiter">'</span><span class="content">sent!</span><span class="delimiter">'</span></span>);  <span class="comment">// </span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>send 함수를 호출한다고 해서 js가 동기적으로 기다리지않습니다. 그냥 요청을 한거 뿐이고 바로 &lt;3&gt;으로 넘어가 실행합니다.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>그럼 &lt;1&gt;은 언제 실행될까요?</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>&lt;1&gt;을 임시로 저장해뒵니다.</p>
+</li>
+<li>
+<p>C++로 만들어진 쓰래드가 HTTP 요청을 실행하여 서버에 요청을 보내고,</p>
+</li>
+<li>
+<p>응답이 와서 응답 데이터를 C++로 파싱이 한후에 저장해 둡니다.</p>
+</li>
+<li>
+<p>임시로 저장했던 &lt;1&gt;을 micro task queue에 추가 합니다.</p>
+</li>
+<li>
+<p>JS의 유일한 쓰래드가 현재 실행중인 macro task(사용자의 클릭이나 document load같은 주요 이벤트에 대해 실행되는) 코드가 없을때</p>
+</li>
+<li>
+<p>JS의 유일한 쓰래드를  macro task queue를 실행하게 합니다.</p>
+</li>
+<li>
+<p>JS 쓰래드는 micro task queue에 저장되어 있던 &lt;1&gt; 함수를  데이터와 함께 호출합니다</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>이런 콜백 기반의 비동기화 방식은 다음과 같은 전제를 합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CPU는 빠르다.</p>
+</li>
+<li>
+<p>IO는 느리다.</p>
+</li>
+<li>
+<p>따라서 IO는 JS에서 하지말고, CPU에 관련된 것은 JS로 하자.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>여전히 JS는 단일 쓰래드입니다.  CPU를 많이 소비하는 작업을 하면 여전히 느려집니다.
+하지만 IO 때문에 느려지는것은 회피할수 있게 되었습니다.</p>
+</div>
+<div class="paragraph">
+<p>웹브라우저상에서 이런식으로 사용할수 있는 비동기 콜백은 과거에는 setTimeout, XmlHttpRequest 정도 였습니다.</p>
+</div>
+<div class="paragraph">
+<p>과거에도 setTimeout을 통해 micro task들을 사용하기는 했습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">function</span> <span class="function">click1</span>() {
+  setTimeout(<span class="keyword">function</span>() {
+
+  },<span class="integer">0</span>); <span class="comment">// </span><i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>timeout 시간을 0으로 주었습니다. 이를 통해 현재 실행중인 macro task가 종료된후에 바로 이어서 micro task를 수행할수 있게 됩니다.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>이런 코드를 통해 현재 macro task가 빠르게 종료시키고, 혹시 다른 클릭등 또다른 macro task가 있으면 그쪽을 우선적으로 실행하여 사용자의 요청에 반응하게 하고, 그후에 시간이 걸리는 작업을 수행하게 할수 있었습니다. 이 과정에서  active object 패턴을 사용 할 수도 있었죠.</p>
+</div>
+<div class="paragraph">
+<p>하지만 ES5를 거치면서 Promise가 추가 되었습니다. 이를 통해 micro task queue를 더 적극적으로 사용할수 있게 되었습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="promise">Promise</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>개념적으로 Promise는 micro task의 선언입니다. 생성자로 준 함수는 바로 micro task queue에 추가됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise(<span class="keyword">function</span>(){
+  console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">Here</span><span class="delimiter">&quot;</span></span>);
+});
+console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">Out here</span><span class="delimiter">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>위의 코드를 실행시키면 다음처럼 실행됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Out here <i class="conum" data-value="1"></i><b>(1)</b>
+Here <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>macro task에서 실행되었음</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>micro task에서 실행되었음</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>여기에서 아 그런가 보다 하고 넘어가기가 쉽습니다만..</p>
+</div>
+<div class="paragraph">
+<p>만약 코드가 다음처럼 무한 루프에 빠진다면 micro task는 실행되지 않습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise(<span class="keyword">function</span>(){
+  console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">Here</span><span class="delimiter">&quot;</span></span>);
+});
+console.log(<span class="string"><span class="delimiter">&quot;</span><span class="content">Out here</span><span class="delimiter">&quot;</span></span>);
+let i=<span class="integer">0</span>;
+<span class="keyword">for</span>(<span class="predefined-constant">true</span>) {
+  i = i+<span class="integer">1</span>;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Out here <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>macro task에서 실행되었음</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>왜냐하면 JS의 유일한 쓰래드가 유휴상태가 되지 않았기 때문에, macro task가 종료되지 않았기 때문에 micro task를 실행할 쓰래드가 없기 때문입니다.</p>
+</div>
+<div class="paragraph">
+<p>이처럼 micro task의 실행에 있어 대전제는 JS의 유일한 쓰래드가 실행하는 다른 JS 코드가 없어야 합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="promise_then">Promise.then</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Promise.then은 새롭게 micro task를 추가하는 명령입니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise(resolve=&gt;{
+  resolve(<span class="integer">10</span>);
+}).then(value=&gt;{
+
+}).<span class="keyword">catch</span>(err=&gt;{
+
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Promise의 생성자에 넘긴 함수는 micro task에서 실행되어 다음에 실행될 함수를 지정합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>resolve 함수를 호출하면, then에 넘겨진 함수를 micro task에 추가합니다.</p>
+</li>
+<li>
+<p>reject를 호출하면 catch에 넘겨진 함수를 micro task에 추가합니다.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+여기에서 중요한것은 다음에 어떤 함수를 호출할지는 오로지 resolve, reject를 호출할때만 결정된다는 것입니다. 만약 resolve, reject 두 함수중 아무것도 호출하지 안는다면 해당 Promise는 이상 상태로 남게 됩니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>then에 넘긴 함수가 micro task queue를 통해 실행된 결과로 promise를 반환할수 있습니다. 그럼 또 then을 반복할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise( <span class="keyword">function</span>(resolve, reject) {
+  resolve(<span class="integer">10</span>);
+}).then(value=&gt;{
+  <span class="keyword">return</span> <span class="keyword">new</span> Promise(<span class="keyword">function</span>(resolve, reject) {
+    resolve(value +<span class="integer">10</span>);
+  });
+}).then(nextValue =&gt; {
+  console.log(nextValue);
+})
+.<span class="keyword">catch</span>(err=&gt;{
+
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 then이 promise를 반환하는 경우에 한해 chaining을 할수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="async_await">Async / Await</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="sequence_diagram">Sequence diagram</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Prmise를 Sequence diagram으로 표현하면 다음과 같겠지만, 적당히만 보시기 바랍니다. 정확한 그림은 아니니까요.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-ff8d8f7de6816cbd1fe4bbdba9c07d7b.png" alt="diag ff8d8f7de6816cbd1fe4bbdba9c07d7b" width="963" height="1029">
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
