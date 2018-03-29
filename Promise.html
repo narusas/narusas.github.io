@@ -235,7 +235,7 @@ console.log(<span class="string"><span class="delimiter">'</span><span class="co
 <h2 id="promise">Promise</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>개념적으로 Promise는 micro task의 선언입니다. 생성자로 준 함수는 바로 micro task queue에 추가됩니다.</p>
+<p>개념적으로 Promise는 micro task의 선언입니다. 생성자에 인자로 준 함수는 바로 micro task queue에 추가됩니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -309,14 +309,14 @@ let i=<span class="integer">0</span>;
 <h2 id="promise_then">Promise.then</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Promise.then은 새롭게 micro task를 추가하는 명령입니다.</p>
+<p>Promise.then은 새롭게 micro task를 추가하는 명령입니다. 일종의 팩토리 메소드 같은 역활이랄까요.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise(resolve=&gt;{
   resolve(<span class="integer">10</span>);
 }).then(value=&gt;{
-
+  console.log(value);
 }).<span class="keyword">catch</span>(err=&gt;{
 
 });</code></pre>
@@ -342,13 +342,13 @@ let i=<span class="integer">0</span>;
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-여기에서 중요한것은 다음에 어떤 함수를 호출할지는 오로지 resolve, reject를 호출할때만 결정된다는 것입니다. 만약 resolve, reject 두 함수중 아무것도 호출하지 안는다면 해당 Promise는 이상 상태로 남게 됩니다.
+여기에서 중요한것은 다음에 어떤 함수를 호출할지는 오로지 resolve, reject를 호출할때만 결정된다는 것입니다. 만약 resolve, reject 두 함수중 아무것도 호출하지 않았다면 해당 Promise는 이상 상태(Pending)로 남게 됩니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>then에 넘긴 함수가 micro task queue를 통해 실행된 결과로 promise를 반환할수 있습니다. 그럼 또 then을 반복할수 있습니다.</p>
+<p>then에 넘긴 함수가 micro task queue를 통해 실행되고 그 결과로 promise를 반환할수 있습니다. 그럼 또 then을 반복할수 있습니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -367,14 +367,62 @@ let i=<span class="integer">0</span>;
 </div>
 </div>
 <div class="paragraph">
-<p>이렇게 then이 promise를 반환하는 경우에 한해 chaining을 할수 있습니다.</p>
+<p>만약 then에 넘긴 함수가 promise를 반환하지 않고 값을 반환하면 어떻게 될까요?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">new</span> Promise( <span class="keyword">function</span>(resolve, reject) {
+  resolve(<span class="integer">10</span>);
+}).then(value=&gt;{
+  <span class="keyword">return</span> value + <span class="integer">10</span>;
+}).then(nextValue =&gt; {
+  console.log(nextValue);
+})
+.<span class="keyword">catch</span>(err=&gt;{
+
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 호출하게 되면 promise는 리턴 받은 값을 단순히 전달만하는 task를 micro task에 추가합니다. 덕분에 그다음 then에서는 20을 받을수 있습니다.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="async_await">Async / Await</h2>
+<h2 id="syncrhonized_code_to_promise">Syncrhonized code to Promise?</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>왜 이런 이상한 짓을 해야 할까요? 왜 그냥 함수 호출이면 될거 같은 동기적 코드를 저렇게 micro task로 만들어야 할까요?</p>
+</div>
+<div class="paragraph">
+<p>원인은 동일합니다. JS가 단일 쓰래드만 지원하기 때문입니다.</p>
+</div>
+<div class="paragraph">
+<p>일련의 작업을 작은 task로 나누어서 하나의 쓰래드로 실행하는 것은 active object 패턴의 전형입니다.
+<a href="https://en.wikipedia.org/wiki/Active_object">Active Object</a></p>
+</div>
+<div class="paragraph">
+<p>일련의 작업을 promise에 넘길정도로 작은 task로 쪼개어 실행하는 것으로 JS Thread를 독점하지 않고, 중간에 사용자의 클릭이나 스크롤등의 macro task를 수행할수 있는 기회를 줄수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>이 일련의 작업이 IO를 사용하는 작업일수도 있고, CPU를 사용하는 작업일수도 있습니다. IO는 외부 환경의 지원을 받지만, CPU는 우리가 직접 나눠주어야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>이런 작업 역시 Promise를 이용하여 코딩할수 있는 것입니다.</p>
+</div>
+<div class="paragraph">
+<p>뭐 물론 작업이 IO/CPU를 모두 그다지 사용하지 않을것 같다면 그냥 작성하면 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이런 작업을 나누는 기준이 되는것은 FPS입니다. 고급 애니메이션이 필요한 곳이라면 60 FPS, 아닌곳이라도 20 FPS 정도는 나올수 있게 하는게 좋습니다.
+물론 웹브라우저에서 애니메이션은 CSS로 하는게 당연시 되긴 합니다만..</p>
+</div>
+<div class="paragraph">
+<p>우리에게 주어진 시간은 1000ms/60fps = 16.6ms  또는 1000ms/20fps = 50ms 정도 입니다. 이 시간안에 모든 JS코드가 동작해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>모든 JS 코드라는 것은 우리가 작성한 코드 말고도 vue, react등 프레임워크들도 포함 해야 합니다.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
