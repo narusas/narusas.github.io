@@ -121,36 +121,36 @@ Request Model에 기술해둔 Validation Rule은 공통화 되지 못하기 때�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>@Controller
-class AController {
-  @Data
-  public static class ChangeBirthdayForm {
-    @NotNull @Min(1917) Integer year;
-    @NotNull @Min(1) @Max(12) Integer month;
-    @NotNull @Min(1) @Max(31) Integer day;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="type">class</span> <span class="class">AController</span> {
+  <span class="annotation">@Data</span>
+  <span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">ChangeBirthdayForm</span> {
+    <span class="annotation">@NotNull</span> <span class="annotation">@Min</span>(<span class="integer">1917</span>) <span class="predefined-type">Integer</span> year;
+    <span class="annotation">@NotNull</span> <span class="annotation">@Min</span>(<span class="integer">1</span>) <span class="annotation">@Max</span>(<span class="integer">12</span>) <span class="predefined-type">Integer</span> month;
+    <span class="annotation">@NotNull</span> <span class="annotation">@Min</span>(<span class="integer">1</span>) <span class="annotation">@Max</span>(<span class="integer">31</span>) <span class="predefined-type">Integer</span> day;
   }
 
-  public ResponseEntity changeBirthday(@Valid @ModelAttribute ChangeBirthdayForm form) {
-    Date newBirthDay = new Date(year -1900, month -1, day);
-    UserBirthdayChangeRequest request = new UserBirthdayChangeRequest(newBirthDay);
+  <span class="directive">public</span> ResponseEntity changeBirthday(<span class="annotation">@Valid</span> <span class="annotation">@ModelAttribute</span> ChangeBirthdayForm form) {
+    <span class="predefined-type">Date</span> newBirthDay = <span class="keyword">new</span> <span class="predefined-type">Date</span>(year -<span class="integer">1900</span>, month -<span class="integer">1</span>, day);
+    UserBirthdayChangeRequest request = <span class="keyword">new</span> UserBirthdayChangeRequest(newBirthDay);
     userInfoInteractor.changeBirthday(request);
   }
 }
 
-@Data @AllArgsConstructor
-class UserBirthdayChangeRequest {
-  Date birthday;
-  public void validate() {
+<span class="annotation">@Data</span> <span class="annotation">@AllArgsConstructor</span>
+<span class="type">class</span> <span class="class">UserBirthdayChangeRequest</span> {
+  <span class="predefined-type">Date</span> birthday;
+  <span class="directive">public</span> <span class="type">void</span> validate() {
     assertNotNull (birthday);
-    assert(DateUtil.pastThan(newDate, now));
+    <span class="keyword">assert</span>(DateUtil.pastThan(newDate, now));
   }
 }
 
-@Service
-class UserInfoInteractor {
-  public void changeBirthday(@Valid UserBirthdayChangeRequest request){
-    assert(userGradePolicy.acceptUserAge(request.getBirthday()));
-    …
+<span class="annotation">@Service</span>
+<span class="type">class</span> <span class="class">UserInfoInteractor</span> {
+  <span class="directive">public</span> <span class="type">void</span> changeBirthday(<span class="annotation">@Valid</span> UserBirthdayChangeRequest request){
+    <span class="keyword">assert</span>(userGradePolicy.acceptUserAge(request.getBirthday()));
+    <span class="error">…</span>
   }
 }</code></pre>
 </div>

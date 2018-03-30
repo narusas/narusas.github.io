@@ -85,17 +85,42 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.*, A.*, P.* FROM EMPLOYEE E, ADDRESS A, PHONE P WHERE E.ADDR_ID = A.ADDRESS_ID AND E.EMP_ID = P.OWNER_ID AND E.STATUS = 'Part-time'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.*, A.*, P.* <span class="keyword">FROM</span> EMPLOYEE E, ADDRESS A, PHONE P <span class="keyword">WHERE</span> E.ADDR_ID = A.ADDRESS_ID <span class="keyword">AND</span> E.EMP_ID = P.OWNER_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>이렇게 나온 데이터는 각 직원 마다 전화 번호를 출력하깅 위해 그루핑한후 포메팅해야 한다.</p>
 </div>
-<div class="paragraph">
-<p>| ID | Name | Address | Phone |
-| 6578 | Bob Jones | 17 Mountainview Dr., Ottawa | 519-456-1111, 613-798-2222 |
-| 7890 |Jill Betty |606 Hurdman Ave., Ottawa |613-711-4566, 613-223-5678 |</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ID</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Address</th>
+<th class="tableblock halign-left valign-top">Phone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6578</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bob Jones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17 Mountainview Dr., Ottawa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">519-456-1111, 613-798-2222</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7890</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jill Betty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">606 Hurdman Ave., Ottawa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">613-711-4566, 613-223-5678</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>위 예에 대응하는 객체 모델은 Employy, Address, Phone 클래스를 정의한다.</p>
 </div>
@@ -112,17 +137,42 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>Select e from Employee e where e.status = 'Part-time'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">Select</span> e <span class="keyword">from</span> Employee e <span class="keyword">where</span> e.status = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>직원 정보를  출력하기 위해서는  Employee에서 Address를 가져오고, 마찬가지로 모든 Phone을 가져오면된다.  출력된 결과는 SQL 버전과 동일하지만, JPA를 통해 생성된  SQL은 매우 다르다.</p>
 </div>
-<div class="paragraph">
-<p>| ID | Name | Address | Phone |
-| 6578 | Bob Jones | 17 Mountainview Dr., Ottawa | 519-456-1111, 613-798-2222 |
-| 7890 | Jill Betty | 606 Hurdman Ave., Ottawa | 613-711-4566, 613-223-5678 |</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">ID</th>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Address</th>
+<th class="tableblock halign-left valign-top">Phone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6578</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bob Jones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17 Mountainview Dr., Ottawa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">519-456-1111, 613-798-2222</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7890</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jill Betty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">606 Hurdman Ave., Ottawa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">613-711-4566, 613-223-5678</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -130,32 +180,25 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.* FROM EMPLOYEE E WHERE E.STATUS = 'Part-time'
-...</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.* <span class="keyword">FROM</span> EMPLOYEE E <span class="keyword">WHERE</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>이 실행된 다음 N개(선택된 employee의 수)만큼의  Address를 select한다.</pre>
-</div>
+<div class="paragraph">
+<p>이 실행된 다음 N개(선택된 employee의 수)만큼의  Address를 select한다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT A.* FROM ADDRESS A WHERE A.ADDRESS_ID = 123
-SELECT A.* FROM ADDRESS A WHERE A.ADDRESS_ID = 456
-...</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> A.* <span class="keyword">FROM</span> ADDRESS A <span class="keyword">WHERE</span> A.ADDRESS_ID = <span class="integer">123</span>
+<span class="class">SELECT</span> A.* <span class="keyword">FROM</span> ADDRESS A <span class="keyword">WHERE</span> A.ADDRESS_ID = <span class="integer">456</span></code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>이 실행된 다음 N개(선택된 employee의 수)만큼의  Phone를 select한다.</pre>
-</div>
+<div class="paragraph">
+<p>이 실행된 다음 N개(선택된 employee의 수)만큼의  Phone를 select한다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT P.* FROM PHONE P WHERE P.OWNER_ID = 789
-SELECT P.* FROM PHONE P WHERE P.OWNER_ID = 135
-...</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> P.* <span class="keyword">FROM</span> PHONE P <span class="keyword">WHERE</span> P.OWNER_ID = <span class="integer">789</span>
+<span class="class">SELECT</span> P.* <span class="keyword">FROM</span> PHONE P <span class="keyword">WHERE</span> P.OWNER_ID = <span class="integer">135</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -169,7 +212,7 @@ join fetch는 객체,  그 객체와 연관된 객체를 단일 쿼리를 통해
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>Select e from Employee e join fetch e.address, join fetch e.phones where e.status = 'Part-time'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">Select</span> e <span class="keyword">from</span> Employee e <span class="keyword">join</span> fetch e.address, <span class="keyword">join</span> fetch e.phones <span class="keyword">where</span> e.status = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -182,7 +225,7 @@ join fetch는 객체,  그 객체와 연관된 객체를 단일 쿼리를 통해
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.*, A.*, P.* FROM EMPLOYEE E, ADDRESS A, PHONE P WHERE E.ADDR_ID = A.ADDRESS_ID AND E.EMP_ID = P.OWNER_ID AND E.STATUS = 'Part-time'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.*, A.*, P.* <span class="keyword">FROM</span> EMPLOYEE E, ADDRESS A, PHONE P <span class="keyword">WHERE</span> E.ADDR_ID = A.ADDRESS_ID <span class="keyword">AND</span> E.EMP_ID = P.OWNER_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -191,8 +234,10 @@ join fetch는 객체,  그 객체와 연관된 객체를 단일 쿼리를 통해
 <div class="paragraph">
 <p>JPA는 join fetch를 JPQL을 통해서만 지정할수 있으나, Eclipselink는 @JoinFetch  어노테이션을 이용해 특정 관계에 대해 항상 Join Fetch를  수행하게 할수 있다.
 다른 JPA 구현체들 중에는  EAGER 관계의 객체를 항상 join fetch하는 것도 있는데, 이것은 일견 좋은 아이디어 인거 같지만, 실제로는 매우 나쁜 아이디어이다.
-EARGER는 관계를 읽어 와야 하는 가를 정의하지, 데이터베이스에 어떻게 접근하느냐를 정의하는 것이 아니다.
-어떤 사용자가 객체의 모든 관계를 읽어 오게 하려고 할때, 만약 모든 관계를 join fetch를 이용해 가져온다면, 모든 ToMany 관계에 대한 거대한 조인(Outer 조인이 사용된다)을 걸게 되고, 거대한 중복 데이터를 읽어고게 된다.
+EARGER는 관계를 읽어 와야 하는 가를 정의하지, 데이터베이스에 어떻게 접근하느냐를 정의하는 것이 아니다.</p>
+</div>
+<div class="paragraph">
+<p>어떤 사용자가 객체의 모든 관계를 읽어 오게 하려고 할때, 만약 모든 관계를 join fetch를 이용해 가져온다면, 모든 ToMany 관계에 대한 거대한 조인(Outer 조인이 사용된다)을 걸게 되고, 거대한 중복 데이터를 읽어고게 된다.
 또한 parent, owner, manager 같은 ManyToOne 관계는 원래 공유 객체여야 하는데(보통은 cache된), join fech는 모든 child에 대해 중복된 부모 객체를 생성하게 되며, 이런 동작은 별개의 독리된 쿼리를 던지는 것(또는 캐쉬된)보다 나쁜 성능을 낼수 있다.</p>
 </div>
 <div class="paragraph">
@@ -210,7 +255,7 @@ ToMany에 대해서는 진짜로 두번째 Join이 필요하며 이 조인은 �
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>query.setHint("eclipselink.join-fetch", "e.projects.milestones");</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">query.setHint(<span class="string"><span class="delimiter">&quot;</span><span class="content">eclipselink.join-fetch</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">e.projects.milestones</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -227,8 +272,8 @@ ToMany에 대해서는 진짜로 두번째 Join이 필요하며 이 조인은 �
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>query.setHint("eclipselink.batch", "e.address");
-query.setHint("eclipselink.batch", "e.phones");</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">query.setHint(<span class="string"><span class="delimiter">&quot;</span><span class="content">eclipselink.batch</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">e.address</span><span class="delimiter">&quot;</span></span>);
+query.setHint(<span class="string"><span class="delimiter">&quot;</span><span class="content">eclipselink.batch</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">e.phones</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -241,9 +286,9 @@ query.setHint("eclipselink.batch", "e.phones");</code></pre>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.* FROM EMPLOYEE E WHERE E.STATUS = 'Part-time'
-SELECT A.* FROM EMPLOYEE E, ADDRESS A WHERE E.ADDR_ID = A.ADDRESS_ID AND E.STATUS = 'Part-time'
-SELECT P.* FROM EMPLOYEE E, PHONE P WHERE E.EMP_ID = P.OWNER_ID AND E.STATUS = 'Part-time'</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.* <span class="keyword">FROM</span> EMPLOYEE E <span class="keyword">WHERE</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>
+<span class="class">SELECT</span> A.* <span class="keyword">FROM</span> EMPLOYEE E, ADDRESS A <span class="keyword">WHERE</span> E.ADDR_ID = A.ADDRESS_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>
+<span class="class">SELECT</span> P.* <span class="keyword">FROM</span> EMPLOYEE E, PHONE P <span class="keyword">WHERE</span> E.EMP_ID = P.OWNER_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -280,8 +325,8 @@ batch fetch 타입의 지정은 쿼리 힌트 "eclipselink.batch.type"을 통해
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>query.setHint("eclipselink.batch.type", "EXISTS");
-@BatchFetch(type=BatchFetchType.EXISTS)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">query.setHint(<span class="string"><span class="delimiter">&quot;</span><span class="content">eclipselink.batch.type</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">EXISTS</span><span class="delimiter">&quot;</span></span>);
+<span class="annotation">@BatchFetch</span>(type=BatchFetchType.EXISTS)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -294,9 +339,9 @@ batch fetch 타입의 지정은 쿼리 힌트 "eclipselink.batch.type"을 통해
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.* FROM EMPLOYEE E WHERE E.STATUS = 'Part-time'
-SELECT A.* FROM ADDRESS A WHERE EXISTS (SELECT E.EMP_ID FROM EMPLOYEE E WHERE E.ADDR_ID = A.ADDRESS_ID AND E.STATUS = 'Part-time')
-SELECT P.* FROM PHONE P WHERE EXISTS (SELECT E.EMP_ID FROM EMPLOYEE E, WHERE E.EMP_ID = P.OWNER_ID AND E.STATUS = 'Part-time')</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.* <span class="keyword">FROM</span> EMPLOYEE E <span class="keyword">WHERE</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>
+<span class="class">SELECT</span> A.* <span class="keyword">FROM</span> ADDRESS A <span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> (<span class="class">SELECT</span> E.EMP_ID <span class="keyword">FROM</span> EMPLOYEE E <span class="keyword">WHERE</span> E.ADDR_ID = A.ADDRESS_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>)
+<span class="class">SELECT</span> P.* <span class="keyword">FROM</span> PHONE P <span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> (<span class="class">SELECT</span> E.EMP_ID <span class="keyword">FROM</span> EMPLOYEE E, <span class="keyword">WHERE</span> E.EMP_ID = P.OWNER_ID <span class="keyword">AND</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -317,9 +362,9 @@ IN 옵션은 또한 SQL의 IN  파트가 동적으로 생성되는것이 지원�
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>SELECT E.* FROM EMPLOYEE E WHERE E.STATUS = 'Part-time'
-SELECT A.* FROM ADDRESS A WHERE A.ADDRESS_ID IN (1, 2, 5, ...)
-SELECT P.* FROM PHONE P WHERE P.OWNER_ID IN (12, 10, 30, ...)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="sql"><span class="class">SELECT</span> E.* <span class="keyword">FROM</span> EMPLOYEE E <span class="keyword">WHERE</span> E.STATUS = <span class="string"><span class="delimiter">'</span><span class="content">Part-time</span><span class="delimiter">'</span></span>
+<span class="class">SELECT</span> A.* <span class="keyword">FROM</span> ADDRESS A <span class="keyword">WHERE</span> A.ADDRESS_ID <span class="keyword">IN</span> (<span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">5</span>, ...)
+<span class="class">SELECT</span> P.* <span class="keyword">FROM</span> PHONE P <span class="keyword">WHERE</span> P.OWNER_ID <span class="keyword">IN</span> (<span class="integer">12</span>, <span class="integer">10</span>, <span class="integer">30</span>, ...)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -332,7 +377,7 @@ SELECT P.* FROM PHONE P WHERE P.OWNER_ID IN (12, 10, 30, ...)</code></pre>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>query.setHint("eclipselink.batch", "e.projects.milestones");</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">query.setHint(<span class="string"><span class="delimiter">&quot;</span><span class="content">eclipselink.batch</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">e.projects.milestones</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -352,14 +397,54 @@ SELECT P.* FROM PHONE P WHERE P.OWNER_ID IN (12, 10, 30, ...)</code></pre>
 <div class="sect1">
 <h2 id="simple_run_fetch_address_phonenumbers">Simple run (fetch address, phoneNumbers)</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>| Query | Average (queries/minute) | %STD | %DIF (of standard) |
-| standard | 5897 | 0.5% | 0 |
-| join fetch| 14024| 1.1%| +137%|
-| batch fetch (JOIN) | 11190 | 4.5% | +89% |
-| batch fetch (EXISTS) | 13764 | 0.4% | +133% |
-| batch fetch (IN) | 14341 | 0.6% | +143% |</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Query</th>
+<th class="tableblock halign-left valign-top">Average (queries/minute)</th>
+<th class="tableblock halign-left valign-top">%STD</th>
+<th class="tableblock halign-left valign-top">%DIF (of standard)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standard</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5897</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">join fetch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14024</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+137%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (JOIN)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11190</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.5%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+89%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (EXISTS)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13764</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.4%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+133%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (IN)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14341</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.6%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+143%</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>첫번쨰 결과만 보면 join fetch가 상당히 좋아 보인다.  첫번째 테스트에서는 2개의 관계만 읽어 왔다. 더 많은 관계를 읽어 오면 어떻게 될까?</p>
 </div>
@@ -368,14 +453,54 @@ SELECT P.* FROM PHONE P WHERE P.OWNER_ID IN (12, 10, 30, ...)</code></pre>
 <div class="sect1">
 <h2 id="complex_run_fetch_address_phonenumbers_projects_manager_managedemployees_emailaddresses_responsibilities_jobtitle_degrees">Complex run (fetch address, phoneNumbers, projects, manager, managedEmployees, emailAddresses, responsibilities, jobTitle, degrees)</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>| Query | Average (queries/minute) | %STD | %DIF (of standard) |
-| standard | 1438 | 0.7% | 0% |
-| join fetch | 1121 | 0.4% | -22% |
-| batch fetch (JOIN) | 3395 | 3.8% | +136% |
-| batch fetch (EXISTS) | 3768 | 2.6% | +162% |
-| batch fetch (IN) | 3893 | 0.5% | +170% |</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Query</th>
+<th class="tableblock halign-left valign-top">Average (queries/minute)</th>
+<th class="tableblock halign-left valign-top">%STD</th>
+<th class="tableblock halign-left valign-top">%DIF (of standard)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">standard</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1438</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.7%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">join fetch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1121</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.4%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-22%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (JOIN)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3395</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.8%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+136%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (EXISTS)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3768</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.6%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+162%</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">batch fetch (IN)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3893</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.5%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+170%</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>두번째 테스트를 보면 join fetch의 문제점이 들어 난다. join fetch는 실제로는  최적화 되지 않는 쿼리보다 느려진다. (-22%). 이건 본질적으로 여러 테이블을 조인하면 더 많은 데이터를 가져와서 처리해야 하기 때문이다.  반면에  batch fetch는 여전히 우월한 성능을 보여준다.</p>
 </div>
