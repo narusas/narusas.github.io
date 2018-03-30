@@ -150,7 +150,6 @@ Request Model에 기술해둔 Validation Rule은 공통화 되지 못하기 때�
 <span class="type">class</span> <span class="class">UserInfoInteractor</span> {
   <span class="directive">public</span> <span class="type">void</span> changeBirthday(<span class="annotation">@Valid</span> UserBirthdayChangeRequest request){
     <span class="keyword">assert</span>(userGradePolicy.acceptUserAge(request.getBirthday()));
-    <span class="error">…</span>
   }
 }</code></pre>
 </div>

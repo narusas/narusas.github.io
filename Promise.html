@@ -67,6 +67,9 @@
 <div class="paragraph">
 <p>따라서 다른 언어와 달리 JS에서는 위의 코드에서 동시성 문제가 발생하지 않습니다. a와 b 변수에 동시에 접근하여 변경 하는 경우자체가 발생하지 않으니까요.</p>
 </div>
+<div class="paragraph">
+<p>언어 차원에서 단일 쓰래드로 정의했기 때문에 동시성 문제를 배제하고 프로그래밍 할수 있다는 것은 나쁘지 않습니다만, 이제 성능이 문제가 됩니다.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -78,9 +81,6 @@
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>언어 차원에서 단일 쓰래드로 정의했기 때문에 동시성 문제를 배제하고 프로그래밍 할수 있다는 것은 나쁘지 않습니다만, 이제 성능이 문제가 됩니다.</p>
 </div>
 </div>
 </div>
@@ -99,16 +99,16 @@
 <p>만약 a.txt의 용량이 커서 읽는데 시간이 많이 걸리면 어떻게 될까요? 사실 배치(batch) 작업에서는 크게 문제 되지 않습니다. 그냥 순서대로 실행하면 되니까요. 우리가 bash 쉘 스크립트같은 곳에서 동시성을 요구하지 않는것과 비슷합니다. 순서대로 일련의 작업을 잘 실행해주면됩니다.</p>
 </div>
 <div class="paragraph">
-<p>하지만 JS의 대부분은 웹 브라우저에서 동작합니다. (네 node express  잘 알고 있습니다)</p>
+<p>하지만 JS의 대부분은 웹 브라우저에서 동작합니다.</p>
 </div>
 <div class="paragraph">
 <p>웹 브라우저에서 사용자가 원하는 것은 배치 작업이 아닙니다. 사용자가 클릭하고, 편집하고, 스크롤하고, 저장하고&#8230;&#8203;</p>
 </div>
 <div class="paragraph">
-<p>동시에 많은 작업을 수행하기를 원할수 있습니다.  하지만, 동시에 시간이 걸리는 작업도 수행해야 합니다.</p>
+<p>동시에 많은 작업을 수행하기를 원할수 있습니다. 하지만, 동시에 시간이 걸리는 작업도 수행해야 합니다.</p>
 </div>
 <div class="paragraph">
-<p>이 두가지를 동시에 요청하면 JS로는 답이 나오지 않습니다.</p>
+<p>이 두가지를 동시에 요청하면 JS만으로 는 답이 나오지 않습니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -124,8 +124,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>사용자가 버튼을 클릭하여 click1이 수행중인데 용량이 커서 읽어오는데 10초쯤 걸립니다. 그런데 또다른 버튼을 클릭해 click2 를 실행하려고 해도 click1이 실행중이기 때문에 click2는 10초후에 실행될 겁니다.
-순차적으로 시간을 소비하여 수행해야 하니까요.</p>
+<p>사용자가 버튼을 클릭하여 click1이 수행중인데 용량이 커서 읽어오는데 10초쯤 걸립니다. 그런데 또다른 버튼을 클릭해 click2 를 실행하려고 해도 click1이 순차적으로 시간을 소비하여 실행중이기 때문에 click2는 10초후에 실행될 겁니다.</p>
 </div>
 </div>
 </div>
@@ -133,10 +132,10 @@
 <h2 id="asynchronous">Asynchronous</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>따라서 JS가 아닌 다른 수단이 필요해집니다.  JS자체로는 이문제를 해결할수 없습니다. 그래서 js의 실행환경을 제공하는 주변 에서 기능을 제공하게 됩니다.</p>
+<p>따라서 JS가 아닌 다른 수단이 필요해집니다. 언어레벨에서 단일 쓰대드라고 규정해버린 JS자체로는 이문제를 해결할수 없습니다. 그래서 js의 실행환경을 제공하는 주변(웹브라우저, node등) 에서 기능을 제공하게 됩니다.</p>
 </div>
 <div class="paragraph">
-<p>웹브라우저에서는 XmlHttpRequest 을 제공합니다. js에서 xmlHttpRequest를 호출하면 웹브라우저는 이에 대한 실행을 C Posix 쓰래드로 실행합니다! JS 쓰래드가 아니고요. (웹브라우저의 구현 언어와 라이브러리에 따라 다른 언어와 쓰래드 라이브러리를 사용할겁니다)</p>
+<p>대표적으로 웹브라우저에서는 XmlHttpRequest 을 제공합니다. js에서 xmlHttpRequest를 호출하면 웹브라우저는 이에 대한 실행을 C Posix 쓰래드로 실행합니다! JS 쓰래드가 아니고요.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -153,7 +152,7 @@ console.log(<span class="string"><span class="delimiter">'</span><span class="co
 <p><code>&lt;2&gt;</code> send 함수를 호출한다고 해서 js가 동기적으로 응답이 올때까지 기다리지는 않습니다. 그냥 빨리 끝나는 함수 하나를 호출한 것 뿐입니다. 바로 <code>&lt;3&gt;</code> 으로 넘어가 실행합니다.</p>
 </div>
 <div class="paragraph">
-<p>그럼 <code>&lt;1&gt;</code> 은 언제 실행될까요?</p>
+<p>그럼 <code>&lt;1&gt;</code> 은 언제 실행될까요? 개념적으로 따라가보겠습니다.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -167,7 +166,7 @@ console.log(<span class="string"><span class="delimiter">'</span><span class="co
 <p>응답이 와서 응답 데이터를 C++로 파싱이 한후에 저장해 둡니다.</p>
 </li>
 <li>
-<p>임시로 저장했던 JS 함수 <code>&lt;1&gt;</code> 을 micro task queue에 추가 합니다.</p>
+<p>임시로 저장했던 JS 함수 <code>&lt;1&gt;</code> 을 호출하는 함수를 micro task queue에 추가 합니다.</p>
 </li>
 <li>
 <p>JS의 유일한 쓰래드가 현재 실행중인 macro task(사용자의 클릭이나 document load같은 주요 이벤트에 대해 실행되는) 코드가 없을때</p>
