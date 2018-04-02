@@ -3,6 +3,8 @@ bundle exec jekyll build
 rm -fR /tmp/publish
 mkdir -p /tmp/publish
 cp -r _site/* /tmp/publish
+cp -r google*.html /tmp/publish
+
 
 rm -fR /tmp/master
 mkdir -p /tmp/master
@@ -14,4 +16,4 @@ git rm . -r
 cp -r /tmp/publish/* ./
 git add .
 git commit -m "updated"
-git push 
+git push
