@@ -1,0 +1,327 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한글 Entity 클래스와 Mybatis</title>
+<meta name="description" content="한글 Entity 클래스와 Mybatis에 대해 기술합니다.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>한글 Entity 클래스와 Mybatis</h1>
+<div class="sect1">
+<h2 id="한글_entity">한글 Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>놀랍게도!! 자바에서는 한글을 명사로 사용할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>변수명, 클래스명 등 이름이 나와야 하는 곳에 한글을 비롯한 유니코드를 적을수 있습니다.
+그래서 java 소스 파일은 utf-8 로 작성되어 있다는 전제로 javac 가 컴파일 하는게 기본이기도 합니다.</p>
+</div>
+<div class="paragraph">
+<p>바로 한글로 된 Entity 소스 예제를 봅시다.</p>
+</div>
+<div class="listingblock">
+<div class="title">한글 Entity 예제</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Data</span>
+<span class="type">class</span> <span class="class">상품기본정보</span> {
+  <span class="predefined-type">Long</span> id;
+  <span class="predefined-type">String</span> 상품명;
+  상품유형 상품유형 = 상품유형.회원상품;
+  이미지정보 대표이미지 = <span class="keyword">new</span> 이미지정보();
+  <span class="predefined-type">String</span> 상품연결URL;
+}
+
+<span class="annotation">@Data</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">이미지정보</span> {
+  <span class="predefined-type">String</span> 경로명;
+  <span class="predefined-type">String</span> 파일명;
+}
+
+
+<span class="directive">public</span> <span class="type">enum</span> 상품유형 {
+  제휴상품, 회원상품;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>읽어보니 어떤가요? 바로 읽히지 않습니까? 이게 바로 모국어를 도메인 언어에서 바로 사용할때 얻을수 있는 효과입니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="persistent_with_jpa">Persistent with JPA</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이제 이 엔티티 파일을 어떻게 DB에서 읽어올까요?</p>
+</div>
+<div class="paragraph">
+<p>물론 하이버네이트나 이클립스링크 같은 JPA 구현체를 이용할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Entity</span>
+<span class="annotation">@Table</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">goods_base_info</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@Getter</span>
+<span class="annotation">@Setter</span>
+<span class="annotation">@ToString</span>(exclude = { <span class="string"><span class="delimiter">&quot;</span><span class="content">상품등록자</span><span class="delimiter">&quot;</span></span> }, callSuper = <span class="predefined-constant">false</span>)
+<span class="annotation">@JsonIgnoreProperties</span>(ignoreUnknown = <span class="predefined-constant">true</span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">상품기본정보</span> <span class="directive">extends</span> AuditableEntity {
+  <span class="annotation">@Id</span>
+  <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+  <span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">GOODS_NO</span><span class="delimiter">&quot;</span></span>)
+  <span class="predefined-type">Long</span> id;
+
+  <span class="annotation">@Size</span>(max=<span class="integer">300</span>,  message = <span class="string"><span class="delimiter">&quot;</span><span class="content">상품명은 300글자 이내여야 합니다.</span><span class="delimiter">&quot;</span></span>)
+  <span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">GOODS_NM</span><span class="delimiter">&quot;</span></span>)
+  <span class="predefined-type">String</span> 상품명;
+
+  <span class="annotation">@Basic</span>
+  <span class="annotation">@Convert</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">상품유형</span><span class="delimiter">&quot;</span></span>)
+  <span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">GOODS_TP</span><span class="delimiter">&quot;</span></span>)
+  상품유형 상품유형 = deal.domain.entity.goods.상품유형.회원상품;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이러면 간단하죠. 하지만 JPA를 사용하는 프로젝트가 많지 않고 대부분 mybatis를 사용하는 한국의 현실에서는 JPA는 채용하기 어렵습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="persistent_with_mybatis">Persistent with Mybatis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>한국의 SI 에서는 mybatis를 이용해 SQL을 마음대로 조작하고 싶어하는 경우가 참 많습니다. 그래서 당연히 이를 지원할수 있어야겠죠.</p>
+</div>
+<div class="sect2">
+<h3 id="entity_source">Entity Source</h3>
+<div class="paragraph">
+<p>자바 소스는 변경할 필요가 없습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Data</span>
+<span class="type">class</span> <span class="class">상품기본정보</span> {
+  <span class="predefined-type">Long</span> id;
+  <span class="predefined-type">String</span> 상품명;
+  상품유형 상품유형 = 상품유형.회원상품;
+  이미지정보 대표이미지 = <span class="keyword">new</span> 이미지정보();
+  <span class="predefined-type">String</span> 상품연결URL;
+}
+
+<span class="annotation">@Data</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">이미지정보</span> {
+  <span class="predefined-type">String</span> 경로명;
+  <span class="predefined-type">String</span> 파일명;
+}
+
+
+<span class="directive">public</span> <span class="type">enum</span> 상품유형 {
+  제휴상품, 회원상품;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sql_source">SQL Source</h3>
+<div class="paragraph">
+<p>SQL 소스를 볼까요. 여러 테이블을 조인하여 결과를 얻을수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;select</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">find상품정보</span><span class="delimiter">&quot;</span></span>   <span class="attribute-name">parameterType</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">java.lang.Long</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">resultMap</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품기본정보DetailMap</span><span class="delimiter">&quot;</span></span> <span class="tag">&gt;</span>
+  SELECT        /* 상품정보Mapper.find상품정보 */
+  <span class="tag">&lt;include</span> <span class="attribute-name">refid</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품기본정보Columns</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+  ,<span class="tag">&lt;include</span> <span class="attribute-name">refid</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품요약정보Columns</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+  ,<span class="tag">&lt;include</span> <span class="attribute-name">refid</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품상세이미지정보Columns</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+  ,<span class="tag">&lt;include</span> <span class="attribute-name">refid</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">orderPkg.해쉬태그정보Mapper.해쉬태그정보Columns</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+  ,<span class="tag">&lt;include</span> <span class="attribute-name">refid</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">원트정보Columns</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  from
+  t_goods_base_info                goods_base_info
+  LEFT OUTER JOIN                t_wnt_info         wnt_info
+
+  .. 생략 ..
+
+  order by goods_dtl_img_info.EXP_PRIOR_RNK ASC
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="tag">&lt;sql</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품기본정보Columns</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  goods_base_info.GOODS_NO                                 as '상품정보.id'
+  ,goods_base_info.GOODS_NM                                as '상품정보.상품명'
+  ,goods_base_info.GOODS_LNK_URL                        as '상품정보.상품연결URL'
+  ,goods_base_info.MAST_IMG_PATH_NM                as '상품정보.대표이미지.경로명'
+  ,goods_base_info.MAST_IMG_FILE_NM             as '상품정보.대표이미지.파일명'
+<span class="tag">&lt;/sql&gt;</span>
+
+<span class="tag">&lt;sql</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품요약정보Columns</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  goods_sumr_info.GOODS_CMNT_CNT         as '상품요약정보.팔로우수'
+  ,goods_sumr_info.GOODS_WNT_CNT        as '상품요약정보.상품수'
+  ,goods_sumr_info.GOODS_TAG_CNT                as '상품요약정보.상품태그수'
+<span class="tag">&lt;/sql&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>각 컬럼에 대해 sub sql로 분리함으로써 재활용할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>여기서 중요한 내용중에 하나는 sql 에서 column alias는 가급적 entity의 속성 구조와 맞추는 것입니다.</p>
+</div>
+<div class="paragraph">
+<p>alias명은 <code>엔티티명.속성명.하위속성명</code> 이렇게 구성되게 하는게 좋습니다.</p>
+</div>
+<div class="paragraph">
+<p>엔티티명으로 시작하면 테이블을 join 걸어도 엔티티명이 각 테이블에 대한 구분 역활을 해줍니다.</p>
+</div>
+<div class="paragraph">
+<p>여기에서 컬럼이 너무 많아요 라고 하실분도 많겠습니다만, 그게 성능에 영향을 주는 경우가 많지는 않습니다.</p>
+</div>
+<div class="paragraph">
+<p>성능에 영향이 갈거 같으면 별도의 result map을 만들면 그만이고, sub columns들을 의미별로 잘게 쪼개서 조합해서 사용하면 됩니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="result_map_source">Result Map Source</h3>
+<div class="paragraph">
+<p>여기에서 사용하는 result map을 볼 차례입니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;resultMap</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품기본정보DetailMap</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">deal.domain.entity.goods.상품기본정보</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;id</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.id</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+
+  <span class="comment">&lt;!-- 속성에 매핑 --&gt;</span>
+  <span class="tag">&lt;result</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품명</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.상품명</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;result</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품연결URL</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.상품연결URL</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;result</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품유형</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.상품유형</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+
+  <span class="comment">&lt;!-- 클래스를 이용한 속성 매핑 --&gt;</span>
+  <span class="tag">&lt;association</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">대표이미지</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">javaType</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">deal.domain.entity.common.이미지정보</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;result</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">경로명</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.대표이미지.경로명</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;result</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">파일명</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">column</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품정보.대표이미지.파일명</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;/association&gt;</span>
+
+  <span class="comment">&lt;!-- Result Map을 이용한 속성 매핑 --&gt;</span>
+  <span class="tag">&lt;association</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품요약정보</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">resultMap</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품요약정보Map</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+
+  <span class="comment">&lt;!-- Result Map을 이용한 컬렉션 속성 매핑 --&gt;</span>
+  <span class="tag">&lt;collection</span> <span class="attribute-name">property</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품상세이미지정보</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">resultMap</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">상품상세이미지정보Map</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/resultMap&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 result map을 사용하여 association이나 collection으로 만들어낼수가 있습니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="결론">결론</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JPA 정도는 아니지만 Mybatis를 이용해 도메인 모델에 최대한 근접할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>물론 code to enum converter등 mybatis  설정이 좀더 필요하겠지만 그렇게 어려운건 아닙니다.</p>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
