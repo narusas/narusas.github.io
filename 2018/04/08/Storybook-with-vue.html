@@ -96,12 +96,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">npm install --save-dev <span class="error">@</span>storybook/vue
-npm install --save-dev <span class="error">@</span>storybook/addon-actions
-npm install --save-dev <span class="error">@</span>storybook/addon-knobs
-npm install --save-dev <span class="error">@</span>storybook/addon-links
-npm install --save-dev <span class="error">@</span>storybook/addon-notes
-npm install --save-dev <span class="error">@</span>storybook/addon-viewport
+<pre class="CodeRay highlight"><code>npm install --save-dev @storybook/vue
+npm install --save-dev @storybook/addon-actions
+npm install --save-dev @storybook/addon-knobs
+npm install --save-dev @storybook/addon-links
+npm install --save-dev @storybook/addon-notes
+npm install --save-dev @storybook/addon-viewport
 npm install --save-dev storybook-vue-route</code></pre>
 </div>
 </div>
@@ -275,7 +275,7 @@ storiesOf(<span class="string"><span class="delimiter">'</span><span class="cont
   .add(<span class="string"><span class="delimiter">'</span><span class="content">Tab이 비엇을때 </span><span class="delimiter">'</span></span>, () =&gt; {
     <span class="keyword">return</span> {
       <span class="key">components</span>: { MainTabs },
-      <span class="key">template</span>: template(<span class="error">`</span><span class="tag">&lt;main-tabs</span> <span class="attribute-name">:tabs</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">tabs</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span><span class="error">`</span>),
+      <span class="key">template</span>: template(<span class="string"><span class="delimiter">'</span><span class="content">&lt;main-tabs :tabs=&quot;tabs&quot;/&gt;</span><span class="delimiter">'</span></span>),
       data() {
         <span class="keyword">return</span> {
           <span class="key">tabs</span>: [
@@ -339,7 +339,7 @@ storiesOf(<span class="string"><span class="delimiter">'</span><span class="cont
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/images/2018-04-08-Storybook-with-vue-459e1.png" alt="2018 04 08 Storybook with vue 459e1">
+<img src="/images/2018-04-08-Storybook-with-vue-459e1.png" alt="2018 04 08 Storybook with vue 459e1">
 </div>
 </div>
 </div>
@@ -375,7 +375,7 @@ story
 story
   .add(<span class="string"><span class="delimiter">'</span><span class="content">Empty cart</span><span class="delimiter">'</span></span>, () =&gt; ({
       <span class="key">components</span>: { StatusBar },
-      <span class="key">template</span>: <span class="error">`</span><span class="tag">&lt;status-bar</span> <span class="attribute-name">:cartCount</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${cartCount(0)}</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span><span class="error">`</span>,
+      <span class="key">template</span>: <span class="string"><span class="delimiter">'</span><span class="content">&lt;status-bar :cartCount=&quot;${cartCount(0)}&quot;/&gt;</span><span class="delimiter">'</span></span>,
     });
   })</code></pre>
 </div>
@@ -385,7 +385,7 @@ story
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/images/2018-04-08-Storybook-with-vue-05f25.png" alt="2018 04 08 Storybook with vue 05f25">
+<img src="/images/2018-04-08-Storybook-with-vue-05f25.png" alt="2018 04 08 Storybook with vue 05f25">
 </div>
 </div>
 </div>
@@ -424,8 +424,20 @@ story
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/images/2018-04-08-Storybook-with-vue-e4e49.png" alt="2018 04 08 Storybook with vue e4e49">
+<img src="/images/2018-04-08-Storybook-with-vue-e4e49.png" alt="2018 04 08 Storybook with vue e4e49">
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+현재 사용중인 syntaxt highlight에서 ES6 template string을 지원하지 못하여 `  대인 ' 를 사용해 문자열을 표현했습니다.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
