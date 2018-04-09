@@ -1,0 +1,492 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+  <head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storybook with Vue.js</title>
+<meta name="description" content="Storybokk for vue 를 사용하는 방법">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  </head>
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Storybook with Vue.js</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#storybook">Storybook</a></li>
+<li><a href="#storybook_for_vue">Storybook for vue</a>
+<ul class="sectlevel2">
+<li><a href="#설정_파일_생성">설정 파일 생성</a></li>
+<li><a href="#스토리_생성">스토리 생성</a></li>
+<li><a href="#npm_script_생성">NPM Script 생성</a></li>
+<li><a href="#스토리북_실행">스토리북 실행</a></li>
+</ul>
+</li>
+<li><a href="#심화">심화</a>
+<ul class="sectlevel2">
+<li><a href="#복잡한_데이터_넘기기">복잡한 데이터 넘기기</a></li>
+<li><a href="#구조">구조</a></li>
+<li><a href="#커스텀_tags_in_head">커스텀 Tags in Head</a></li>
+<li><a href="#정적파일_제공">정적파일 제공</a></li>
+<li><a href="#grouping_stories">Grouping Stories</a></li>
+<li><a href="#knobs_사용하기">Knobs 사용하기</a></li>
+<li><a href="#vieport_애드온">Vieport 애드온</a></li>
+<li><a href="#background_애드온">Background 애드온</a></li>
+<li><a href="#storybook_addon_vue_info_애드온">storybook-addon-vue-info 애드온</a></li>
+<li><a href="#애드온_호환성">애드온 호환성</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="storybook">Storybook</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>스토리북은 컴포넌트 단위로 개발을 하기 위한 도구입니다. 뷰어 용도로도 사용 가능하며 정적 파일로 빌드하여 사이트에 퍼블리싱할수도 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="storybook_for_vue">Storybook for vue</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Storybook은 react, angular, vue등을 지원합니다. 하지만 시작을 react로 시작했기때문에 react는 잘 지원하는 반면, 다른 프레임워크는 다소 문제가 많습니다.</p>
+</div>
+<div class="paragraph">
+<p>웹팩설정이 항상 복잡해지기 때문에 설명 간소화를 위해 기존의 프로젝트가 <code>vue-cli webpack project-name</code>으로 생성되었다고 가정하겠습니다.</p>
+</div>
+<div class="paragraph">
+<p>기존에 개발중인 소스에 storybook을 설치합니다. 설치하는 김에 자주 사용되는 애드온도 같이 설치합시다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">npm install --save-dev <span class="error">@</span>storybook/vue
+npm install --save-dev <span class="error">@</span>storybook/addon-actions
+npm install --save-dev <span class="error">@</span>storybook/addon-knobs
+npm install --save-dev <span class="error">@</span>storybook/addon-links
+npm install --save-dev <span class="error">@</span>storybook/addon-notes
+npm install --save-dev <span class="error">@</span>storybook/addon-viewport
+npm install --save-dev storybook-vue-route</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="설정_파일_생성">설정 파일 생성</h3>
+<div class="paragraph">
+<p><code>-c</code> 옵션으로 설정파일 폴더를 지정할수 있습니다. 보통 <code>.storybook</code> 으로 폴더를 생성합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>webpack 설정 파일.
+아래 설정은 <code>vue-cli</code>로 생성된 webpack 설정을 가져다 스토리북에서도 사용하기 위한 설정 파일입니다.</p>
+<div class="listingblock">
+<div class="title"><code>.storybook/webpack.config.js</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const path = require(<span class="string"><span class="delimiter">'</span><span class="content">path</span><span class="delimiter">'</span></span>);
+
+<span class="keyword">function</span> <span class="function">resolve</span>(dir) {
+  <span class="keyword">return</span> path.join(__dirname, <span class="string"><span class="delimiter">'</span><span class="content">..</span><span class="delimiter">'</span></span>, dir);
+}
+
+<span class="comment">// CSS 등 정적파일 로더 설정을 읽어옵니다.</span>
+const vueLoaderConfig = require(<span class="string"><span class="delimiter">'</span><span class="content">../build/vue-loader.conf</span><span class="delimiter">'</span></span>);
+
+module.exports = (storybookBaseConfig, configType) =&gt; {
+  storybookBaseConfig.module.rules.find(rule =&gt; rule.test.source.includes(<span class="string"><span class="delimiter">'</span><span class="content">vue</span><span class="delimiter">'</span></span>)).options = vueLoaderConfig;
+  storybookBaseConfig.resolve  = {
+    <span class="key">extensions</span>: [<span class="string"><span class="delimiter">'</span><span class="content">.js</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">.vue</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">.json</span><span class="delimiter">'</span></span>],
+      <span class="key">alias</span>: {
+        <span class="key">config</span>: path.resolve(__dirname,<span class="string"><span class="delimiter">'</span><span class="content">../build/config.json</span><span class="delimiter">'</span></span>),
+        <span class="predefined">vue$</span>: <span class="string"><span class="delimiter">'</span><span class="content">vue/dist/vue.esm.js</span><span class="delimiter">'</span></span>,
+        <span class="key"><span class="delimiter">'</span><span class="content">@</span><span class="delimiter">'</span></span>: resolve(<span class="string"><span class="delimiter">'</span><span class="content">src</span><span class="delimiter">'</span></span>),
+        <span class="key"><span class="delimiter">'</span><span class="content">src</span><span class="delimiter">'</span></span>: resolve(<span class="string"><span class="delimiter">'</span><span class="content">src</span><span class="delimiter">'</span></span>),
+        <span class="key"><span class="delimiter">'</span><span class="content">assets</span><span class="delimiter">'</span></span>: resolve(<span class="string"><span class="delimiter">'</span><span class="content">src/assets</span><span class="delimiter">'</span></span>),
+        <span class="key">lib</span>: resolve(<span class="string"><span class="delimiter">'</span><span class="content">src/lib</span><span class="delimiter">'</span></span>),
+
+    },
+  };
+  <span class="keyword">return</span> storybookBaseConfig;
+};</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>스토리 파일들을 읽어 등록하는 설정</p>
+<div class="listingblock">
+<div class="title"><code>.storybook/config</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> { configure  as vueConfigure} from <span class="string"><span class="delimiter">'</span><span class="content">@storybook/vue</span><span class="delimiter">'</span></span>
+
+<span class="comment">// automatically import all files ending in *.stories.js</span>
+const req = require.context(<span class="string"><span class="delimiter">'</span><span class="content">../src/stories</span><span class="delimiter">'</span></span>, <span class="predefined-constant">true</span>, <span class="regexp"><span class="delimiter">/</span><span class="content">.stories.js$</span><span class="delimiter">/</span></span>);
+<span class="keyword">function</span> <span class="function">loadStories</span>() {
+  req.keys().forEach(filename =&gt; req(filename));
+}
+
+vueConfigure(loadStories, module);</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>애드온 설정</p>
+<div class="listingblock">
+<div class="title"><code>.storybook/addons.js</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-actions/register</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-links/register</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-knobs/register</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-viewport/register</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-notes/register</span><span class="delimiter">'</span></span>;</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="스토리_생성">스토리 생성</h3>
+<div class="paragraph">
+<p>스토리 파일은 <code>src/stories</code> 하위에서 찾습니다. <code>.storybook/config</code> 에 경로가 설정되어 있습니다.
+상대 경로가 복잡해지는 문제를 방지하기 위해 src 하위 폴더를 사용합니다.</p>
+</div>
+<div class="paragraph">
+<p>작성해둔 컴포넌트에 대한 사용 스토리를 기술합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> Vue from <span class="string"><span class="delimiter">'</span><span class="content">vue</span><span class="delimiter">'</span></span>;
+
+<span class="reserved">import</span> { storiesOf } from <span class="string"><span class="delimiter">'</span><span class="content">@storybook/vue</span><span class="delimiter">'</span></span>;
+
+<span class="reserved">import</span> MyButton from <span class="string"><span class="delimiter">'</span><span class="content">./Button.vue</span><span class="delimiter">'</span></span>;
+
+storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">MyButton</span><span class="delimiter">'</span></span>, module)
+  .add(<span class="string"><span class="delimiter">'</span><span class="content">story as a template</span><span class="delimiter">'</span></span>, () =&gt; <span class="string"><span class="delimiter">'</span><span class="content">&lt;my-button :rounded=&quot;true&quot;&gt;story as a function template&lt;/my-button&gt;</span><span class="delimiter">'</span></span>)
+  .add(<span class="string"><span class="delimiter">'</span><span class="content">story as a component</span><span class="delimiter">'</span></span>, () =&gt; ({
+    <span class="key">components</span>: { MyButton },
+    <span class="key">template</span>: <span class="string"><span class="delimiter">'</span><span class="content">&lt;my-button :rounded=&quot;true&quot;&gt;rounded&lt;/my-button&gt;</span><span class="delimiter">'</span></span>
+  }));</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="npm_script_생성">NPM Script 생성</h3>
+<div class="paragraph">
+<p><code>package.json</code>  에 다음을 추가하여 스토리북 실행 스크립트를 추가합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">scripts</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">storybook</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">start-storybook -p 6006 -c .storybook -s ./ </span><span class="delimiter">&quot;</span></span>
+  }
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>-p</code>: 개발 서버 포트 지정</p>
+</li>
+<li>
+<p><code>-c</code>: 스토리북 설정 파일 폴더 경로 지정</p>
+</li>
+<li>
+<p><code>-s</code>: 정적 파일 URL 매핑 루트 지정. <a href="http://localhost:6006/static/images/logo.jpg" class="bare">http://localhost:6006/static/images/logo.jpg</a>  경로중 /static/images/logo.jpg 를 찾기 위한 경로. node 프로젝트의 경우 프로젝트 루트 폴더에 static 으로 지정되는 경우가 많으나 /static 이라는 텍스트가 URL에 포함되는 경우도 많기 때문에 지정함.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="스토리북_실행">스토리북 실행</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">npm run storybook</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>로 실행하고 웹브라우저에서 <a href="http://localhost:6006" class="bare">http://localhost:6006</a> 으로 접속해보시면 됩니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="심화">심화</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>여기까지의 내용은 기존에도 다른 문서들이나 블로그등이 있었습니다.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://storybook.js.org/basics/guide-vue/" class="bare">https://storybook.js.org/basics/guide-vue/</a></p>
+</div>
+<div class="paragraph">
+<p><a href="http://vuejs.kr/vue/storybook/2017/09/21/vue-storybook/" class="bare">http://vuejs.kr/vue/storybook/2017/09/21/vue-storybook/</a></p>
+</div>
+<div class="paragraph">
+<p>여기서 부터는 조금 더 들어간 내용을 다뤄봅니다.</p>
+</div>
+<div class="sect2">
+<h3 id="복잡한_데이터_넘기기">복잡한 데이터 넘기기</h3>
+<div class="paragraph">
+<p>단순 문자열이나 숫자가 아닌 복잡한 데이터를 props에 넘기기 위해서는 vue의 구조를 이용해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>우리가 작성한 story 자체가 하나의 vue 컴포넌트 이기 때문에 data 속성을 정의할수 있습니다. data로 선언된 객체를 <code>:</code>표기법을 이용해 넘기면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">공통/MainTabs</span><span class="delimiter">'</span></span>, module)
+  .add(<span class="string"><span class="delimiter">'</span><span class="content">Tab이 비엇을때 </span><span class="delimiter">'</span></span>, () =&gt; {
+    <span class="keyword">return</span> {
+      <span class="key">components</span>: { MainTabs },
+      <span class="key">template</span>: template(<span class="error">`</span><span class="tag">&lt;main-tabs</span> <span class="attribute-name">:tabs</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">tabs</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span><span class="error">`</span>),
+      data() {
+        <span class="keyword">return</span> {
+          <span class="key">tabs</span>: [
+            { <span class="key">id</span>:<span class="integer">1</span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Home Menu</span><span class="delimiter">'</span></span>, <span class="key">cssClass</span>: <span class="string"><span class="delimiter">'</span><span class="content">home</span><span class="delimiter">'</span></span>, },
+            { <span class="key">id</span>:<span class="integer">2</span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Menu 1</span><span class="delimiter">'</span></span>,  },
+            { <span class="key">id</span>:<span class="integer">3</span>, <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">Menu 2</span><span class="delimiter">'</span></span>, },
+          ],
+        };
+      },
+    };
+  })</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="구조">구조</h3>
+<div class="imageblock">
+<div class="content">
+<img src="/images/storybook-components.png" alt="Storybook Components">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="커스텀_tags_in_head">커스텀 Tags in Head</h3>
+<div class="paragraph">
+<p>Preview 영역이 우리가 작성한 story가 렌더링 되는 영역이며 이 영역은 iframe에 의해 생성됩니다.
+생성시에 우리가 css나 js등을 포함하고 싶을수 있습니다. 또는 head 영역에 선언을 추가해야할수도 있습니다.
+이것을 위해 config 폴더(이 예제에서는 .storybook 폴더)에 <code>preview-head.html</code>을 생성하면 이 파일이 preview 생성시 head 영역에 추가됩니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="정적파일_제공">정적파일 제공</h3>
+<div class="paragraph">
+<p>css, js, image등 정적파일을 개발서버에서 제공하고 싶다면 실행옵션에 <code>-s</code> 를 주어 폴더명을 주면됩니다. 복수의 폴더를 동시에 지정하고 싶으면 컴마를 구분자로 사용하세요.</p>
+</div>
+<div class="listingblock">
+<div class="title">package.json</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">scripts</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">start-storybook</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">start-storybook -s ./public,./static -p 9001</span><span class="delimiter">&quot;</span></span>
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="grouping_stories">Grouping Stories</h3>
+<div class="paragraph">
+<p>스토리가 늘어나면 이 스토리들을 논리적으로 그룹핑할 필요가 생깁니다.  그렇다면 스토리명에 <code>/</code>로 구분자를 넣어주면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">공통/Breadcrumb</span><span class="delimiter">'</span></span>, module);
+storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">공통/Gnb</span><span class="delimiter">'</span></span>, module);
+storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">공통/GNB + MainTabs</span><span class="delimiter">'</span></span>, module);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 <code>/</code>를 구분자로 트리구조로 구성이 가능합니다.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-04-08-Storybook-with-vue-459e1.png" alt="2018 04 08 Storybook with vue 459e1">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="knobs_사용하기">Knobs 사용하기</h3>
+<div class="paragraph">
+<p>모든 경우를 별개의 스토리로 만드는것은 힘든 일입니다. 변경 가능한 데이터 영역을 UI를 통해 변경해 가면서 테스트할수 있게 하는게 좋을것입니다.</p>
+</div>
+<div class="paragraph">
+<p>일단 knobs 애드온을 임포트합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> { withKnobs, text, <span class="reserved">boolean</span>, number, select } from <span class="string"><span class="delimiter">'</span><span class="content">@storybook/addon-knobs/vue</span><span class="delimiter">'</span></span>;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>knobs에서는 다양한 변경점(knob) 제공합니다.</p>
+</div>
+<div class="paragraph">
+<p>예를들어 숫자를 변경할수 있는 number를 사용하면 다음과 같이 작성할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">function</span> <span class="function">cartCount</span>(count = <span class="integer">8</span>) {
+  <span class="keyword">return</span> number(<span class="string"><span class="delimiter">'</span><span class="content">Cart No</span><span class="delimiter">'</span></span>, count);
+}
+
+storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">Common/StatusBar</span><span class="delimiter">'</span></span>, module);
+story
+  .addDecorator(withKnobs);
+
+story
+  .add(<span class="string"><span class="delimiter">'</span><span class="content">Empty cart</span><span class="delimiter">'</span></span>, () =&gt; ({
+      <span class="key">components</span>: { StatusBar },
+      <span class="key">template</span>: <span class="error">`</span><span class="tag">&lt;status-bar</span> <span class="attribute-name">:cartCount</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${cartCount(0)}</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span><span class="error">`</span>,
+    });
+  })</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>해당 스토리를 선택하면 스토리 하단 제어판에 Knobs 항목에서 숫자를 직접 입력할수 있습니다.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-04-08-Storybook-with-vue-05f25.png" alt="2018 04 08 Storybook with vue 05f25">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="vieport_애드온">Vieport 애드온</h3>
+<div class="paragraph">
+<p>중요한 애드온중에 하나입니다. viewport의 설정을 변경해 모바일 기기처럼 테스트 할수 있게 해줍니다.
+하지만 2018.04.08 현재 안정 버전(3.4.0)은 기기 종류를 추가할수 없습니다.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/storybooks/storybook/tree/master/addons/viewport" class="bare">https://github.com/storybooks/storybook/tree/master/addons/viewport</a></p>
+</div>
+<div class="paragraph">
+<p>에서 기술된 옵션들은 차기 버전에서 지원될 것으로 보입니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="background_애드온">Background 애드온</h3>
+<div class="paragraph">
+<p>배경색을 변경하는 애드온이지만 현재 vue를 지원하지 않습니다. 이것때문에 고생하지 마세요.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="storybook_addon_vue_info_애드온">storybook-addon-vue-info 애드온</h3>
+<div class="paragraph">
+<p>2018-04-08 현재 이것만 단독으로 쓰면 상관없지만, knobs, note 등 다른 애드온과 같이 쓰면 오류가 납니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="애드온_호환성">애드온 호환성</h3>
+<div class="paragraph">
+<p>스토리북의 애드온중 vue와 호환 되지 않는 애드온이 많습니다.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/storybooks/storybook/blob/master/ADDONS_SUPPORT.md" class="bare">https://github.com/storybooks/storybook/blob/master/ADDONS_SUPPORT.md</a></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-04-08-Storybook-with-vue-e4e49.png" alt="2018 04 08 Storybook with vue e4e49">
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>Footer</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+
+</body>
+</html>
