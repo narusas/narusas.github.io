@@ -443,12 +443,9 @@ story
 const height = <span class="integer">720</span>;
 
 <span class="reserved">export</span> <span class="keyword">default</span> <span class="keyword">function</span> (content) {
-  <span class="keyword">return</span> <span class="error">`</span>
-  <span class="tag">&lt;div&gt;</span>
-  <span class="tag">&lt;span&gt;</span>Width: ${width}px Height: ${height}px<span class="tag">&lt;/span&gt;</span>
-
-  <span class="tag">&lt;div</span> <span class="attribute-name">style</span>=<span class="string"><span class="delimiter">&quot;</span><span class="key">border</span>:<span class="float">1px</span> <span class="value">dotted</span>; <span class="key">border-color</span>: <span class="color">#f00</span>; <span class="key">width</span>: <span class="error">$</span>{<span class="key">width</span>}<span class="key">px</span>; <span class="key">height</span>: <span class="error">$</span>{<span class="key">height</span>}<span class="key">x</span>; <span class="key">background-color</span>: <span class="color">#000</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>` + content + '<span class="tag">&lt;/div&gt;</span>&lt;<span class="regexp"><span class="delimiter">/</span><span class="content">div&gt;';
-};</span></span></code></pre>
+  <span class="keyword">return</span> <span class="string"><span class="delimiter">'</span><span class="content">&lt;div&gt;&lt;span&gt;Width: ${width}px Height: ${height}px&lt;/span&gt;</span><span class="delimiter">'</span></span>+
+  <span class="string"><span class="delimiter">'</span><span class="content">&lt;div style=&quot;border:1px dotted; border-color: #f00; width: ${width}px; height: ${height}x; background-color: #000&quot;&gt;</span><span class="delimiter">'</span></span> + content + <span class="string"><span class="delimiter">'</span><span class="content">&lt;/div&gt;&lt;/div&gt;</span><span class="delimiter">'</span></span>;
+};</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -494,7 +491,7 @@ storiesOf(<span class="string"><span class="delimiter">'</span><span class="cont
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-현재 사용중인 syntaxt highlight에서 ES6 template string을 지원하지 못하여 `  대인 ' 를 사용해 문자열을 표현했습니다.
+현재 사용중인 syntaxt highlight에서 ES6 template string을 지원하지 못하여 `  대인 ' 를 사용해 문자열을 표현했습니다. 문자열 중간 ${} 표기가 있으면 ` 로 바꿔서 입력하셔야 합니다
 </td>
 </tr>
 </table>
