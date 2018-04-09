@@ -66,6 +66,7 @@
 <li><a href="#정적파일_제공">정적파일 제공</a></li>
 <li><a href="#grouping_stories">Grouping Stories</a></li>
 <li><a href="#knobs_사용하기">Knobs 사용하기</a></li>
+<li><a href="#route_작성하기">Route 작성하기</a></li>
 <li><a href="#vieport_애드온">Vieport 애드온</a></li>
 <li><a href="#background_애드온">Background 애드온</a></li>
 <li><a href="#storybook_addon_vue_info_애드온">storybook-addon-vue-info 애드온</a></li>
@@ -387,6 +388,27 @@ story
 <div class="content">
 <img src="/images/2018-04-08-Storybook-with-vue-05f25.png" alt="2018 04 08 Storybook with vue 05f25">
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="route_작성하기">Route 작성하기</h3>
+<div class="paragraph">
+<p>vue-router를 사용하는 컴포넌트에 대한 스토리를 작성하려면 storybook-vue-router 를 사용해야 합니다.
+그냥 임포트해서 decorator로 등록시키면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> StoryRouter from <span class="string"><span class="delimiter">'</span><span class="content">storybook-vue-router</span><span class="delimiter">'</span></span>;
+
+const story = storiesOf(<span class="string"><span class="delimiter">'</span><span class="content">공통/MainTabs</span><span class="delimiter">'</span></span>, module);
+story
+  .addDecorator(withKnobs)
+  .addDecorator(StoryRouter());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>자세한 사용법은 다음 URL을 참고 하세요<br>
+<a href="https://github.com/gvaldambrini/storybook-router/tree/master/packages/vue" class="bare">https://github.com/gvaldambrini/storybook-router/tree/master/packages/vue</a></p>
 </div>
 </div>
 <div class="sect2">
