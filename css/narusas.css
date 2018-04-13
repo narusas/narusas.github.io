@@ -1,0 +1,6 @@
+@import url(//cdn.jsdelivr.net/font-nanum/1.0/nanumbarungothic/nanumbarungothic.css);
+@import url(https://cdn.jsdelivr.net/gh/Joungkyun/font-d2coding@1.31.0/d2coding.css);
+
+body { font-family: 'Nanum Barun Gothic', serif; }
+
+.CodeRay code { font-family: 'D2 coding', serif;}
