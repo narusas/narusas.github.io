@@ -94,25 +94,25 @@
 <div class="listingblock">
 <div class="title">LeftMenu.vue</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="htmlt">&lt;template&gt;
-  &lt;ul class=&quot;leftMenu&quot;  :class=&quot;{ [$style.leftMenu]: isOpen }&quot;&gt;
-    &lt;li is=&quot;menu-header&quot; @closeClicked=&quot;closedClicked&quot;/&gt;
-    &lt;li is=&quot;main-logo&quot; :mainLogoType=&quot;mainLogo&quot; @click.stop=&quot;mainLogoClicked&quot;/&gt;
-    &lt;li is=&quot;sub-brand-logo&quot; v-if=&quot;isSubBrand&quot; :selectedBrand=&quot;selectedBrand&quot;/&gt;
-    &lt;li is=&quot;upper-brand-link&quot; v-if=&quot;hasUpperBrand&quot; :upperBrand=&quot;upperBrand&quot;/&gt;
-    &lt;ul class=&quot;category&quot;&gt;
-      &lt;div class=&quot;scroller&quot;&gt;
-        &lt;div class=&quot;scrollWrapper&quot;&gt;
-          &lt;li is=&quot;category-list&quot; v-for=&quot;cateogry in topCategorie&quot; :category=&quot;category&quot;/&gt;
-          &lt;li is=&quot;brand-list&quot; v-for=&quot;cateogry in topCategorie&quot; :category=&quot;category&quot;/&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/ul&gt;
-    &lt;ul class=&quot;brandNew&quot;&gt;
-      &lt;li is=&quot;brand-new-list&quot; v-for=&quot;goods in newGoodsList&quot; :goods=&quot;goods&quot;/&gt;
-    &lt;/ul&gt;
-  &lt;/ul&gt;
-&lt;/template&gt;</code></pre>
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;template&gt;</span>
+  <span class="tag">&lt;ul</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">leftMenu</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">:class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">{ [$style.leftMenu]: isOpen }</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">menu-header</span><span class="delimiter">&quot;</span></span> <span class="error">@</span><span class="attribute-name">closeClicked</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">closedClicked</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">main-logo</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:mainLogoType</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mainLogo</span><span class="delimiter">&quot;</span></span> <span class="error">@</span><span class="attribute-name">click.stop</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mainLogoClicked</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">sub-brand-logo</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">v-if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">isSubBrand</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:selectedBrand</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">selectedBrand</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">upper-brand-link</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">v-if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">hasUpperBrand</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:upperBrand</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">upperBrand</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;ul</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">scroller</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">scrollWrapper</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+          <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category-list</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">cateogry in topCategorie</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:category</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+          <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">brand-list</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">cateogry in topCategorie</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:category</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+    <span class="tag">&lt;ul</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">brandNew</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;li</span> <span class="attribute-name">is</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">brand-new-list</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">goods in newGoodsList</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:goods</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">goods</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/ul&gt;</span>
+<span class="tag">&lt;/template&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -177,43 +177,43 @@
 <div class="listingblock">
 <div class="title">LeftMenuContainer.vue</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="htmlt">&lt;template&gt;
-  &lt;left-menu&gt;
-    &lt;menu-header
-      slot=&quot;menu-header&quot;
-      @closeClicked=&quot;closedClicked&quot;/&gt;
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;template&gt;</span>
+  <span class="tag">&lt;left-menu&gt;</span>
+    <span class="tag">&lt;menu-header</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">menu-header</span><span class="delimiter">&quot;</span></span>
+      <span class="error">@</span><span class="attribute-name">closeClicked</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">closedClicked</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;main-logo
-      slot=&quot;main-logo&quot;
-      :mainLogoType=&quot;mainLogo&quot;
-      @click.stop=&quot;mainLogoClicked&quot;/&gt;
+    <span class="tag">&lt;main-logo</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">main-logo</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:mainLogoType</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mainLogo</span><span class="delimiter">&quot;</span></span>
+      <span class="error">@</span><span class="attribute-name">click.stop</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mainLogoClicked</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;sub-brand-logo
-      slot=&quot;sub-brand-logo&quot;
-      v-if=&quot;isSubBrand&quot;
-      :selectedBrand=&quot;selectedBrand&quot;/&gt;
+    <span class="tag">&lt;sub-brand-logo</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">sub-brand-logo</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">isSubBrand</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:selectedBrand</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">selectedBrand</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;upper-brand-link-container
-      slot=&quot;upper-brand-link&quot;
-      v-if=&quot;hasUpperBrand&quot;
-      :upperBrand=&quot;upperBrand&quot;/&gt;
+    <span class="tag">&lt;upper-brand-link-container</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">upper-brand-link</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">hasUpperBrand</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:upperBrand</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">upperBrand</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;category-list
-      slot=&quot;category-list&quot;
-      v-for=&quot;cateogry in topCategorie&quot;
-      :category=&quot;category&quot;/&gt;
+    <span class="tag">&lt;category-list</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category-list</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">cateogry in topCategorie</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:category</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;brand-list
-      slot=&quot;brand-list&quot;
-      v-for=&quot;cateogry in topCategorie&quot;
-      :category=&quot;category&quot;/&gt;
+    <span class="tag">&lt;brand-list</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">brand-list</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">cateogry in topCategorie</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:category</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">category</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 
-    &lt;brand-new-list
-      slot=&quot;brand-new-list&quot;
-      v-for=&quot;goods in newGoodsList&quot;
-      :goods=&quot;goods&quot;/&gt;
-  &lt;/left-menu&gt;
-&lt;/template&gt;</code></pre>
+    <span class="tag">&lt;brand-new-list</span>
+      <span class="attribute-name">slot</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">brand-new-list</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">v-for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">goods in newGoodsList</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">:goods</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">goods</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;/left-menu&gt;</span>
+<span class="tag">&lt;/template&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
