@@ -1,0 +1,441 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test에 대한 고찰</title>
+<meta name="description" content="테스트에 대한 고찰. 디자인 우선 개발.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="Test에 대한 고찰" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="테스트에 대한 고찰. 디자인 우선 개발." >
+<meta property="og:url"                 content="https://narusas.github.io/2018/04/30/Test.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2018-04-30T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="test" >
+<meta property="article:tag"            content="tdd" >
+<meta property="article:tag"            content="unit test" >
+<meta property="article:tag"            content="bdd" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Test에 대한 고찰</h1>
+<div class="sect1">
+<h2 id="test">Test</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Test란 무엇일까요? 검사입니다.</p>
+</div>
+<div class="literalblock">
+<div class="title">네이버 사전</div>
+<div class="content">
+<pre>사실이나 일의 상태 또는 물질의 구성 성분 따위를 조사하여 옳고 그름과 낫고 못함을 판단하는 일.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>우리가 무엇을 만들었을때 이게 제대로 만든것인지를 조사하여 판단하는 일인거죠.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="단위테스트_unit_test">단위테스트(Unit Test)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>단위 테스트란 우리가 지정하는 단위에 해당하는 무언가를 조사해서 판단하는 검사를 의미합니다.</p>
+</div>
+<div class="paragraph">
+<p>단위는 문맥에 따라 달라질수 있습니다. 함수 하나일수도 있고, 클래스 하나일수도 있고, 패키지 하나일수도 있습니다. 더 나아가 기능 하나일수도 있으며, 어플리케이션 하나, 시스템 하나일수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>우리가 프로그래머이기 때문에 클래스나 모듈단위의 단위를 일반적으로 생각하기 쉽지만 이는 큰 오류입니다. 누군가와 대화할때 단위에 대한 정의를 일치시키지 않는다면, 대화가 성립되지 않습니다.
+프로그래밍 책에 적힌 단위 테스트가, 클래스가 단위의 전부가 아니라는 것을 먼저 인지해야 합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="프로그래밍_단위_테스트">프로그래밍 단위 테스트</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이제 우리에게 익숙한 클래스를 단위로 지정해 봅시다.</p>
+</div>
+<div class="paragraph">
+<p>클래스 단위의 테스트가 얼마나 쓸모 있을까요?</p>
+</div>
+<div class="paragraph">
+<p>보통은 쓸모 없습니다.</p>
+</div>
+<div class="paragraph">
+<p>여러분이 StringUtils 같은 함수 묶음 클래스를 만든다면 클래스 단위의 테스트가 유용할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>하지만 우리가 만드는 프로그램의 기능 대부분은 단일 클래스로 동작하지 않습니다. 10내 안팎의 클래스들의 상호 동작에 의해 기능이 동작하게 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이렇게 상호 작용이 필요한 클래스들을 개별 클래스로 쪼개어 테스트 하기 위해서는 다량의 mock 객체들이 필요로 합니다.</p>
+</div>
+<div class="paragraph">
+<p>또한 이런 테스트는 클래스 내부의 구조에 밀접하게 커플링되어 내부 구현이 조금만 바뀌어도 테스트 케이스가 실패하게 됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="무엇을_테스트_해야_하나">무엇을 테스트 해야 하나?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>우리가 테스트 하려는게 무엇인가요? 구조와 디테일인가요? 아니면 <code>이게 제대로 만든것인지를 조사하여 판단</code>하는 것인가요?</p>
+</div>
+<div class="paragraph">
+<p>우리가 집중해서 테스트 해야 하는 것은 기능과 품질이여야 합니다.  따라서 단위 테스트 역시 기능과 품질을 테스트 해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>따라서 기능을 단위로 하여 테스트를 작성해야 합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="기능_테스트">기능 테스트</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>기능을 어떻게 테스트 할까요?</p>
+</div>
+<div class="paragraph">
+<p>장바구니 담기 버튼을 누르고, 장바구니도 가서 구매 버튼을 눌러 결제하고 &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>사람이 기능을 테스트할수 있습니다만, 자동화 되지 못한 테스트는 재현과 반복이 어렵기 때문에 쉽게 포기 되고 누락된다는 것은 우리 업계의 오랜 경험에 의한 교훈입니다.</p>
+</div>
+<div class="paragraph">
+<p>따라서 자동화가 필요합니다. 하지만 무엇을 자동화 해야 할까요?</p>
+</div>
+<div class="paragraph">
+<p>우리 업계의 현재까지의 교훈은 UI는 너무나 빠르게 변하기 때문에 UI를 기준으로 테스트를 만들면 들인 비용에 비해 ROI(Return Of Investment)가 낮다는 것입니다.</p>
+</div>
+<div class="paragraph">
+<p>물론 비용을 들여서라도 해두면 좋은 UI 테스트들이 있습니다. 어플리케이션의 핵심 시나리오에 대한 자동화된 UI 테스트는 시스템 안정성 확보에 지대한 효과를 가지기도 합니다. 하지만 작은 기능 하나 까지 자동화 된 UI 테스트를 작성하는것은 ROI가 너무 낮기 때문에 추천되지 않습니다.</p>
+</div>
+<div class="paragraph">
+<p>따라서 기능 테스트에 있어 UI 테스트는 일차적인 선택사항이 아닙니다.</p>
+</div>
+<div class="paragraph">
+<p>그럼 UI를 통하지 않고 어떻게 기능을 테스트할수 있을까요? 여기에서 핵심적 문제가 나타납니다.</p>
+</div>
+<div class="paragraph">
+<p><strong>기능을 테스트 할 방법이 마땅히 없다는 것입니다.</strong></p>
+</div>
+<div class="paragraph">
+<p>그래서 훈련되지 않은 팀은 수동으로 UI 테스트를 진행하는 것으로 기능을 테스트합니다. 이럴 경우 우리가 앞서 말했던 자동화의 장점을 누리지 못하기 때문에 매번 힘겹게 테스트 하지만 누락이 발생해 버그가 잡히지 않아 사고가 발생하는 악몽이 반복됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="기능을_테스트_할_방법">기능을 테스트 할 방법</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>UI를 수동 조작하지 않고 어떻게 기능을 테스트 할수 있을까요?</p>
+</div>
+<div class="paragraph">
+<p>단 하나의 방법이 존재합니다. 바로 기능을 자동화 테스트 할 수 있게 <strong>설계</strong>하고 <strong>구현</strong>하는 것입니다. 테스트 가능성(Testability)이라는 것이 요구사항중 하나가 되어야만 자동화된 테스트를 할수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>하지만 테스트 가능성은 달성하기 어려운 요구사항입니다. 이미 작성한 코드를 테스트 가능하게 만드는 것은 <strong>설계 변경</strong>을 수반 하기 때문에 사실상 재작성에 가깝습니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+레거시 코드의 경우 이미 복잡하게 얽혀 있는 의존성이 기능을 테스트 하기 어렵게 만듭니다. 레거시 코드의 테스트 가능성에 대해서 할말이 많습니다만, 여기에 적기에는 시간이 없네요 ㅠㅠ
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>그러면 테스트가 가능한 설계를 먼저 하고 구현을 하면 어떻게 될까요?</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="테스트_주도_개발_test_driven_development_tdd">테스트 주도 개발(Test Driven Development, TDD)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>네 그렇습니다. TDD는 코딩 기법이 아니였습니다. 테스트가 가능한 설계를 먼저 작성하는 설계 방법(Design First Development) 이였던 것입니다. 그러기 위한 프로세스입니다.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>실패하는 테스트를 추가한다.</p>
+</li>
+<li>
+<p>모든 테스트를 실행하고 새로 추가된 테스트가 실패하는 것을 확인한다.</p>
+</li>
+<li>
+<p>코드를 작성한다</p>
+</li>
+<li>
+<p>테스트를 실행하여 모든 테스트가 성공하는 것을 확인한다</p>
+</li>
+<li>
+<p>리팩토링한다</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>이 단순한 프로세스는 하루 3번 식사후 3분동안 양치질을 하세요 처럼 단순하지만, 오랜기간 수행했을때 놀라운 결과를 보여주는 프로세스입니다.</p>
+</div>
+<div class="paragraph">
+<p>TDD라는 프로세스는 기능을 구현하는 프로세스이지 나타내는 것이지, 클래스를 만드는 프로세스가 아닙니다. 단위테스트를 만드는 프로세스가 아닙니다.</p>
+</div>
+<div class="paragraph">
+<p>TDD의 테스트 코드는 클래스나 함수 단위의 테스트가 아닙니다. 기능 단위의 테스트 여야 합니다. 품질 단위의 테스트 여야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>흑자는 TDD에서는 반드시 클래스 개별적으로 테스트 해야 하며, 때문에 mock을 사용해야 한다는 주장이 있습니다만, TDD의 저 프로세스중 어디에 mock 에 대한 이야기가 있는지 먼저 확인해보셔야 합니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+이 부분에 대한 오해로 인해 is TDD dead 논쟁이 일어 났었죠.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>전혀 없습니다. TDD의 결과물로 나온 테스트는 기능 테스트이자 모듈에 대한 통합 테스트입니다. 최대한 mock 없이 전체 클래스를 테스트 하고 또 테스트 하는 test double 하라고 이야기 하기도 하는데 왜 mock을 쓰라고 하겠습니까? 켄트벡, 마틴 파울러등 TDD 창시자들인 오래전부터 자신은 Mock을 거의 하지 않는다고 이야기 해왔습니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+물론 TDD에서 요구하는 모든 테스트롤 구동해야 한다 라는 요구 때문에 각 테스트의 실행시간은 작을수록 좋고, 이를 위해 시간이 많이 걸리거나 외부 시스템과의 연동은 생략하거나 더 빠른 버전의 구현을 선택할수 있으면 좋습니다. 그러기 위한 수단으로 mock을 사용하기는 합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TDD는 프로세스입니다. 여기에서 작성된 테스트는 기능을 작게도 크게도 테스트하며 적절하기만 하면 클래스 단위의 테스트를 작성할수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>하지만 우리가 잘 아는바와 같이 디테일에 집중하다보면 일이 엉뚱한 방향으로 가능 경우도 많습니다.</p>
+</div>
+<div class="paragraph">
+<p>우리에겐 우리가 TDD라는 프로세스를 통해 디테일을 구현하면서도, 우리가 정상적인 방향으로 가고 있다는 것을 알려줄 또 다른 테스트가 필요합니다. 바로 <strong>승인 테스트(Acceptance Test)</strong>입니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="승인_테스트">승인 테스트</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>승인 테스트는 작성된 어플리케이션이 요구사항인 유스케이스/스토리를 만족하는제 검사하는 테스트입니다.</p>
+</div>
+<div class="paragraph">
+<p>개발을 시작하기 전에 승인 테스트를 작성하면 우리가 작성할 프로그램의 디테일한 목표를 알수 있습니다. 이를 참고하여 우리가 작성하는 코드가 이 승인 테스트에 적합한 코드일까를 계속 생각하며 개발을 진행할수 있게 해줍니다.</p>
+</div>
+<div class="paragraph">
+<p>승인 테스트를 위해 다양한 도구가 존재합니다만, 승인 테스트 자체를 위한 템플릿을 익히는게 더 도움이 될것입니다.</p>
+</div>
+<div class="paragraph">
+<p>다음은 대표적인 승인테스트 기법인 BDD(Behavior Driven Development)에서 자주 사용되는 테스트 작성 템플릿입니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Feature: 기능명을 적습니다.</p>
+</li>
+<li>
+<p>Scenario: 기능을 사용하는 시나리오</p>
+</li>
+<li>
+<p>Given: 유스케이스가 수행되기전의 세상의 상태를 묘사합니다.</p>
+</li>
+<li>
+<p>When: 수행하고자 하는 특정 행위를 기술합니다.</p>
+</li>
+<li>
+<p>Then: 특정 행위의 결과로 발생하는 변화를 기술합니다.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>기능 : 사용자가 주식을 교환한다
+  Scenario: 사용자가 장 마감 시간 전에 판매요청을 한다.
+    Given 나는 MS주식 100주를 가지고 있다.
+      그리고 나는 애플 주식 150주를 가지고 있다.
+      그리고 장 마감 시간 이전이다.
+
+    When 내가 MS주식 20주 판매를 요청한다.
+
+    Then 나는 MS주식 80주를 가지고 있어야 한다
+      그리고 나는 애플 주식 150주를 가지고 있다.
+      그리고 MS 주식 20주 판매 요청은 실행 완료 되어야 한다.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>어플리케이션의 UI나, DB상태등 디테일에 대한 이야기는 단 한마디도 없습니다. 기능에 대해서만 이야기해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>이것 역시 자동화되는것이 좋을 것입니다. FIT, Cucumber 등이 자주 사용됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="요약">요약</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>테스트는 어플리케이션을 조사해서 옳고 그름과 낫고 못함을 판단하는 일입니다.</p>
+</div>
+<div class="paragraph">
+<p>테스트 자동화는 품질 <strong>유지</strong>의 핵심입니다.</p>
+</div>
+<div class="paragraph">
+<p>이미 작성된 코드를 자동화 기능 테스트 하게 변경하는 것은 상당한 투자가 필요합니다.</p>
+</div>
+<div class="paragraph">
+<p>테스트를 가능하게 하는 가장 좋은 방법은 애초에 테스트가 가능하게 설계 하는 것입니다.</p>
+</div>
+<div class="paragraph">
+<p>디테일에 너무 신경 쓰다보면 엉뚱한 산에 갈수 있으니 애초에 목표에 도착했는지 확인할수 있는 테스트를 먼저 만드는게 좋습니다.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+        
+        <a href="/tag/test"><code class="highligher-rouge"><nobr>test</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/tdd"><code class="highligher-rouge"><nobr>tdd</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/unit test"><code class="highligher-rouge"><nobr>unit test</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/bdd"><code class="highligher-rouge"><nobr>bdd</nobr></code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+</html>
