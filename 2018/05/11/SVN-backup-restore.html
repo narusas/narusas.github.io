@@ -1,0 +1,308 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVN 백업 및 복구, 증분백업, 증분복구</title>
+<meta name="description" content="SVN 백업 복구와 너무 큰 저장소에 대해 증분 백업 복구를 다룹니다.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="SVN 백업 및 복구, 증분백업, 증분복구" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="SVN 백업 복구와 너무 큰 저장소에 대해 증분 백업 복구를 다룹니다." >
+<meta property="og:url"                 content="https://narusas.github.io/2018/05/11/SVN-backup-restore.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2018-05-11T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="svn" >
+<meta property="article:tag"            content="basckup" >
+<meta property="article:tag"            content="restore" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>SVN 백업 및 복구, 증분백업, 증분복구</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#덤프_받기">1. 덤프 받기</a>
+<ul class="sectlevel2">
+<li><a href="#전체_덤프_받기">1.1. 전체 덤프 받기</a></li>
+<li><a href="#지정_덤프_받기">1.2. 지정 덤프 받기</a></li>
+<li><a href="#구간_덤프_받기">1.3. 구간 덤프 받기</a></li>
+<li><a href="#특정_폴더_덤프_받기">1.4. 특정 폴더 덤프 받기</a></li>
+<li><a href="#특정_폴더를_제외_하고덤프_받기">1.5. 특정 폴더를 제외 하고덤프 받기</a></li>
+<li><a href="#특정_날짜부터_현재까지_덤프_받기">1.6. 특정 날짜부터 현재까지 덤프 받기</a></li>
+<li><a href="#증분_덤프_받기">1.7. 증분 덤프 받기</a></li>
+<li><a href="#백업하면서_압축하기">1.8. 백업하면서 압축하기</a></li>
+<li><a href="#압축_한거_풀기">1.9. 압축 한거 풀기</a></li>
+</ul>
+</li>
+<li><a href="#덤프_복원하기">2. 덤프 복원하기</a>
+<ul class="sectlevel2">
+<li><a href="#복원하기">2.1. 복원하기</a></li>
+<li><a href="#증분_덤프_복원하기">2.2. 증분 덤프 복원하기</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="덤프_받기">1. 덤프 받기</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="전체_덤프_받기">1.1. 전체 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/  &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>전체 저장소를 덤프 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="지정_덤프_받기">1.2. 지정 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ -r 10  &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>리비전 10만 덤프 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="구간_덤프_받기">1.3. 구간 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ -r 10:20  &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>리비전 10에서 20까지 덤프를 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="특정_폴더_덤프_받기">1.4. 특정 폴더 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ | svndumpfilter include WORK &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>저장소에서 WORK 폴더만 덤프를 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="특정_폴더를_제외_하고덤프_받기">1.5. 특정 폴더를 제외 하고덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ | svndumpfilter exclude TEMP &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>저장소에서 TEMP 폴더만 제외하고 덤프를 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="특정_날짜부터_현재까지_덤프_받기">1.6. 특정 날짜부터 현재까지 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ -r {2014-01-20}:HEAD &gt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>저장소에서 TEMP 폴더만 제외하고 덤프를 받습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="증분_덤프_받기">1.7. 증분 덤프 받기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/ -r 0:1000  &gt; ~/repos-0-1000.svn_dump
+svnadmin dump /var/www/svn/reposA/ -r 1000:2000 --incremental &gt; ~/repos-1000-2000.svn_dump
+svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-3000.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>구간별로 증분이 가능 하도록 덤프를 받습니다. load시 증분해서 복원이 가능 함.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="백업하면서_압축하기">1.8. 백업하면서 압축하기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin dump /var/www/svn/reposA/  | gzip -9 &gt; ~/reposA.svn_dump.gz</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="압축_한거_풀기">1.9. 압축 한거 풀기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>gunzip ~/reposA.svn_dump.gz</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="덤프_복원하기">2. 덤프 복원하기</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>덤프를 복원하기 위해서는 기존의 저장소나 빈 저장소가 있어야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>svnadmin --help create 를 참고 하세요.</p>
+</div>
+<div class="sect2">
+<h3 id="복원하기">2.1. 복원하기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin load /path/to/repo &lt; ~/reposA.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>repo라는 저장소에 덤프 파일을 복원 합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="증분_덤프_복원하기">2.2. 증분 덤프 복원하기</h3>
+<div class="listingblock">
+<div class="content">
+<pre>svnadmin /path/to/repo &lt; ~/repos-0-1000.svn_dump
+svnadmin /path/to/repo &lt; ~/repos-1000-2000.svn_dump
+svnadmin /path/to/repo &lt; ~/repos-2000-3000.svn_dump</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이전에 증분했던 순서대로 다시 차례대로 넣어 주면 됩니다.</p>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+        
+        <a href="/tag/svn"><code class="highligher-rouge"><nobr>svn</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/basckup"><code class="highligher-rouge"><nobr>basckup</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/restore"><code class="highligher-rouge"><nobr>restore</nobr></code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+</html>
