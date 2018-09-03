@@ -1,0 +1,840 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Data Architectures</title>
+<meta name="description" content="빅 데이터 아키텍처를 구성하는 빌딩 블럭에 대해 간단히 소개합니다.">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="Big Data Architectures" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="빅 데이터 아키텍처를 구성하는 빌딩 블럭에 대해 간단히 소개합니다." >
+<meta property="og:url"                 content="https://narusas.github.io/2018/09/03/Big-data-architectures.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2018-09-03T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="big data" >
+<meta property="article:tag"            content="architecture" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Big Data Architectures</h1>
+<div class="sect1">
+<h2 id="system_overview">System Overview</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-09-03-Big-data-architectures-3b501.png" alt="2018 09 03 Big data architectures 3b501">
+</div>
+</div>
+<div class="ulist">
+<div class="title">구성</div>
+<ul>
+<li>
+<p>Data Sources</p>
+<div class="paragraph">
+<p>수집하려고 하는 데이터의 소스들입니다.</p>
+</div>
+</li>
+<li>
+<p>Data Collection</p>
+<div class="paragraph">
+<p>데이터를 수집하는 메커니즘이 필요합니다. 주기적으로 파일을 옮겨 올수도 있고, DB를 조회할수도 있고, 파일 변화를 주시하며 추가 되는 내용을 스트리밍할수도 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>데이터를 주기적으로 옮기는 곳을 스테이징이라고 합니다. 이때 저장되는 raw 데이터는 보통 용량이 매우 크기 때문에 대용량 저장이 가능한 메커니즘을 사용합니다.</p>
+</div>
+<div class="paragraph">
+<p>실시간으로 전달할때는 채널이라고 부릅니다. 메시지 큐의 형태로 생산자와 소비자를 분리시키는 경우가 많습니다.</p>
+</div>
+</li>
+<li>
+<p>Batch Data Processing</p>
+<div class="paragraph">
+<p>수집된 데이터를 주기적으로 처리합니다.</p>
+</div>
+</li>
+<li>
+<p>Real-time Data processing</p>
+<div class="paragraph">
+<p>수집된 데이터를 실시간으로 처리합니다.</p>
+</div>
+</li>
+<li>
+<p>Result store</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Result store</p>
+<div class="paragraph">
+<p>처리된 데이터를 사용하기 편한 저장소에 저장합니다. 데이터의 성격에 따라 다음을 선택하는 경우가 많습니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>대규모의 Row를 가진다면 Document base DBMS</p>
+</li>
+<li>
+<p>복잡한 구조를 가진다면 Relation DBMS</p>
+</li>
+<li>
+<p>쓰기 작업이 집중적으로 이루어진다면 Memory base DBMS</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Query Engine</p>
+<div class="paragraph">
+<p>저장된 결과를 쉽게 조회하고 분석하기 위해 SQL 기반의 쿼리 엔진을 포함하여 사용하는 경우가 많습니다.</p>
+</div>
+</li>
+<li>
+<p>Message</p>
+<div class="paragraph">
+<p>이벤트에 반응하여 실시간으로 처리하기를 원한다면 Message Queue를 사용하기도 합니다.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Result Consumer</p>
+<div class="paragraph">
+<p>데이터를 사용합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>분석 결과 보고서</p>
+</li>
+<li>
+<p>데이터 서비스</p>
+</li>
+<li>
+<p>분석 도구</p>
+</li>
+<li>
+<p>경고 도구</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building_blocks">Building Blocks</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-09-03-Big-data-architectures-23ab6.png" alt="2018 09 03 Big data architectures 23ab6">
+</div>
+</div>
+<div class="paragraph">
+<p>시스템을 구성하기 위한 솔루션 빌딩 블럭에 대한 개요입니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Data Acquisition: 데이터 수집 솔루션</p>
+</li>
+<li>
+<p>IoT: Internet of Things를 위한 솔루션</p>
+</li>
+<li>
+<p>Messaging: 메시지 처리를 위한 솔루션</p>
+</li>
+<li>
+<p>Format: 데이터를 저장하거나 이동하기 위한 포멧</p>
+</li>
+<li>
+<p>File System: 빅 데이터 를 저장하기 위한 파일 시스템</p>
+</li>
+<li>
+<p>Batch Processing: 주기적 처리를 위한 솔루션</p>
+</li>
+<li>
+<p>Streaming Processing: 실시간 스트리밍 처리를 위한 솔루션</p>
+</li>
+<li>
+<p>Analytics: 분석 도구</p>
+</li>
+<li>
+<p>Batch SQL: 저장된 raw파일을 SQL로 조회하기 위한 솔루션</p>
+</li>
+<li>
+<p>Key-value DBMS: 키-밸류 형태로 저장하고 조회하는 DBMS</p>
+</li>
+<li>
+<p>Table-style DBMS: 테이블 형태로 저장하고 조회하는 DBMS</p>
+</li>
+<li>
+<p>Document DBMS: 문서 기반으로 저장하고 조회하는 DBMS.</p>
+</li>
+<li>
+<p>Relation DBMS: 연관 관계에 기반해 저장하고 조회하는 DBMS</p>
+</li>
+<li>
+<p>Graph DBMS: 그래프 기반으로 저장하고 조회하는 DBMS</p>
+</li>
+<li>
+<p>Query Federation: 다양한 데이터 소스에서 조회를 가능하게 하는 솔루션</p>
+</li>
+<li>
+<p>Visualization: 데이터 시각화 솔루션</p>
+</li>
+<li>
+<p>Orchestration: 작업들간의 의존관계를 관리하여 작업이 연속될수 있게 한다.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="big_data_solution_ecosystem">Big Data Solution Ecosystem</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-09-03-Big-data-architectures-bb94d.png" alt="2018 09 03 Big data architectures bb94d">
+</div>
+</div>
+<div class="sect2">
+<h3 id="data_acquisition">Data Acquisition</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Sqoop</p>
+</li>
+<li>
+<p>Flume</p>
+</li>
+<li>
+<p>Apache NIFI</p>
+</li>
+<li>
+<p>Logstash</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="iot">IoT</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>MQTT</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="messaging">Messaging</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Kafka</p>
+</li>
+<li>
+<p>AWS Smple Queue Service</p>
+</li>
+<li>
+<p>Rabbit MQ</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="format">Format</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>AVRO</p>
+</li>
+<li>
+<p>Parquet</p>
+</li>
+<li>
+<p>Google Protocolbuf</p>
+</li>
+<li>
+<p>Apache Thrift</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="file_system">File System</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Hadoop File System (HDFS)</p>
+</li>
+<li>
+<p>AWS S3</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="batch_processing">Batch Processing</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Pig</p>
+</li>
+<li>
+<p>Hadoop MapReduce</p>
+</li>
+<li>
+<p>Apache Spark</p>
+</li>
+<li>
+<p>Oozie</p>
+</li>
+<li>
+<p>Apache Beam</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="streaming_process">Streaming Process</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Spark Stream</p>
+</li>
+<li>
+<p>Apache Storm</p>
+</li>
+<li>
+<p>Apache Flink</p>
+</li>
+<li>
+<p>Apache SAMZA</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="batch_sql">Batch SQL</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Hive</p>
+</li>
+<li>
+<p>Apache Spark SQL</p>
+</li>
+<li>
+<p>Apache Impala</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="analytics">Analytics</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Spark MLib</p>
+</li>
+<li>
+<p>Apache Spark GraphX</p>
+</li>
+<li>
+<p>Apache Spark + H2O Sparklig Water</p>
+</li>
+<li>
+<p>OPEN NLP</p>
+</li>
+<li>
+<p>R</p>
+</li>
+<li>
+<p>Python</p>
+</li>
+<li>
+<p>Lucene</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="key_valye_dbms">Key-valye DBMS</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Redis</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="table_style_dbms">Table Style DBMS</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache HBase</p>
+</li>
+<li>
+<p>Apache Cassandra</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="document_dbms">Document DBMS</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>mongoDB</p>
+</li>
+<li>
+<p>elasticsearch</p>
+</li>
+<li>
+<p>Solr</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="in_memory_dbms">In-memory DBMS</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Ignite</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="relation_dbms">Relation DBMS</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Phoenix</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="query_federation">Query Federation</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Apache Drill</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="visualization">Visualization</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Kibana</p>
+</li>
+<li>
+<p>D3.js</p>
+</li>
+<li>
+<p>Apache Zeppelin Notebook</p>
+</li>
+<li>
+<p>Python Jupyter Notebook</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="orchestration">Orchestration</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Jenkins</p>
+</li>
+<li>
+<p>Airflow</p>
+</li>
+<li>
+<p>Netflix Genie</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="my_choice">My Choice</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-09-03-Big-data-architectures-34959.png" alt="2018 09 03 Big data architectures 34959">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Data Acquisition</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Sqoop: DB Table/Queyr → HDFS 를 간단히 할수 있는 솔루션</p>
+</li>
+<li>
+<p>logstash: 기존에 사용하던 솔루션</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>IoT</p>
+<div class="ulist">
+<ul>
+<li>
+<p>None: 대상없음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Messaging</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Kafka: Retention 기능으로 안전한 기반 제공</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Format</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Parquet: 대부분의 분석 솔루션에서 지원하는 포멧</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>File System</p>
+<div class="ulist">
+<ul>
+<li>
+<p>HDFS</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Analysis</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Spark: 단일 기술 체제를 유지하기 위해 spark 기반으로 선택</p>
+</li>
+<li>
+<p>Python</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Stream Processing</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Spark Streaming: 단일 기술 체제를 유지하기 위해 spark 기반으로 선택</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Batch Processing</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Spark: 단일 기술 체제를 유지하기 위해 spark 기반으로 선택</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Batch SQL</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Spark SQL: 단일 기술 체제를 유지하기 위해 spark 기반으로 선택</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Key-Value</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Redis: intensive한 write를 감당하기 위한 메모리 기반 솔루션 선택</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Graph DBS</p>
+<div class="ulist">
+<ul>
+<li>
+<p>None: 대상없음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Table-style DBMS</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Cassandra: HBase사용시 HDFS를 분석용으로만 사용할수가 없음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Document DBMS</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Elasticsearch: 기존에 사용하는 솔루션</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In-Memory DBMS</p>
+<div class="ulist">
+<ul>
+<li>
+<p>None: 대상없음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Relation DBMS</p>
+<div class="ulist">
+<ul>
+<li>
+<p>None: 대상없음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Query Federation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Drill: HDFS뿐만이 아니고 다양한 Datasource를 SQL로 조회할수 있음</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Orchestration</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Airflow: Jenkins는 일정기반으로만 가능한 반면, sensor기반으로 workflow동작가능.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Visualization</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Zeppline: 더 나은 ui.  만약 일반  분석업무도 이 시스템을 사용하게 되면 jupyter가 좋겠지만 추천에서만 사용하기 때문에 더 단순한 솔루션 선택</p>
+</li>
+<li>
+<p>Jupyter:  분석용으로 사용할수 있음</p>
+</li>
+<li>
+<p>Kibana: 기존에 사용하던 솔루션</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building_block_applied">Building block applied</h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="/images/images/2018-09-03-Big-data-architectures-9f3d2.png" alt="2018 09 03 Big data architectures 9f3d2">
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+        
+        <a href="/tag/big data"><code class="highligher-rouge"><nobr>big data</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/architecture"><code class="highligher-rouge"><nobr>architecture</nobr></code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+</html>
