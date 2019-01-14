@@ -1,0 +1,950 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Boot Tutorial</title>
+<meta name="description" content="Spring Boot 따라하기">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="Spring Boot Tutorial" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="Spring Boot 따라하기" >
+<meta property="og:url"                 content="https://narusas.github.io/2019/01/14/Spring-Boot-Tutorial.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2019-01-14T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="spring" >
+<meta property="article:tag"            content="spring  boot" >
+<meta property="article:tag"            content="tutorial" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Spring Boot Tutorial</h1>
+<div id="toc" class="toc">
+<div id="toctitle">목차</div>
+<ul class="sectlevel1">
+<li><a href="#spring_boot_소개">1. Spring Boot 소개</a>
+<ul class="sectlevel2">
+<li><a href="#spring_framework와의_차이점">1.1. Spring Framework와의 차이점</a></li>
+</ul>
+</li>
+<li><a href="#설치">2. 설치</a>
+<ul class="sectlevel2">
+<li><a href="#gradle_설치">2.1. Gradle 설치</a></li>
+<li><a href="#프로젝트_설치">2.2. 프로젝트 설치</a></li>
+</ul>
+</li>
+<li><a href="#개발_시작">3. 개발 시작</a>
+<ul class="sectlevel2">
+<li><a href="#main_만들기">3.1. Main 만들기</a></li>
+<li><a href="#application_properties_파일_만들기">3.2. application.properties 파일 만들기</a></li>
+<li><a href="#controller_만들기">3.3. Controller 만들기</a></li>
+</ul>
+</li>
+<li><a href="#실행해보기">4. 실행해보기</a>
+<ul class="sectlevel2">
+<li><a href="#ide에서_실행">4.1. IDE에서 실행</a></li>
+<li><a href="#gradle로_실행">4.2. gradle로 실행</a></li>
+<li><a href="#실행가능한_jar_로_실행">4.3. 실행가능한 jar 로 실행</a></li>
+</ul>
+</li>
+<li><a href="#여기_까지의_설정에_대한_시간을_더_단축하고_싶다면">5. 여기 까지의 설정에 대한 시간을 더 단축하고 싶다면</a></li>
+<li><a href="#추가_설정">6. 추가 설정</a>
+<ul class="sectlevel2">
+<li><a href="#mybatis_사용하기">6.1. MyBatis 사용하기</a></li>
+<li><a href="#mapper_추가">6.2. Mapper 추가</a></li>
+<li><a href="#controller_수정">6.3. Controller 수정</a></li>
+<li><a href="#mapper_와_sql_파일을_같은_폴더에_두기">6.4. Mapper 와 SQL 파일을 같은 폴더에 두기</a></li>
+<li><a href="#lombok_사용하기">6.5. Lombok 사용하기</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="spring_boot_소개"><a class="link" href="#spring_boot_소개">1. Spring Boot 소개</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="spring_framework와의_차이점"><a class="link" href="#spring_framework와의_차이점">1.1. Spring Framework와의 차이점</a></h3>
+<div class="paragraph">
+<p>Spring Boot = Spring Framework + Default Configuration + Launcher + Plugins + Sever</p>
+</div>
+<div class="paragraph">
+<p>Spring Framework가 유연한 설정과 확장이 장점인 반면, 설정 하는 방법을 익히는데 시간이 너무 걸리는 단점이 있음.</p>
+</div>
+<div class="paragraph">
+<p>Spring Boot는 일반적으로 사용될만한 기본 설정을 제공하고, 이를 바로 실행 시킬수 있는 런처를 제공. 이를 위한 다수의 플러그인들도 제공 하여 빠른 시간안에 개발이 가능하게 함.</p>
+</div>
+<div class="paragraph">
+<p>설정 커스터마이징을 통해 Spring Framework의 기능을 모두 사용할수 있음. 엔터프라이즈급 어플리케이션도 개발 가능.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="설치"><a class="link" href="#설치">2. 설치</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Boot는 2.0 부터 JDK 1.8 이상만 지원합니다.</p>
+</div>
+<div class="sect2">
+<h3 id="gradle_설치"><a class="link" href="#gradle_설치">2.1. Gradle 설치</a></h3>
+<div class="paragraph">
+<p>의존성 관리및 빌드 도구로 maven과 gradle을 사용할수 있습니다. 여기에서는 gradle을 이용해서 투토리얼을 진행합니다.</p>
+</div>
+<div class="sect3">
+<h4 id="download"><a class="link" href="#download">2.1.1. Download</a></h4>
+<div class="paragraph">
+<p><a href="https://gradle.org/install/" class="bare">https://gradle.org/install/</a> 에서 최신 버전 다운로드 받기</p>
+</div>
+<div class="paragraph">
+<p>현재 최신 버전은 5.1</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://downloads.gradle.org/distributions/gradle-5.1.1-bin.zip" class="bare">http://downloads.gradle.org/distributions/gradle-5.1.1-bin.zip</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="설치_2"><a class="link" href="#설치_2">2.1.2. 설치</a></h4>
+<div class="paragraph">
+<p>적당한 위치에 풀어 넣는다.</p>
+</div>
+<div class="paragraph">
+<p>추천위치: <code>C:\java\util\gradle</code></p>
+</div>
+<div class="paragraph">
+<p>경로 중간에 공백이 들어가지 않는 위치가 좋습니다.</p>
+</div>
+<div class="paragraph">
+<p>사실 지금 내려 받은 gradle 은 딱 한번만 쓰일거라 어디에 두셔도 상관없습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="프로젝트_설치"><a class="link" href="#프로젝트_설치">2.2. 프로젝트 설치</a></h3>
+<div class="sect3">
+<h4 id="프로젝트_폴더_만들기"><a class="link" href="#프로젝트_폴더_만들기">2.2.1. 프로젝트 폴더 만들기</a></h4>
+<div class="paragraph">
+<p>이클립스는 workspace 부터 만들어야 함</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>mkdir workspace
+mkdir workspace/MyProject</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="build_gradle_만들기"><a class="link" href="#build_gradle_만들기">2.2.2. build.gradle 만들기</a></h4>
+<div class="paragraph">
+<p>build.gradle 파일을 만든다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td>
+  <td class="code"><pre>buildscript {
+  ext {
+    springBootVersion = <span class="string"><span class="delimiter">'</span><span class="content">2.1.2.RELEASE</span><span class="delimiter">'</span></span>
+  }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-gradle-plugin:</span><span class="inline"><span class="inline-delimiter">${</span>springBootVersion<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
+  }
+}
+
+plugins {
+  <span class="comment">// gradle 내장 플러그인</span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">java</span><span class="delimiter">'</span></span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">eclipse</span><span class="delimiter">'</span></span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">eclipse-wtp</span><span class="delimiter">'</span></span>
+
+  <span class="comment">// 다운로드해야 하는 플러그인. 버전 지정이 필요</span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot</span><span class="delimiter">'</span></span> version <span class="string"><span class="delimiter">'</span><span class="content">2.1.2.RELEASE</span><span class="delimiter">'</span></span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">io.spring.dependency-management</span><span class="delimiter">'</span></span> version <span class="string"><span class="delimiter">'</span><span class="content">1.0.6.RELEASE</span><span class="delimiter">'</span></span>
+}
+
+
+group = <span class="string"><span class="delimiter">'</span><span class="content">com.myproject</span><span class="delimiter">'</span></span>
+version = <span class="string"><span class="delimiter">'</span><span class="content">0.0.1-SNAPSHOT</span><span class="delimiter">'</span></span>
+sourceCompatibility = <span class="string"><span class="delimiter">'</span><span class="content">1.8</span><span class="delimiter">'</span></span>
+
+task initSrc  {
+  doLast {
+    project.sourceSets*.allSource.srcDirTrees.flatten().dir.each { dir -&gt;
+      dir.mkdirs()
+    }
+  }
+}
+
+configurations {
+  developmentOnly
+  runtimeClasspath {
+    extendsFrom developmentOnly
+  }
+}
+
+dependencies {
+  implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.apache.commons:commons-lang3:3.8.1</span><span class="delimiter">'</span></span>
+  implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.apache.commons:commons-collections4:4.2</span><span class="delimiter">'</span></span>
+
+  implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter</span><span class="delimiter">'</span></span>
+  implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-web</span><span class="delimiter">'</span></span>
+  implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-jdbc</span><span class="delimiter">'</span></span>
+
+
+  testImplementation  <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-test</span><span class="delimiter">'</span></span>
+
+  developmentOnly     <span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-devtools</span><span class="delimiter">&quot;</span></span>
+  providedRuntime     <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-tomcat</span><span class="delimiter">'</span></span>
+
+}
+
+</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="settings_gradle_만들기"><a class="link" href="#settings_gradle_만들기">2.2.3. settings.gradle 만들기</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+</pre></td>
+  <td class="code"><pre>rootProject.name = <span class="string"><span class="delimiter">'</span><span class="content">MyProject</span><span class="delimiter">'</span></span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="wrapper_만들기"><a class="link" href="#wrapper_만들기">2.2.4. Wrapper 만들기</a></h4>
+<div class="paragraph">
+<p>로컬에 설치된 gradle을 이용할수도 있지만, 좀더 여러곳에서 사용하기 쉽게 wrapper를 만듭니다. 이후에는 gradle wrapper만 사용할 겁니다.</p>
+</div>
+<div class="paragraph">
+<p><code>~/java/util/gradle-5.1.1/bin/gradle wrapper</code></p>
+</div>
+<div class="paragraph">
+<p>폴더안에 <code>.gradle</code>, <code>gradlew</code>, <code>gradlew.bat</code> 파일 및 폴더가 생성되었는지 확인한다.</p>
+</div>
+<div class="paragraph">
+<p>만들어진 실행 파일을 실행해 본다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Linux: <code>./gradlew</code></p>
+</li>
+<li>
+<p>Windows: <code>gradlew.bat</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>알아서 gradle를 내려 받아 실행가능한 환경을 만들어 준다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="방화벽에_막힌_환경에서_의존성_설정하기"><a class="link" href="#방화벽에_막힌_환경에서_의존성_설정하기">2.2.5. 방화벽에 막힌 환경에서 의존성 설정하기</a></h4>
+<div class="paragraph">
+<p>위의 과정을 방화벽으로 막힌곳에서는 제대로 되지 않을수 있다.</p>
+</div>
+<div class="sect4">
+<h5 id="gradle_wrapper_properties_파일_수정하기"><a class="link" href="#gradle_wrapper_properties_파일_수정하기">gradle-wrapper.properties 파일 수정하기</a></h5>
+<div class="paragraph">
+<p>gradle/wrapper/gradle-wrapper.properties 파일을 열어 distributionUrl 을 수정해줍니다.</p>
+</div>
+<div class="paragraph">
+<p>https &#8594; http 로 변경해줍니다.</p>
+</div>
+<div class="paragraph">
+<p><code>distributionUrl=http\://services.gradle.org/distributions/gradle-5.1.1-bin.zip</code></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="build_gradle_파일"><a class="link" href="#build_gradle_파일">build.gradle 파일</a></h5>
+<div class="paragraph">
+<p>repositories 관련 설정을 변경합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td>
+  <td class="code"><pre>buildscript {
+  ...
+  repositories {
+    maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
+  }
+  ...
+}
+
+...
+
+repositories {
+  maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
+}
+...</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="settings_gradle_파일"><a class="link" href="#settings_gradle_파일">settings.gradle 파일</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td>
+  <td class="code"><pre>pluginManagement {
+  repositories {
+    maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
+    <span class="comment">//gradlePluginPortal() // maven 설정을 주지 않았을때 기본으로 사용하는 저장소</span>
+  }
+}
+
+rootProject.name = <span class="string"><span class="delimiter">'</span><span class="content">MyProject</span><span class="delimiter">'</span></span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ide_관련_task_설정"><a class="link" href="#ide_관련_task_설정">2.2.6. IDE 관련 Task 설정</a></h4>
+<div class="paragraph">
+<p><code>./gradlew initSrc</code> 를 실행하여 src 폴더 생성</p>
+</div>
+<div class="paragraph">
+<p><code>./gradlew cleanEclipse eclipse</code> 를 실행하여 <code>.project</code> 파일이 생성되는 것을 확인</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ide로_프로젝트_띄우기"><a class="link" href="#ide로_프로젝트_띄우기">2.2.7. IDE로 프로젝트 띄우기</a></h4>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="개발_시작"><a class="link" href="#개발_시작">3. 개발 시작</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="main_만들기"><a class="link" href="#main_만들기">3.1. Main 만들기</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>src/main/java/com/myproject 패키지 만들기</p>
+</li>
+<li>
+<p>MyProjectMain.java 만들기</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.myproject</span>;
+<span class="keyword">import</span> <span class="include">org.springframework.boot.SpringApplication</span>;
+<span class="keyword">import</span> <span class="include">org.springframework.boot.autoconfigure.SpringBootApplication</span>;
+
+<span class="annotation">@SpringBootApplication</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyProjectMain</span> {
+        <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span><span class="type">[]</span> args) {
+                SpringApplication.run(MyProjectMain.class, args);
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><code>@SpringBootApplication</code>  = <code>@EnableAutoConfiguration</code> + <code>@ComponentScan</code> + <code>@SpringBootConfiguration</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@EnableAutoConfiguration</code>: 클래스 패스에 포함된 라이브러리를 검사하여 적절한 설정을 자동으로 활성화</p>
+</li>
+<li>
+<p><code>@ComponentScan</code>: <code>SpringApplication.run</code> 에 넘겨준 Main Configuration 클래스 이하 경로의 Component를 Scan</p>
+</li>
+<li>
+<p><code>@SpringBootConfiguration</code>: <code>@Configuration</code> 과 마찬가지로 설정이 기술되는 클래스라는 표기(Marker)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="application_properties_파일_만들기"><a class="link" href="#application_properties_파일_만들기">3.2. application.properties 파일 만들기</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>src/main/resources/application.properties 파일  만들기</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>지금은 아무런 내용이 없어도 됩니다. 없으면 모두 기본 설정으로 동작함.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://docs.spring.io/spring-boot/docs/2.1.2.RELEASE/reference/htmlsingle/#common-application-properties" class="bare">https://docs.spring.io/spring-boot/docs/2.1.2.RELEASE/reference/htmlsingle/#common-application-properties</a> 참조</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="controller_만들기"><a class="link" href="#controller_만들기">3.3. Controller 만들기</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>src/main/java/com/myproject/controller 패키지 만들기</p>
+</li>
+<li>
+<p>ExampleController.java 만들기</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="실행해보기"><a class="link" href="#실행해보기">4. 실행해보기</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="ide에서_실행"><a class="link" href="#ide에서_실행">4.1. IDE에서 실행</a></h3>
+<div class="paragraph">
+<p>IDE에서 MyProjectMain을 실행합니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="gradle로_실행"><a class="link" href="#gradle로_실행">4.2. gradle로 실행</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre>./gradlew bootRun</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="실행가능한_jar_로_실행"><a class="link" href="#실행가능한_jar_로_실행">4.3. 실행가능한 jar 로 실행</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre>./gradlew bootJar</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>build/libs 폴더를 확인하면 <code>MyProject-0.0.1-SNAPSHOT.jar</code> 파일이 만들어져 있습니다.  다음과 같이 실행할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java -jar MyProject-0.0.1-SNAPSHOT.jar</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="여기_까지의_설정에_대한_시간을_더_단축하고_싶다면"><a class="link" href="#여기_까지의_설정에_대한_시간을_더_단축하고_싶다면">5. 여기 까지의 설정에 대한 시간을 더 단축하고 싶다면</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://start.spring.io" class="bare">https://start.spring.io</a> 에서 기본 설정되어 있는 압축파일을 내려 받아 바로 개발 시작 할수 있음</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="추가_설정"><a class="link" href="#추가_설정">6. 추가 설정</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이 이후 부터는 기본적인 추가 설정입니다.</p>
+</div>
+<div class="sect2">
+<h3 id="mybatis_사용하기"><a class="link" href="#mybatis_사용하기">6.1. MyBatis 사용하기</a></h3>
+<div class="sect3">
+<h4 id="의존성_추가하기"><a class="link" href="#의존성_추가하기">6.1.1. 의존성 추가하기</a></h4>
+<div class="paragraph">
+<p><code>build.gradle</code> 에 다음 내용을 추가합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td>
+  <td class="code"><pre>...
+
+dependencies {
+  ...
+  implementation     <span class="string"><span class="delimiter">'</span><span class="content">org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2</span><span class="delimiter">'</span></span>
+  testImplementation <span class="string"><span class="delimiter">'</span><span class="content">org.mybatis.spring.boot:mybatis-spring-boot-starter-test:1.3.2</span><span class="delimiter">'</span></span>
+
+  implementation <span class="string"><span class="delimiter">'</span><span class="content">org.hsqldb:hsqldb</span><span class="delimiter">'</span></span> <span class="comment">// 빠른 테스트를 위한 In-Memory DB</span>
+  ...
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>./gradlew eclipse</code> 를 실행하여 의존성을 내려 받음.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="설정_추가"><a class="link" href="#설정_추가">6.1.2. 설정 추가</a></h4>
+<div class="paragraph">
+<p>MyProjectMain 에 <code>@MapperScan</code> 설정을 추가한다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td>
+  <td class="code"><pre>...
+import org.mybatis.spring.annotation.MapperScan;
+
+<span class="annotation">@SpringBootApplication</span>
+<span class="annotation">@MapperScan</span>(basePackageClasses=MyProjectMain.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyProjectMain</span> {
+...</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>MyProjectMain 이하 하위 패키지의 클래스들중 `@Mapper`가 붙은 클래스를 찾아 Mapper로 등록하게 된다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mapper_추가"><a class="link" href="#mapper_추가">6.2. Mapper 추가</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>src/main/java/com/myproject/mapper</code> 패키지 생성</p>
+</li>
+<li>
+<p><code>ExampleMapper.java</code> 파일 생성</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td>
+  <td class="code"><pre><span class="keyword">package</span> <span class="namespace">com.myproject.mapper</span>;
+
+<span class="keyword">import</span> <span class="include">org.apache.ibatis.annotations.Mapper</span>;
+
+<span class="annotation">@Mapper</span>
+<span class="directive">public</span> <span class="type">interface</span> <span class="class">ExampleMapper</span> {
+        <span class="predefined-type">String</span> selectFromDB();
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="sql_xml_추가"><a class="link" href="#sql_xml_추가">6.2.1. SQL XML 추가</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p><code>src/main/resources/com/myproject/mapper</code> 패키지 생성</p>
+</li>
+<li>
+<p><code>ExampleMapper.xml</code> 파일 생성</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td>
+  <td class="code"><pre><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+
+<span class="doctype">&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span>
+
+<span class="tag">&lt;mapper</span> <span class="attribute-name">namespace</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">com.myproject.mapper.ExampleMapper</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;select</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">selectFromDB</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">resultType</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+SELECT CURRENT_DATE AS today FROM (VALUES(0))
+  <span class="tag">&lt;/select&gt;</span>
+<span class="tag">&lt;/mapper&gt;</span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="controller_수정"><a class="link" href="#controller_수정">6.3. Controller 수정</a></h3>
+<div class="paragraph">
+<p>ExampleController 수정</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td>
+  <td class="code"><pre>...
+
+<span class="annotation">@RestController</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ExampleController</span> {
+        <span class="annotation">@Autowired</span>
+        ExampleMapper exampleMapper;
+
+        <span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+        <span class="predefined-type">String</span> home() {
+                <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World2! </span><span class="delimiter">&quot;</span></span> + exampleMapper.selectFromDB();
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mapper_와_sql_파일을_같은_폴더에_두기"><a class="link" href="#mapper_와_sql_파일을_같은_폴더에_두기">6.4. Mapper 와 SQL 파일을 같은 폴더에 두기</a></h3>
+<div class="paragraph">
+<p>Mybatis의 장점은 Java소스와 SQL 소스를 분리해주는데 있다. 하지만 파일이 분리되는 것은 좋으나 maven 방식의 소스폴더 구조상 <code>src/main/java</code> 와 <code>src/main/resources</code> 하위에 각기 java 파일과 xml 파일을 분리해두어 햐는 것 때문에 거리가 멀어지는 불편함이 있다.</p>
+</div>
+<div class="paragraph">
+<p>이런 문제를 극복하기 위해 Mapper 와 SQL XML을 같은 폴더에 두고 볼수 있게 할수 있다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>일단 <code>ExampleMapper.xml</code> 파일을  <code>ExampleMaper.java</code> 와 같은 폴더로 이동한다.</p>
+</li>
+<li>
+<p><code>build.gradle</code> 에 다음을 추가한다.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td>
+  <td class="code"><pre>sourceSets {
+    main {
+        resources {
+            srcDirs = [<span class="string"><span class="delimiter">&quot;</span><span class="content">src/main/resources</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">src/main/java</span><span class="delimiter">&quot;</span></span>]
+            includes = [<span class="string"><span class="delimiter">&quot;</span><span class="content">**/*</span><span class="delimiter">&quot;</span></span>]
+            excludes = [<span class="string"><span class="delimiter">&quot;</span><span class="content">**/*.java</span><span class="delimiter">&quot;</span></span>]
+        }
+    }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>위의 설정을 통해 resouce 처리 과정에서 기본 폴더인 <code>src/main/resources</code> 에 추가적으로 폴더를 지정해서 resource 처리를 할수 있다.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="lombok_사용하기"><a class="link" href="#lombok_사용하기">6.5. Lombok 사용하기</a></h3>
+<div class="paragraph">
+<p>Lombok은 IDE용 플러그인은 lombok.jar 안에 포함하고 있지만 빌드 도구용 플러그인을 가지고 있지 않습니다.
+gradle용 플러그인을 설치할 필요가 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>build.gradle 에 다음 내용을 추가합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td>
+  <td class="code"><pre>...
+plugins {
+  ...
+  id <span class="string"><span class="delimiter">'</span><span class="content">io.franzbecker.gradle-lombok</span><span class="delimiter">'</span></span> version <span class="string"><span class="delimiter">'</span><span class="content">1.14</span><span class="delimiter">'</span></span>
+  ...
+}
+...
+lombok {
+  version = <span class="string"><span class="delimiter">&quot;</span><span class="content">1.18.4</span><span class="delimiter">&quot;</span></span>
+  sha256 = <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>
+}
+...</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+        
+        <a href="/tag/spring"><code class="highligher-rouge"><nobr>spring</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/spring  boot"><code class="highligher-rouge"><nobr>spring  boot</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/tutorial"><code class="highligher-rouge"><nobr>tutorial</nobr></code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+</html>
