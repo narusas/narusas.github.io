@@ -76,6 +76,7 @@
 <ul class="sectlevel2">
 <li><a href="#gradle_설치">2.1. Gradle 설치</a></li>
 <li><a href="#프로젝트_설치">2.2. 프로젝트 설치</a></li>
+<li><a href="#gralde_repository에_대한_간단한_이해">2.3. Gralde Repository에 대한 간단한 이해</a></li>
 </ul>
 </li>
 <li><a href="#개발_시작">3. 개발 시작</a>
@@ -182,9 +183,26 @@ mkdir workspace/MyProject</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="build_gradle_만들기"><a class="link" href="#build_gradle_만들기">2.2.2. build.gradle 만들기</a></h4>
+<h4 id="gradle_init"><a class="link" href="#gradle_init">2.2.2. gradle init</a></h4>
 <div class="paragraph">
-<p>build.gradle 파일을 만든다</p>
+<p>gradle을 이용하여 프로젝트를 초기화 한다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>/java/util/gradle/bin/gradle init</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>basic을 지정하여 초기화 한다.</p>
+</div>
+<div class="paragraph">
+<p>폴더안에 <code>.gradle</code>, <code>gradlew</code>, <code>gradlew.bat</code>, <code>build.gradle</code>,<code>settings.gradle</code> 파일 및 폴더가 생성되었는지 확인한다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="build_gradle_수정"><a class="link" href="#build_gradle_수정">2.2.3. build.gradle 수정</a></h4>
+<div class="paragraph">
+<p>build.gradle 파일을 수정한다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -248,6 +266,9 @@ mkdir workspace/MyProject</pre>
 57
 58
 59
+60
+61
+62
 </pre></td>
   <td class="code"><pre>buildscript {
   ext {
@@ -264,8 +285,10 @@ mkdir workspace/MyProject</pre>
 plugins {
   <span class="comment">// gradle 내장 플러그인</span>
   id <span class="string"><span class="delimiter">'</span><span class="content">java</span><span class="delimiter">'</span></span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">war</span><span class="delimiter">'</span></span>
   id <span class="string"><span class="delimiter">'</span><span class="content">eclipse</span><span class="delimiter">'</span></span>
   id <span class="string"><span class="delimiter">'</span><span class="content">eclipse-wtp</span><span class="delimiter">'</span></span>
+  id <span class="string"><span class="delimiter">'</span><span class="content">idea</span><span class="delimiter">'</span></span>
 
   <span class="comment">// 다운로드해야 하는 플러그인. 버전 지정이 필요</span>
   id <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot</span><span class="delimiter">'</span></span> version <span class="string"><span class="delimiter">'</span><span class="content">2.1.2.RELEASE</span><span class="delimiter">'</span></span>
@@ -275,7 +298,9 @@ plugins {
 
 group = <span class="string"><span class="delimiter">'</span><span class="content">com.myproject</span><span class="delimiter">'</span></span>
 version = <span class="string"><span class="delimiter">'</span><span class="content">0.0.1-SNAPSHOT</span><span class="delimiter">'</span></span>
+
 sourceCompatibility = <span class="string"><span class="delimiter">'</span><span class="content">1.8</span><span class="delimiter">'</span></span>
+targetCompatibility = <span class="string"><span class="delimiter">'</span><span class="content">1.8</span><span class="delimiter">'</span></span>
 
 task initSrc  {
   doLast {
@@ -297,15 +322,14 @@ dependencies {
   implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.apache.commons:commons-collections4:4.2</span><span class="delimiter">'</span></span>
 
   implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter</span><span class="delimiter">'</span></span>
+  testImplementation  <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-test</span><span class="delimiter">'</span></span>
+
   implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-web</span><span class="delimiter">'</span></span>
   implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-jdbc</span><span class="delimiter">'</span></span>
 
 
-  testImplementation  <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-test</span><span class="delimiter">'</span></span>
-
-  developmentOnly     <span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-devtools</span><span class="delimiter">&quot;</span></span>
+  developmentOnly     <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-devtools</span><span class="delimiter">'</span></span>
   providedRuntime     <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-tomcat</span><span class="delimiter">'</span></span>
-
 }
 
 </pre></td>
@@ -314,7 +338,7 @@ dependencies {
 </div>
 </div>
 <div class="sect3">
-<h4 id="settings_gradle_만들기"><a class="link" href="#settings_gradle_만들기">2.2.3. settings.gradle 만들기</a></h4>
+<h4 id="settings_gradle_만들기"><a class="link" href="#settings_gradle_만들기">2.2.4. settings.gradle 만들기</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
@@ -326,18 +350,15 @@ dependencies {
 </div>
 </div>
 <div class="sect3">
-<h4 id="wrapper_만들기"><a class="link" href="#wrapper_만들기">2.2.4. Wrapper 만들기</a></h4>
+<h4 id="wrapper_만들기"><a class="link" href="#wrapper_만들기">2.2.5. Wrapper 만들기</a></h4>
 <div class="paragraph">
-<p>로컬에 설치된 gradle을 이용할수도 있지만, 좀더 여러곳에서 사용하기 쉽게 wrapper를 만듭니다. 이후에는 gradle wrapper만 사용할 겁니다.</p>
+<p>로컬에 설치된 gradle을 이용할수도 있지만 이후에는 gradle wrapper만 사용할 겁니다.</p>
 </div>
 <div class="paragraph">
 <p><code>~/java/util/gradle-5.1.1/bin/gradle wrapper</code></p>
 </div>
 <div class="paragraph">
-<p>폴더안에 <code>.gradle</code>, <code>gradlew</code>, <code>gradlew.bat</code> 파일 및 폴더가 생성되었는지 확인한다.</p>
-</div>
-<div class="paragraph">
-<p>만들어진 실행 파일을 실행해 본다.</p>
+<p>만들어진 실행 파일을 실행해 봅니다. (<code>gradle init</code> 를 통해 프로젝트를 생성했다면 이미 만들어 져 있습니다.)</p>
 </div>
 <div class="ulist">
 <ul>
@@ -350,30 +371,45 @@ dependencies {
 </ul>
 </div>
 <div class="paragraph">
-<p>알아서 gradle를 내려 받아 실행가능한 환경을 만들어 준다.</p>
+<p>실행하면 자동으로 gradle 배포판을 다운로드하여 실행가능한 환경을 만들어 줍니다. 설치는 <code>${HOME}/.gradle</code> 에 진행됩니다.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="방화벽에_막힌_환경에서_의존성_설정하기"><a class="link" href="#방화벽에_막힌_환경에서_의존성_설정하기">2.2.5. 방화벽에 막힌 환경에서 의존성 설정하기</a></h4>
+<h4 id="방화벽에_막힌_환경에서_의존성_설정하기"><a class="link" href="#방화벽에_막힌_환경에서_의존성_설정하기">2.2.6. 방화벽에 막힌 환경에서 의존성 설정하기</a></h4>
 <div class="paragraph">
-<p>위의 과정을 방화벽으로 막힌곳에서는 제대로 되지 않을수 있다.</p>
+<p>위의 초기화 과정은 방화벽으로 막힌곳에서는 제대로 되지 않을수 있습니다.</p>
 </div>
 <div class="sect4">
 <h5 id="gradle_wrapper_properties_파일_수정하기"><a class="link" href="#gradle_wrapper_properties_파일_수정하기">gradle-wrapper.properties 파일 수정하기</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p>HTTPS 가 막힌 방화벽</p>
 <div class="paragraph">
 <p>gradle/wrapper/gradle-wrapper.properties 파일을 열어 distributionUrl 을 수정해줍니다.</p>
 </div>
 <div class="paragraph">
 <p>https &#8594; http 로 변경해줍니다.</p>
 </div>
-<div class="paragraph">
-<p><code>distributionUrl=http\://services.gradle.org/distributions/gradle-5.1.1-bin.zip</code></p>
+<div class="listingblock">
+<div class="content">
+<pre>distributionUrl=http\://services.gradle.org/distributions/gradle-5.1.1-bin.zip</pre>
+</div>
+</div>
+</li>
+<li>
+<p>인터넷이 막인 방화벽 : 방화벽 내부의 웹서버에 올려놓고 해당 URL로 변경하면 됩니다.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect4">
 <h5 id="build_gradle_파일"><a class="link" href="#build_gradle_파일">build.gradle 파일</a></h5>
 <div class="paragraph">
-<p>repositories 관련 설정을 변경합니다.</p>
+<p>repositories 관련 설정을 변경합니다. 별도로 지정하지 않으면 maven central repository 를 기본으로 사용하게 됩니다. ( <a href="https://mvnrepository.com/repos/central" class="bare">https://mvnrepository.com/repos/central</a> )</p>
+</div>
+<div class="paragraph">
+<p>여기에서는 사설 Maven Repository를 지정하여 방화벽 내부에서 다운로드 할수 있게 합니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -392,11 +428,14 @@ dependencies {
 12
 13
 14
+15
+16
 </pre></td>
   <td class="code"><pre>buildscript {
   ...
   repositories {
     maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
+    <span class="comment">//mavenCentral()</span>
   }
   ...
 }
@@ -405,6 +444,7 @@ dependencies {
 
 repositories {
   maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
+  <span class="comment">//mavenCentral()</span>
 }
 ...</pre></td>
 </tr></table></code></pre>
@@ -413,6 +453,9 @@ repositories {
 </div>
 <div class="sect4">
 <h5 id="settings_gradle_파일"><a class="link" href="#settings_gradle_파일">settings.gradle 파일</a></h5>
+<div class="paragraph">
+<p>여러 gradle 플러그인들을 다운로드 하기 위한 플로그인 저장소를 변경합니다. 별도로 지정하지 않으면 gradle plugin portal( <a href="https://plugins.gradle.org/m2/" class="bare">https://plugins.gradle.org/m2/</a> )을 사용합니다.</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
@@ -428,7 +471,7 @@ repositories {
   <td class="code"><pre>pluginManagement {
   repositories {
     maven { url <span class="string"><span class="delimiter">&quot;</span><span class="content">http://devops.ssfshop.com/nexus/repository/maven-public/</span><span class="delimiter">&quot;</span></span> }
-    <span class="comment">//gradlePluginPortal() // maven 설정을 주지 않았을때 기본으로 사용하는 저장소</span>
+    <span class="comment">//gradlePluginPortal()</span>
   }
 }
 
@@ -438,18 +481,136 @@ rootProject.name = <span class="string"><span class="delimiter">'</span><span cl
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="ide_관련_task_설정"><a class="link" href="#ide_관련_task_설정">2.2.6. IDE 관련 Task 설정</a></h4>
+</div>
+<div class="sect2">
+<h3 id="gralde_repository에_대한_간단한_이해"><a class="link" href="#gralde_repository에_대한_간단한_이해">2.3. Gralde Repository에 대한 간단한 이해</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>NOTE: 중요한 내용은 아닙니다. 참고만 하세요</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
+<p>gradle은 3개의 repository를 지정할수 있습니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>project dependency repository</p>
+<div class="paragraph">
+<p>작성한 코드(src 밑의 소스파일)을 빌드 하는데 필요한 의존성을 내려 받기 위한 저장소.  <code>repositories</code> 로 지정합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+</pre></td>
+  <td class="code"><pre>allproject {
+  repositories {
+    ...
+  }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>또는 단일 프로젝트일때</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+</pre></td>
+  <td class="code"><pre>repositories {
+  ...
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>script build dependency repository</p>
+<div class="paragraph">
+<p><code>build.gradle</code> 도 groovy 소스 파일이며 이 파일을 컴파일 할때 필요한 의존성을 내려 받기 위한 저장소. <code>build.gradle</code> 파일 최상단에 선언 되어야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+</pre></td>
+  <td class="code"><pre>buildscript {
+  repositories {
+    ...
+  }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>plugin dependency repository</p>
+<div class="paragraph">
+<p>gradle 플러그인을 내려 받기 위한 저장소. <code>settings.gradle</code> 의 최상단에 선언되어야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+</pre></td>
+  <td class="code"><pre>pluginManagement {
+    repositories {
+        ...
+    }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="ide_관련_task_설정"><a class="link" href="#ide_관련_task_설정">2.3.1. IDE 관련 Task 설정</a></h4>
+<div class="ulist">
+<ul>
+<li>
 <p><code>./gradlew initSrc</code> 를 실행하여 src 폴더 생성</p>
-</div>
-<div class="paragraph">
-<p><code>./gradlew cleanEclipse eclipse</code> 를 실행하여 <code>.project</code> 파일이 생성되는 것을 확인</p>
+</li>
+<li>
+<p>Eclipse: <code>./gradlew cleanEclipse eclipse</code> 를 실행하여 <code>.project</code> 파일이 생성되는 것을 확인</p>
+</li>
+<li>
+<p>IntelliJ: <code>./gradlew cleanIdea idea</code> 를 실행하여 <code>MyProject.ipr</code> 파일이 생성되는 것을 확인</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
-<h4 id="ide로_프로젝트_띄우기"><a class="link" href="#ide로_프로젝트_띄우기">2.2.7. IDE로 프로젝트 띄우기</a></h4>
-
+<h4 id="ide로_프로젝트_띄우기"><a class="link" href="#ide로_프로젝트_띄우기">2.3.2. IDE로 프로젝트 띄우기</a></h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Eclipse: <code>/workspace</code> 를 연다</p>
+</li>
+<li>
+<p>IntelliJ: <code>/workspace/MyProject/MyProject.ipr</code> 을 연다</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
