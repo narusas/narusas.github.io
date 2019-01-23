@@ -103,6 +103,14 @@
 <li><a href="#lombok_사용하기">6.5. Lombok 사용하기</a></li>
 </ul>
 </li>
+<li><a href="#자동_설정_변경_및_확장">7. 자동 설정 변경 및 확장</a>
+<ul class="sectlevel2">
+<li><a href="#springmvc">7.1. Spring@MVC</a></li>
+<li><a href="#spring_security">7.2. Spring Security</a></li>
+<li><a href="#spring_application">7.3. Spring Application</a></li>
+</ul>
+</li>
+<li><a href="#기본_설정_제거_및_커스터마이징">8. 기본 설정 제거 및 커스터마이징</a></li>
 </ul>
 </div>
 <div class="sect1">
@@ -916,6 +924,449 @@ lombok {
 </tr></table></code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="자동_설정_변경_및_확장"><a class="link" href="#자동_설정_변경_및_확장">7. 자동 설정 변경 및 확장</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>우선은 <code>@EnableAutoConfiguration</code> 로 자동 설정된 설정을 변경하고 확장하는 방법에 대해 알아보자</p>
+</div>
+<div class="sect2">
+<h3 id="springmvc"><a class="link" href="#springmvc">7.1. Spring@MVC</a></h3>
+<div class="paragraph">
+<p>Spring MVC의 자동 설정은 다음과 같은 내용을 포함한다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ContentNegotiatingViewResolver</code> and <code>BeanNameViewResolver</code> 빈 설정 포함</p>
+</li>
+<li>
+<p>정적 리소스 취급 지원. WebJars 역시 지원함</p>
+</li>
+<li>
+<p><code>Converter</code> 와 <code>GenericConverter</code>, <code>Formatter</code> 빈들을 자동 등록함</p>
+</li>
+<li>
+<p><code>HttpMessageConverters</code> 를 지원함</p>
+</li>
+<li>
+<p><code>MessageCodeResolver</code> 를 자동 등록함</p>
+</li>
+<li>
+<p>정적 <code>index.html</code> 지원</p>
+</li>
+<li>
+<p>Favicon 지원</p>
+</li>
+<li>
+<p><code>ConfigurableWebBindingInitializer</code> 빈을 자동으로 사용</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring Boot의 @MVC에 대한 자동설정을 유지한 상태에서 설정(인터셉터나 포메터등)을 <strong>추가</strong> 하고 싶다면 설정을 추가 하고 싶다면  <code>@EnableWebMvc</code> 어노테이션이 붙지 않은 <code>@Configuration</code> 클래스를 만들어서 설정하면 된다.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>RequestMappingHandlerMapping</code>, <code>RequestMappingHandlerAdapter</code>, <code>ExceptionHandlerExceptionResolver</code> 의 구현체를 변경하고 싶다면 <code>WebMvcRegistrationsAdapter</code> 를 등록하면 됩니다
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+만약 Spring @MVC에 설정에 완전한 제어를 하고 싶다면 <code>@EnableWebMvc</code> 이 붙은 <code>@Configuration</code> 클래스를 만들어서 설정하면 된다. 즉 <code>@EnableWebMvc</code> 어노테이션은 자동 설정을 사용하지 않겠다는 선언인 셈이다. 주의 필요!!
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="httpmessageconverters"><a class="link" href="#httpmessageconverters">7.1.1. HttpMessageConverters</a></h4>
+<div class="paragraph">
+<p>HTTP 요청과 응답에 XML, JSON등 다양한 메시지를 다루기 위해 여러 <code>HttpMessageConverter</code> Bean 들이 자동 등록 되는데,  이 목록에 추가하거나 커스터마이징을 위한 메커니즘으로 <code>HttpMessageConverters</code> 를 등록할수 있다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyConfiguration</span> {
+
+        <span class="annotation">@Bean</span>
+        <span class="directive">public</span> HttpMessageConverters customConverters() {
+                HttpMessageConverter&lt;?&gt; additional = ...
+                HttpMessageConverter&lt;?&gt; another = ...
+                return <span class="keyword">new</span> HttpMessageConverters(additional, another);
+        }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>application context에 등록된 모든 <code>HttpMessageConverter</code> Bean 은 위의 목록에 추가된다. 같은식으로 기본 등록되는 컨버터 들을 교체 할 수 있다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="정적_컨텐츠_제공"><a class="link" href="#정적_컨텐츠_제공">7.1.2. 정적 컨텐츠 제공</a></h4>
+<div class="paragraph">
+<p>기본적으로 다음 디렉토리에서 정적 컨텐츠를 찾아 제공하게 됩니다. (찾는 root 위치는 classpath 또는 ServletContext root 입니다.)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/static</code></p>
+</li>
+<li>
+<p><code>/public</code></p>
+</li>
+<li>
+<p><code>/resources</code></p>
+</li>
+<li>
+<p><code>/META-INF/resources</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="teplate_engine"><a class="link" href="#teplate_engine">7.1.3. Teplate Engine</a></h4>
+<div class="paragraph">
+<p>Spring Boot는 FreeMarker, Groovy, Thymeleaf, Mustache, JSP등을 지원합니다.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+JSP는 executable jar에서 지원되지 않기 때문에 가급적 사용하지 않는게 좋습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>템플릿 소스는 <code>src/main/resources/templates</code> 에 저장하면 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>여기서는 thymeleaf를 세팅해 봅니다</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>build.gradle에 thymeleaf 의존성을 추가합니다.</p>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+</pre></td>
+  <td class="code"><pre>implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-thymeleaf</span><span class="delimiter">'</span></span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Controller 변경</p>
+<div class="listingblock">
+<div class="title">ExampleController.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Controller</span>
+<span class="annotation">@Slf4j</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ExampleController</span> {
+        <span class="annotation">@GetMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+        <span class="directive">public</span> <span class="predefined-type">String</span> home(Model model) {
+                model.addAttribute(<span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">world</span><span class="delimiter">&quot;</span></span>);
+                <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">greeting</span><span class="delimiter">&quot;</span></span> ;
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Template을 사용하기 때문에  Controller가 <code>@RestController</code> 가 붙으면 안됩니다. 이걸로 삽질하는 경우가 꽤나 많습니다.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>템플릿 파일은 <code>src/main/resources/templates/greeting.html</code> 에 생성합니다</p>
+<div class="listingblock">
+<div class="title">greeting.html</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td>
+  <td class="code"><pre><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attribute-name">xmlns:th</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.thymeleaf.org</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attribute-name">charset</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">utf-8</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">'hello '+${message}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="servlet_filter"><a class="link" href="#servlet_filter">7.1.4. Servlet Filter</a></h4>
+<div class="paragraph">
+<p><code>web.xml</code> 없이 서블릿을 등록해 봅니다.</p>
+</div>
+<div class="paragraph">
+<p>샘플로 필터를 하나 만들어 봅니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">MyFilter</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Slf4j</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyFilter</span> <span class="directive">implements</span> <span class="predefined-type">Filter</span> {
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                        <span class="directive">throws</span> <span class="exception">IOException</span>, ServletException {
+                log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Requested</span><span class="delimiter">&quot;</span></span>);
+                chain.doFilter(request, response);
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이걸 빈으로 등록합니다. 필터간의 우선순위는 Bean Order를 주면 됩니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">MyConfiguration.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyConfiguration</span> {
+  <span class="annotation">@Order</span>(<span class="integer">0</span>)
+        <span class="annotation">@Bean</span>
+        <span class="directive">public</span> <span class="predefined-type">Filter</span> myFilter() {
+                <span class="keyword">return</span> <span class="keyword">new</span> MyFilter();
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이렇게 등록한 필터는 모든 요청에 대해 동작합니다. 일부 URL에 대해서만 동작하게 하고 싶다면 <code>FilterRegistrationBean</code> 으로 등록해야 합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">MyConfiguration.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyConfiguration</span> {
+        <span class="annotation">@Order</span>(<span class="integer">0</span>)
+        <span class="annotation">@Bean</span>
+        <span class="directive">public</span> FilterRegistrationBean&lt;MyFilter&gt; loggingFilter() {
+                FilterRegistrationBean&lt;MyFilter&gt; registrationBean = <span class="keyword">new</span> FilterRegistrationBean&lt;&gt;();
+                registrationBean.setFilter(<span class="keyword">new</span> MyFilter());
+                registrationBean.addUrlPatterns(<span class="string"><span class="delimiter">&quot;</span><span class="content">/user/*</span><span class="delimiter">&quot;</span></span>);
+                <span class="keyword">return</span> registrationBean;
+        }
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="embedded_server"><a class="link" href="#embedded_server">7.1.5. Embedded Server</a></h4>
+<div class="sect4">
+<h5 id="embedded_server_사용하지_않기"><a class="link" href="#embedded_server_사용하지_않기">Embedded Server 사용하지 않기</a></h5>
+<div class="listingblock">
+<div class="title">application.properteis</div>
+<div class="content">
+<pre>spring.main.web-application-type=none</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="포트_변경"><a class="link" href="#포트_변경">포트 변경</a></h5>
+<div class="paragraph">
+<p>임베디드 서버의 포트를 지정하는 방식은 몇가지 있습니다.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>application.properteis</p>
+<div class="listingblock">
+<div class="content">
+<pre>server.port=8888</pre>
+</div>
+</div>
+</li>
+<li>
+<p><code>WebServerFactoryCustomizer</code> 구현한 빈 제공하기</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td>
+  <td class="code"><pre><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">CustomizationBean</span> <span class="directive">implements</span> WebServerFactoryCustomizer&lt;ConfigurableServletWebServerFactory&gt; {
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> customize(ConfigurableServletWebServerFactory server) {
+                server.setPort(<span class="integer">9000</span>);
+        }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="서버는_띄우고_싶지_않지만_webapplicationcontext_가_필요할때"><a class="link" href="#서버는_띄우고_싶지_않지만_webapplicationcontext_가_필요할때">서버는 띄우고 싶지 않지만 <code>WebApplicationContext</code> 가 필요할때</a></h5>
+<div class="listingblock">
+<div class="title">application.properteis</div>
+<div class="content">
+<pre>server.port=-1</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring_security"><a class="link" href="#spring_security">7.2. Spring Security</a></h3>
+<div class="paragraph">
+<p>Spring Security를 사용하기 위해 의존성을 추가합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+</pre></td>
+  <td class="code"><pre>implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-security</span><span class="delimiter">'</span></span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring_application"><a class="link" href="#spring_application">7.3. Spring Application</a></h3>
+<div class="paragraph">
+<p>어플리케이션 자체를 변경해보자</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="기본_설정_제거_및_커스터마이징"><a class="link" href="#기본_설정_제거_및_커스터마이징">8. 기본 설정 제거 및 커스터마이징</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>`@EnableAutoConfiguration`를 사용해도 자동 설정을 불가능하게 하고 완전히 커스터마이징 할수도 있다.</p>
 </div>
 </div>
 </div>
