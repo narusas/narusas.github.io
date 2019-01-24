@@ -1286,6 +1286,184 @@ Template을 사용하기 때문에  Controller가 <code>@RestController</code> �
 </tr></table></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Spring boot의 기본 security 설정은 다음을 제공합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>메모리 기반으로 단일 유저 한명을 제공하는 <code>UserDetailsService</code></p>
+</li>
+<li>
+<p>Form-based login or HTTP Basic security</p>
+</li>
+<li>
+<p><code>DefaultAuthenticationEventPublisher</code> 빈 제공 (인증 이벤트 전파용)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>물론 이것은 데모용 수준에 지나지 않기 때문에 커스터마이징을 해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>그러기 위해선 일단 웹 어플리케이션 Security 기본 설정을 제거 해야 하는데 <code>WebSecurityConfigurerAdapter</code> 을 구현한 빈을 등록 하면 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이 클래스에서는 상당히 많은 설정을 할수 있습니다.(해주어야 합니다)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+</pre></td>
+  <td class="code"><pre>
+<span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyWebSecurityConfiguration</span> <span class="directive">extends</span> WebSecurityConfigurerAdapter {
+        <span class="annotation">@Autowired</span>
+        <span class="directive">private</span> LoginSuccessHandler loginSuccessHandler;
+
+        <span class="annotation">@Override</span>
+        <span class="directive">protected</span> <span class="type">void</span> configure(HttpSecurity http) <span class="directive">throws</span> <span class="exception">Exception</span> {
+                <span class="comment">//@formatter:off</span>
+                http
+                        .authorizeRequests()
+                                .antMatchers(<span class="string"><span class="delimiter">&quot;</span><span class="content">/api</span><span class="delimiter">&quot;</span></span>)         <span class="comment">// api 로 가는 요청은</span>
+                                        .authenticated()         <span class="comment">// 인증되어야 한다.</span>
+                                .anyRequest()                         <span class="comment">//  그외  모든 요청은</span>
+                                        .permitAll()                 <span class="comment">// 인증이 필요 없다.</span>
+
+                        .and()
+                                .formLogin()
+                                        .loginPage(<span class="string"><span class="delimiter">&quot;</span><span class="content">/login</span><span class="delimiter">&quot;</span></span>)
+                                        .loginProcessingUrl(<span class="string"><span class="delimiter">&quot;</span><span class="content">/login</span><span class="delimiter">&quot;</span></span>)
+                                        .failureUrl(<span class="string"><span class="delimiter">&quot;</span><span class="content">/login?error=true</span><span class="delimiter">&quot;</span></span>)
+                                        .successHandler(loginSuccessHandler)
+                                        .usernameParameter(<span class="string"><span class="delimiter">&quot;</span><span class="content">username</span><span class="delimiter">&quot;</span></span>)
+                                        .passwordParameter(<span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)
+                                        .permitAll()
+                        .and()
+                                .httpBasic()
+                                        .disable() <span class="comment">//  더이상 할게 없기 때문에  .and()  생략됨</span>
+                                .logout()
+                                        .deleteCookies(<span class="string"><span class="delimiter">&quot;</span><span class="content">remove</span><span class="delimiter">&quot;</span></span>)
+                                        .invalidateHttpSession(<span class="predefined-constant">true</span>)
+                                        .logoutRequestMatcher(<span class="keyword">new</span> AntPathRequestMatcher(<span class="string"><span class="delimiter">&quot;</span><span class="content">/logout</span><span class="delimiter">&quot;</span></span>))
+                                        .logoutSuccessUrl(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+                        .and()
+                                .csrf()
+                                        .disable();
+                <span class="comment">//@formatter:on</span>
+        }
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> configure(WebSecurity web) <span class="directive">throws</span> <span class="exception">Exception</span> {
+                <span class="comment">//@formatter:off</span>
+                web
+                .ignoring()
+                        .antMatchers(<span class="string"><span class="delimiter">&quot;</span><span class="content">/resources/**</span><span class="delimiter">&quot;</span></span>)
+                        .antMatchers(<span class="string"><span class="delimiter">&quot;</span><span class="content">/static/**</span><span class="delimiter">&quot;</span></span>)
+                ;
+                <span class="comment">//@formatter:on</span>
+
+        }
+
+}
+
+<span class="annotation">@Component</span>
+<span class="type">class</span> <span class="class">LoginSuccessHandler</span> <span class="directive">implements</span> AuthenticationSuccessHandler {
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                        Authentication authentication) <span class="directive">throws</span> <span class="exception">IOException</span>, ServletException {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.sendRedirect(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>);
+        }
+
+}</pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>자세한 것은 Spring Security를 보세요</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="https://yookeun.github.io/java/2016/12/03/spring-security/" class="bare">https://yookeun.github.io/java/2016/12/03/spring-security/</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>마찬가지로 기본 제공되는 <code>UserDetailsService`를 비활성화 하려뎐 `UserDetailsService</code>, <code>AuthenticationProvider</code> 빈을 등록하던가 <code>AuthenticationManager</code> 빈을 등록하면 됩니다. (모두 <code>WebSecurityConfigurerAdapter</code> 에서 오버라이딩 할수 있긴합니다.)</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="spring_application"><a class="link" href="#spring_application">7.3. Spring Application</a></h3>
