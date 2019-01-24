@@ -1270,8 +1270,141 @@ Template을 사용하기 때문에  Controller가 <code>@RestController</code> �
 </div>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="spring_security"><a class="link" href="#spring_security">7.2. Spring Security</a></h3>
+<div class="paragraph">
+<p>Spring Security를 사용하기 위해 의존성을 추가합니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
+  <td class="line-numbers"><pre>1
+</pre></td>
+  <td class="code"><pre>implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-security</span><span class="delimiter">'</span></span></pre></td>
+</tr></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spring_application"><a class="link" href="#spring_application">7.3. Spring Application</a></h3>
 <div class="sect3">
-<h4 id="embedded_server"><a class="link" href="#embedded_server">7.1.5. Embedded Server</a></h4>
+<h4 id="설정_파일"><a class="link" href="#설정_파일">7.3.1. 설정 파일</a></h4>
+<div class="paragraph">
+<p>Spring Boot의 설정은 매우 다양한 경로를 통해 결정됩니다. 우선순위는 다음과 같습니다.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>홈 디렉토리에 위치한 Devtools 의 전역 설정 파일(<code>~/.spring-boot-devtools.properties</code> Devtool이 활성화 되었을때만 적용됨).</p>
+</li>
+<li>
+<p>테스트에 어노테이션 된  <code>@TestPropertySource</code></p>
+</li>
+<li>
+<p><code>@SpringBootTest</code> 어노테이션이 붙은 테스트 코드의 <code>properties</code> 필드</p>
+</li>
+<li>
+<p>Command line arguments.</p>
+</li>
+<li>
+<p>환경변수(Environment 또는 System)에 포함된 <code>SPRING_APPLICATION_JSON</code> 을 JSON 파싱한 <code>Properties</code></p>
+</li>
+<li>
+<p><code>ServletConfig</code> init parameters.</p>
+</li>
+<li>
+<p><code>ServletContext</code> init parameters.</p>
+</li>
+<li>
+<p><code>java:comp/env</code> JNDI 속성</p>
+</li>
+<li>
+<p>Java System properties (System.getProperties()).</p>
+</li>
+<li>
+<p>OS environment variables.</p>
+</li>
+<li>
+<p>Key가 <code>random.*.</code> 로 시작하는 경우 <code>RandomValuePropertySource</code> 에서 값을 읽어옴</p>
+</li>
+<li>
+<p>외부 Profile-specific application properties 파일 (application-{profile}.properties and YAML variants).</p>
+</li>
+<li>
+<p>JAR 파일 내부 Profile-specific application properties(application-{profile}.properties and YAML variants).</p>
+</li>
+<li>
+<p>외부 Application properties  (application.properties and YAML variants).</p>
+</li>
+<li>
+<p>Jar 파일 내부 Application properties (application.properties and YAML variants).</p>
+</li>
+<li>
+<p><code>@Configuration</code> 클래스에 기술된 <code>@PropertySource</code>.</p>
+</li>
+<li>
+<p>Spring Boot 기본 설정 (<code>SpringApplication.setDefaultProperties</code> 에 지정되어 있음).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><code>application.properties</code> 는 다음 위치에서 찾게 됩니다.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>현재 디렉토리의 <code>/config</code> 하위 디렉토리</p>
+</li>
+<li>
+<p>현재 디렉토리</p>
+</li>
+<li>
+<p>클래스패스의 <code>/config</code> 패키지</p>
+</li>
+<li>
+<p>클래스패스 루트</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="logging"><a class="link" href="#logging">7.3.2. Logging</a></h4>
+<div class="paragraph">
+<p>기본적으로 Spring Boot는 logback을 사용합니다.</p>
+</div>
+<div class="paragraph">
+<p>logback은 classpath 루트에서 <code>logback.xml</code>,<code>logback.groovy</code> 를 순차적으로 찾아 발견 되는 파일을 설정 파일로 사용합니다. 보통의 경우라면 여기에 로그 설정을 하면 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring Boot는 프로필 기반 설정, 환경변수 제공등 몇몇 유용한 logback 확장을 제공하는데, 스프링이 기동 되는 시점은 logback이 이미 <code>logback.xml</code> 을 읽어서 초기화가 된 이후가 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이를 극복하기 위해 Spring Boot에서는 자체 설정된 <code>logback.xml`을 제공하며, 여기에서 `logback-spring.xml</code>,<code>logback-spring.groovy</code> 파일을 추가로 읽어와서 설정 파일로 사용합니다. 따라서 Spring Boot기반의 어플리케이션들은 <code>logback-spring.xml</code> 을 설정 파일로 사용하면 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>이를 통해 다음과 같은 확장 기능을 사용할수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="title">logback-spring.xml</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;springProfile</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">staging</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="comment">&lt;!-- configuration to be enabled when the &quot;staging&quot; profile is active --&gt;</span>
+<span class="tag">&lt;/springProfile&gt;</span>
+
+<span class="tag">&lt;springProfile</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dev | staging</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="comment">&lt;!-- configuration to be enabled when the &quot;dev&quot; or &quot;staging&quot; profiles are active --&gt;</span>
+<span class="tag">&lt;/springProfile&gt;</span>
+
+<span class="tag">&lt;springProfile</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">!production</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="comment">&lt;!-- configuration to be enabled when the &quot;production&quot; profile is not active --&gt;</span>
+<span class="tag">&lt;/springProfile&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="embedded_server"><a class="link" href="#embedded_server">7.3.3. Embedded Server</a></h4>
 <div class="sect4">
 <h5 id="embedded_server_사용하지_않기"><a class="link" href="#embedded_server_사용하지_않기">Embedded Server 사용하지 않기</a></h5>
 <div class="listingblock">
@@ -1338,35 +1471,13 @@ Template을 사용하기 때문에  Controller가 <code>@RestController</code> �
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="spring_security"><a class="link" href="#spring_security">7.2. Spring Security</a></h3>
-<div class="paragraph">
-<p>Spring Security를 사용하기 위해 의존성을 추가합니다.</p>
-</div>
-<div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><table class="CodeRay"><tr>
-  <td class="line-numbers"><pre>1
-</pre></td>
-  <td class="code"><pre>implementation      <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-security</span><span class="delimiter">'</span></span></pre></td>
-</tr></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="spring_application"><a class="link" href="#spring_application">7.3. Spring Application</a></h3>
-<div class="paragraph">
-<p>어플리케이션 자체를 변경해보자</p>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="기본_설정_제거_및_커스터마이징"><a class="link" href="#기본_설정_제거_및_커스터마이징">8. 기본 설정 제거 및 커스터마이징</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>`@EnableAutoConfiguration`를 사용해도 자동 설정을 불가능하게 하고 완전히 커스터마이징 할수도 있다.</p>
+<p><code>@EnableAutoConfiguration</code> 를 사용해도 자동 설정을 불가능하게 하고 완전히 커스터마이징 할수도 있다.</p>
 </div>
 </div>
 </div>
