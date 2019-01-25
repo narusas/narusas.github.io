@@ -1,0 +1,607 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphviz 소개</title>
+<meta name="description" content="Graphviz 소개">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="Graphviz 소개" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="Graphviz 소개" >
+<meta property="og:url"                 content="https://narusas.github.io/2019/01/25/Graphviz.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2019-01-25T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="diagram" >
+<meta property="article:tag"            content="graphviz" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+            <h1>
+                <a href="../../../">narusas's blog</a>
+
+            </h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+        <h1>Graphviz 소개</h1>
+<div id="toc" class="toc">
+<div id="toctitle">목차</div>
+<ul class="sectlevel1">
+<li><a href="#graphviz_란">1. Graphviz 란?</a></li>
+<li><a href="#기본_문법">2. 기본 문법</a></li>
+<li><a href="#기본적인거_따라해보기">3. 기본적인거 따라해보기</a>
+<ul class="sectlevel2">
+<li><a href="#그래프를_하나_그려보겠습니다">3.1. 그래프를 하나 그려보겠습니다.</a></li>
+<li><a href="#라벨_속성_주기">3.2. 라벨 속성 주기</a></li>
+<li><a href="#여러_노드_그리기">3.3. 여러 노드 그리기</a></li>
+<li><a href="#여러_속성">3.4. 여러 속성</a></li>
+<li><a href="#노드_연결">3.5. 노드 연결</a></li>
+<li><a href="#하나가_여러개에_연결될땐_어떻게_할까요">3.6. 하나가 여러개에 연결될땐 어떻게 할까요?</a></li>
+</ul>
+</li>
+<li><a href="#그럼_화살표는">4. 그럼 화살표는?</a></li>
+<li><a href="#edge_에_속성_주기">5. Edge 에 속성 주기</a></li>
+<li><a href="#원은_질렸다_다른_모양은">6. 원은 질렸다 다른 모양은?</a></li>
+<li><a href="#난_기본으로_사강형을_쓰고_싶은데">7. 난 기본으로 사강형을 쓰고 싶은데?</a></li>
+<li><a href="#묶음_처리는_어떻게">8. 묶음 처리는 어떻게?</a></li>
+<li><a href="#bc_가_같은_레벨이면_좋겠는데">9. b,c 가 같은 레벨이면 좋겠는데?</a></li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="graphviz_란"><a class="link" href="#graphviz_란">1. Graphviz 란?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://www.graphviz.org" class="bare">http://www.graphviz.org</a> 에서 개발중인 오픈소스 다이어그램 생성기입니다.</p>
+</div>
+<div class="paragraph">
+<p>웹 버전은 <a href="http://viz-js.com" class="bare">http://viz-js.com</a> 에서 보실수 있죠</p>
+</div>
+<div class="paragraph">
+<p>Markdown 처럼 문서로 다이어그램을 표기하고자 하는 욕망은 개발자에게  항상 있습니다. Plantuml 도 있지만 좀더 유연한 그래프가 필요할때 Graphviz 를 사용할수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="기본_문법"><a class="link" href="#기본_문법">2. 기본 문법</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph	:	[ strict ] (graph | digraph) [ ID ] '{' stmt_list '}'
+stmt_list	:	[ stmt [ ';' ] stmt_list ]
+stmt	:	node_stmt
+|	edge_stmt
+|	attr_stmt
+|	ID '=' ID
+|	subgraph
+attr_stmt	:	(graph | node | edge) attr_list
+attr_list	:	'[' [ a_list ] ']' [ attr_list ]
+a_list	:	ID '=' ID [ (';' | ',') ] [ a_list ]
+edge_stmt	:	(node_id | subgraph) edgeRHS [ attr_list ]
+edgeRHS	:	edgeop (node_id | subgraph) [ edgeRHS ]
+node_stmt	:	node_id [ attr_list ]
+node_id	:	ID [ port ]
+port	:	':' ID [ ':' compass_pt ]
+|	':' compass_pt
+subgraph	:	[ subgraph [ ID ] ] '{' stmt_list '}'
+compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이걸 보고 바로 이해 하는 분은 없을겁니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="기본적인거_따라해보기"><a class="link" href="#기본적인거_따라해보기">3. 기본적인거 따라해보기</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>하나씩 따라해보죠</p>
+</div>
+<div class="sect2">
+<h3 id="그래프를_하나_그려보겠습니다"><a class="link" href="#그래프를_하나_그려보겠습니다">3.1. 그래프를 하나 그려보겠습니다.</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-2b32840f509e1f97e79d849d645e07bb.png" alt="diag 2b32840f509e1f97e79d849d645e07bb" width="83" height="59">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="라벨_속성_주기"><a class="link" href="#라벨_속성_주기">3.2. 라벨 속성 주기</a></h3>
+<div class="paragraph">
+<p>여기에서 <code>a</code> 는 그려질 노드의 id 입니다. 별도로 label을 주지 않으면 id를 label로 사용하죠</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A"]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-06ce4adc9352d6d1c2a44bceef73de86.png" alt="diag 06ce4adc9352d6d1c2a44bceef73de86" width="112" height="59">
+</div>
+</div>
+<div class="paragraph">
+<p>이런식으로 각 노드에 <code>[]</code> 로 노드의 속성을 기술할수 있습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="여러_노드_그리기"><a class="link" href="#여러_노드_그리기">3.3. 여러 노드 그리기</a></h3>
+<div class="paragraph">
+<p>노드를 두개 그려 볼까요?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a
+	b
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-7c53f5f5945af8753948896ba6e26174.png" alt="diag 7c53f5f5945af8753948896ba6e26174" width="179" height="59">
+</div>
+</div>
+<div class="paragraph">
+<p>당연히 둘다 라벨을 줄수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A"]
+	b [label="Node B"]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-51589103ef71c19926974ff7acde8579.png" alt="diag 51589103ef71c19926974ff7acde8579" width="239" height="59">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="여러_속성"><a class="link" href="#여러_속성">3.4. 여러 속성</a></h3>
+<div class="paragraph">
+<p>이번엔 색상 속성을 주어 볼까요?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A" color=red]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-d67b50981eb406b3b9d2d42018e7af8e.png" alt="diag d67b50981eb406b3b9d2d42018e7af8e" width="112" height="59">
+</div>
+</div>
+<div class="paragraph">
+<p>색상명을 주면 그래프의 색상이 변경됩니다</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+색상 이름 목록은 <a href="https://graphviz.gitlab.io/_pages/doc/info/colors.html" class="bare">https://graphviz.gitlab.io/_pages/doc/info/colors.html</a> 를 참고하세요
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>RGB 형태로 줄수도 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A" color="#FF0000"]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-e9798d98c69e6c4950eb0dc9d6c34a7c.png" alt="diag e9798d98c69e6c4950eb0dc9d6c34a7c" width="112" height="59">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+전체 속성 목록은 <a href="https://graphviz.gitlab.io/_pages/doc/info/attrs.html" class="bare">https://graphviz.gitlab.io/_pages/doc/info/attrs.html</a> 에서 참고하시면 됩니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="노드_연결"><a class="link" href="#노드_연결">3.5. 노드 연결</a></h3>
+<div class="paragraph">
+<p>그래프라 함은 서로 연결선이 있어야 하겠죠?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a -- b
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-949b966e263ae115bbb227ec8ba24caf.png" alt="diag 949b966e263ae115bbb227ec8ba24caf" width="83" height="155">
+</div>
+</div>
+<div class="paragraph">
+<p><code>--</code> 좌 우에 노드를 기술해주면 됩니다.</p>
+</div>
+<div class="sect3">
+<h4 id="노드에_속성을_주고_싶다면_노드_선언을_먼저_하고_진행하면_됩니다"><a class="link" href="#노드에_속성을_주고_싶다면_노드_선언을_먼저_하고_진행하면_됩니다">3.5.1. 노드에 속성을 주고 싶다면 노드 선언을 먼저 하고 진행하면 됩니다.</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A"]
+	b [label="Node B"]
+	a -- b
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-f9fee6c2cf61e90026e8b143eebb61e9.png" alt="diag f9fee6c2cf61e90026e8b143eebb61e9" width="112" height="155">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="하나가_여러개에_연결될땐_어떻게_할까요"><a class="link" href="#하나가_여러개에_연결될땐_어떻게_할까요">3.6. 하나가 여러개에 연결될땐 어떻게 할까요?</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A"]
+	b [label="Node B"]
+	c [label="Node C"]
+	a -- {b c}
+
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-e34a39a754bcbee5c1db0cbff5e691d0.png" alt="diag e34a39a754bcbee5c1db0cbff5e691d0" width="239" height="155">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="그럼_화살표는"><a class="link" href="#그럼_화살표는">4. 그럼 화살표는?</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>화살표를 가지는 그래프는 <code>digraph</code> 입니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>digraph {
+	a [label="Node A"]
+	b [label="Node B"]
+	a -- b
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-21542f57913be647a4ee27a32f6fde2a.png" alt="diag 21542f57913be647a4ee27a32f6fde2a" width="112" height="155">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="edge_에_속성_주기"><a class="link" href="#edge_에_속성_주기">5. Edge 에 속성 주기</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>물론 graph 에서도 화살표를 표현할수는 있지만 기본적으로는 화살표를 표현하지 않습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a [label="Node A"]
+	b [label=Node B]
+	a -- b [dir="forward"]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-ac443cf7a787ef5bd7f531df8b68cece.png" alt="diag ac443cf7a787ef5bd7f531df8b68cece" width="112" height="155">
+</div>
+</div>
+<div class="paragraph">
+<p><code>--</code> 나 <code>&#8594;</code> 로 표시된 것은 edge를 표시하는 것이며, edge에도 위처럼 속성을 줄수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="원은_질렸다_다른_모양은"><a class="link" href="#원은_질렸다_다른_모양은">6. 원은 질렸다 다른 모양은?</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a
+	b [shape=box]
+	c [shape=ellipse]
+	d [shape=oval]
+	e [shape=circle]
+	f [shape=point]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-d27c740705772d8a8f4473c719eef8cc.png" alt="diag d27c740705772d8a8f4473c719eef8cc" width="471" height="59">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+다음 URL에서 지원하는 모든 Shape를 볼수 있습니다.  <a href="https://graphviz.gitlab.io/_pages/doc/info/shapes.html#polygon" class="bare">https://graphviz.gitlab.io/_pages/doc/info/shapes.html#polygon</a>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="난_기본으로_사강형을_쓰고_싶은데"><a class="link" href="#난_기본으로_사강형을_쓰고_싶은데">7. 난 기본으로 사강형을 쓰고 싶은데?</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	# 이 그래프에서의 node 기본값 지정
+	node [shape=box]
+
+	a
+	b
+	c
+	d
+	e
+	f
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-1382930396022095c03b0e8c32d462b9.png" alt="diag 1382930396022095c03b0e8c32d462b9" width="563" height="59">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="묶음_처리는_어떻게"><a class="link" href="#묶음_처리는_어떻게">8. 묶음 처리는 어떻게?</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	subgraph cluster01 {
+			a -- b
+			a -- c
+			b -- c
+	}
+	subgraph cluster02 {
+		d
+		e
+		f
+	}
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-92cde62cd4ac494bd6e13926d12f714f.png" alt="diag 92cde62cd4ac494bd6e13926d12f714f" width="448" height="293">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="bc_가_같은_레벨이면_좋겠는데"><a class="link" href="#bc_가_같은_레벨이면_좋겠는데">9. b,c 가 같은 레벨이면 좋겠는데?</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	subgraph cluster01 {
+			a -- b
+			a -- c
+			b -- c
+			{rank = same; b; c;}
+	}
+	subgraph cluster02 {
+		d
+		e
+		f
+	}
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-4126a5bfbcf8c76f4921c3dda988483b.png" alt="diag 4126a5bfbcf8c76f4921c3dda988483b" width="517" height="197">
+</div>
+</div>
+<div class="paragraph">
+<p>기본적으로 graphvis는 계층을 가지는 다이어그램을 그려주는 툴이므로, 같은 계층에 위치한 노드들을 나열하여 정리 할수 있다.</p>
+</div>
+<div class="paragraph">
+<p>낮은 계층은 왼쪽 위, 높은 계층은 오른쪽 아래에 위치한다.</p>
+</div>
+<div class="paragraph">
+<p>rank는 다음의 값을 가질수 있다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"same" : 같은 계층에 위치한다.</p>
+</li>
+<li>
+<p>"min": 제일 낮은 계층에 위치한다.</p>
+</li>
+<li>
+<p>"source"</p>
+</li>
+<li>
+<p>"max": 제일 높은 계층에 위치한다.</p>
+</li>
+<li>
+<p>"sink": max와 같다.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+rank 같은 속성은 괄호 안에 기술해야함
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+        
+        <a href="/tag/diagram"><code class="highligher-rouge"><nobr>diagram</nobr></code>&nbsp;</a>
+      
+        
+        <a href="/tag/graphviz"><code class="highligher-rouge"><nobr>graphviz</nobr></code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+<!-- End Main Content and Sidebar -->
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://narusass-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+<!-- Footer -->
+
+<footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+</html>
