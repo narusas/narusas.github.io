@@ -84,6 +84,7 @@
 <li><a href="#난_기본으로_사강형을_쓰고_싶은데">7. 난 기본으로 사강형을 쓰고 싶은데?</a></li>
 <li><a href="#묶음_처리는_어떻게">8. 묶음 처리는 어떻게?</a></li>
 <li><a href="#bc_가_같은_레벨이면_좋겠는데">9. b,c 가 같은 레벨이면 좋겠는데?</a></li>
+<li><a href="#class_diagram을_그려야_하는데_화살표가_부족해">10. Class diagram을 그려야 하는데 화살표가 부족해</a></li>
 </ul>
 </div>
 <div class="sect1">
@@ -439,9 +440,10 @@ compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
 	subgraph cluster01 {
-			a -- b
-			a -- c
-			b -- c
+		label="Cluster 1"
+		a -- b
+		a -- c
+		b -- c
 	}
 	subgraph cluster02 {
 		d
@@ -453,7 +455,7 @@ compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-92cde62cd4ac494bd6e13926d12f714f.png" alt="diag 92cde62cd4ac494bd6e13926d12f714f" width="448" height="293">
+<img src="/images/diag-904c21b9a978146b8ccedee69da9edd9.png" alt="diag 904c21b9a978146b8ccedee69da9edd9" width="331" height="420">
 </div>
 </div>
 </div>
@@ -519,6 +521,47 @@ compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
 </td>
 <td class="content">
 rank 같은 속성은 괄호 안에 기술해야함
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="class_diagram을_그려야_하는데_화살표가_부족해"><a class="link" href="#class_diagram을_그려야_하는데_화살표가_부족해">10. Class diagram을 그려야 하는데 화살표가 부족해</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	node [shape=box]
+	a -&gt; b [arrowhead=diamond]
+	a -&gt; c [arrowhead=onormal]
+	a -&gt; d [arrowhead=onormal]
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Failed to generate image: /usr/bin/dot failed: Warning: &lt;stdin&gt;: syntax error in line 3 near '-&gt;'
+
+graph {
+	node [shape=box]
+	a -&gt; b [arrowhead=diamond]
+	a -&gt; c [arrowhead=onormal]
+	a -&gt; d [arrowhead=onormal]
+
+}</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="https://graphviz.gitlab.io/_pages/doc/info/arrows.html" class="bare">https://graphviz.gitlab.io/_pages/doc/info/arrows.html</a> 참조
 </td>
 </tr>
 </table>
