@@ -85,6 +85,12 @@
 <li><a href="#묶음_처리는_어떻게">8. 묶음 처리는 어떻게?</a></li>
 <li><a href="#bc_가_같은_레벨이면_좋겠는데">9. b,c 가 같은 레벨이면 좋겠는데?</a></li>
 <li><a href="#class_diagram을_그려야_하는데_화살표가_부족해">10. Class diagram을 그려야 하는데 화살표가 부족해</a></li>
+<li><a href="#점선을_쓰고_싶은데">11. 점선을 쓰고 싶은데?</a>
+<ul class="sectlevel2">
+<li><a href="#노드를_변경할떄">11.1. 노드를 변경할떄</a></li>
+<li><a href="#연결선을_변경할떄">11.2. 연결선을 변경할떄</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="sect1">
@@ -386,12 +392,13 @@ compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
 	d [shape=oval]
 	e [shape=circle]
 	f [shape=point]
+	h [shape=diamond]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-d27c740705772d8a8f4473c719eef8cc.png" alt="diag d27c740705772d8a8f4473c719eef8cc" width="471" height="59">
+<img src="/images/diag-408623560980fb26b5f3e0eb829bec6a.png" alt="diag 408623560980fb26b5f3e0eb829bec6a" width="856" height="59">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -533,7 +540,6 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	node [shape=box]
 	a -&gt; b [arrowhead=diamond]
 	a -&gt; c [arrowhead=onormal]
 	a -&gt; d [arrowhead=onormal]
@@ -541,17 +547,69 @@ rank 같은 속성은 괄호 안에 기술해야함
 }</code></pre>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-9444834df7c867b1f2f980d8a3c1af7f.png" alt="diag 9444834df7c867b1f2f980d8a3c1af7f" width="755" height="155">
+</div>
+</div>
+<div class="paragraph">
+<p><code>o</code> 로 시작하면 비어있는 화살표가 됩니다.</p>
+</div>
+<div class="paragraph">
+<p></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+옵션이 훨씬 더 많이 있습니다. <a href="https://graphviz.gitlab.io/_pages/doc/info/arrows.html" class="bare">https://graphviz.gitlab.io/_pages/doc/info/arrows.html</a> 참조 하세요.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="점선을_쓰고_싶은데"><a class="link" href="#점선을_쓰고_싶은데">11. 점선을 쓰고 싶은데?</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="노드를_변경할떄"><a class="link" href="#노드를_변경할떄">11.1. 노드를 변경할떄</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre>Failed to generate image: /usr/bin/dot failed: Warning: &lt;stdin&gt;: syntax error in line 3 near '-&gt;'
+<pre class="CodeRay highlight"><code>graph {
+	a [style=solid]
+	b [style=dashed]
+	c [style=dotted]
+	d [style=bold]
+	e [style=filled]
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-46b41f352dc6fc0dc370e7ffd6b92b92.png" alt="diag 46b41f352dc6fc0dc370e7ffd6b92b92" width="467" height="59">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="연결선을_변경할떄"><a class="link" href="#연결선을_변경할떄">11.2. 연결선을 변경할떄</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>graph {
+	a -- b0 [dir="forward" style=solid]
+	a -- b1 [dir="forward" style=dashed]
+	a -- b2 [dir="forward" style=dotted]
+	a -- b3 [dir="forward" style=bold]
 
-graph {
-	node [shape=box]
-	a -&gt; b [arrowhead=diamond]
-	a -&gt; c [arrowhead=onormal]
-	a -&gt; d [arrowhead=onormal]
-
-}</pre>
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-f2e6445bff4dc306798d757c65a5fa9d.png" alt="diag f2e6445bff4dc306798d757c65a5fa9d" width="371" height="155">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -561,10 +619,11 @@ graph {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<a href="https://graphviz.gitlab.io/_pages/doc/info/arrows.html" class="bare">https://graphviz.gitlab.io/_pages/doc/info/arrows.html</a> 참조
+더 많은 스타일은 <a href="https://graphviz.gitlab.io/_pages/doc/info/attrs.html#k:style" class="bare">https://graphviz.gitlab.io/_pages/doc/info/attrs.html#k:style</a> 에서 참고 하세요
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
