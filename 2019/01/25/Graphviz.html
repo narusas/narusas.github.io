@@ -91,6 +91,7 @@
 <li><a href="#연결선을_변경할떄">11.2. 연결선을 변경할떄</a></li>
 </ul>
 </li>
+<li><a href="#연결선이_직선_말고는_없나">12. 연결선이 직선 말고는 없나?</a></li>
 </ul>
 </div>
 <div class="sect1">
@@ -623,6 +624,59 @@ rank 같은 속성은 괄호 안에 기술해야함
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="연결선이_직선_말고는_없나"><a class="link" href="#연결선이_직선_말고는_없나">12. 연결선이 직선 말고는 없나?</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>digraph Orthogonal {
+  graph [label="Orthogonal edges", splines=line, nodesep=0.8]
+  node [shape=box]
+  a-&gt;{b c}
+  b-&gt;{d e}
+  c-&gt;{f g}
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-92afaff6ee1cae6950cdd227a5cccef7.png" alt="diag 92afaff6ee1cae6950cdd227a5cccef7" width="531" height="281">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>digraph Orthogonal {
+  graph [label="Orthogonal edges", splines=ortho, nodesep=0.8]
+  node [shape=box]
+  a-&gt;{b c}
+  b-&gt;{d e}
+  c-&gt;{f g}
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-ec7b95571cbb085ca3f6429199bd627e.png" alt="diag ec7b95571cbb085ca3f6429199bd627e" width="531" height="281">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>digraph Orthogonal {
+  graph [label="Orthogonal edges", splines=curved, nodesep=0.8]
+  node [shape=box]
+  a-&gt;{b c}
+  b-&gt;{d e}
+  c-&gt;{f g}
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/diag-118f297826d50bec6890f027675b039d.png" alt="diag 118f297826d50bec6890f027675b039d" width="531" height="281">
 </div>
 </div>
 </div>
