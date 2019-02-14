@@ -410,6 +410,10 @@ graph {
 	e [shape=circle]
 	f [shape=point]
 	h [shape=diamond]
+	i [shape=cylinder]
+	j [shape=note]
+	k [shape=tab]
+
 }</code></pre>
 </div>
 </div>
@@ -560,10 +564,16 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a -&gt; b [arrowhead=diamond]
-	a -&gt; c [arrowhead=onormal]
-	a -&gt; d [arrowhead=onormal]
-
+	# 기본값이  normal입니다.
+	a -- b1 [dir="forward"]
+	a -- b2 [dir="forward" arrowhead=normal]
+	a -- c [dir="forward" arrowhead=onormal]
+	a -- d [dir="forward" arrowhead=diamond]
+	a -- e [dir="forward" arrowhead=odiamond]
+	a -- f [dir="forward" arrowhead=vee]
+	# 까치발 ^^
+	a -- g [dir="forward" arrowhead=crow]
+	a -- h [dir="forward" arrowhead=dot]
 }</code></pre>
 </div>
 </div>
