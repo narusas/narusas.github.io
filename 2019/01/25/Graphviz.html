@@ -468,12 +468,15 @@ graph {
 		a -- b
 		a -- c
 		b -- c
+		c
 	}
 	subgraph cluster02 {
 		d
 		e
 		f
 	}
+	# 서브그래프 를 벗어 나는 연결은 바깥쪽에 기술
+	c -- d
 }</code></pre>
 </div>
 </div>
