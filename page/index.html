@@ -2,104 +2,127 @@
 <!--[if IE 9]>
 <html class="lt-ie10" lang="en"> <![endif]-->
 <html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{page.title}}</title>
-    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-    <meta name="author" content="Your name goes here">
-    <meta name="copyright" content="Maybe consider a Creative Commons license">
-    <link rel="stylesheet" href="{{page.root}}css/foundation.css">
-    <link rel="stylesheet" href="{{page.root}}css/font-awesome.css">
-    <link rel="stylesheet" href="{{page.root}}css/coderay.css">
-    <link rel="stylesheet" href="{{page.root}}css/asciidoctor.css">
-    <script src="{{page.root}}js/vendor/modernizr.js"></script>
-    <script src="{{page.root}}js/toc.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{page.title}}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="author" content="Your name goes here">
+  <meta name="copyright" content="Maybe consider a Creative Commons license">
+  <!-- Google Tag Manager -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-NHC6HV5');
+  </script>
+  <!-- End Google Tag Manager -->
+  <link rel="stylesheet" href="{{page.root}}css/foundation.css">
+  <link rel="stylesheet" href="{{page.root}}css/font-awesome.css">
+  <link rel="stylesheet" href="{{page.root}}css/coderay.css">
+  <link rel="stylesheet" href="{{page.root}}css/asciidoctor.css">
+  <script src="{{page.root}}js/vendor/modernizr.js"></script>
+  <script src="{{page.root}}js/toc.js"></script>
 </head>
+
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NHC6HV5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
+  <!-- Nav Bar -->
 
-<!-- Nav Bar -->
-
-<nav class="top-bar" data-topbar>
+  <nav class="top-bar" data-topbar>
     <ul class="title-area">
-        <!-- Title Area -->
-        <li class="name">
-            <h1>
-                <a href="{{page.root}}">{{site.title}}</a>
-            </h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      <!-- Title Area -->
+      <li class="name">
+        <h1>
+          <a href="{{page.root}}">{{site.title}}</a>
+        </h1>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
-</nav>
-<!-- End Nav -->
+  </nav>
+  <!-- End Nav -->
 
 
-<!-- Main Page Content and Sidebar -->
+  <!-- Main Page Content and Sidebar -->
 
-<div class="row">
+  <div class="row">
 
     <!-- Main Blog Content -->
     <div class="large-12 columns" role="content">
 
-        {{ content }}
+      {{ content }}
 
     </div>
-</div>
+  </div>
 
   {% for post in paginator.posts %}
-<div class="row">
-  <div class="medium-8 columns" role="content">
-    <div class="blog-post">
-      <h3><a href="{{ post.url }}">{{ post.date }} - {{ post.navtitle }}</a></h3>
+  <div class="row">
+    <div class="medium-8 columns" role="content">
+      <div class="blog-post">
+        <h3><a href="{{ post.url }}">{{ post.date }} - {{ post.navtitle }}</a></h3>
+      </div>
+
     </div>
 
   </div>
 
-</div>
+  {% endfor %}
 
-{% endfor %}
-
-<div class="row">
+  <div class="row">
     <div class="large-12 columns">
-      <hr/>
+      <hr />
       {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
+      <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
       {% else %}
-        <span class="previous">Previous</span>
+      <span class="previous">Previous</span>
       {% endif %}
       <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
       {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path }}" class="next">Next</a>
+      <a href="{{ paginator.next_page_path }}" class="next">Next</a>
       {% else %}
-        <span class="next ">Next</span>
+      <span class="next ">Next</span>
       {% endif %}
     </div>
-</div>
+  </div>
 
 
-<!-- End Main Content and Sidebar -->
+  <!-- End Main Content and Sidebar -->
 
 
-<!-- Footer -->
+  <!-- Footer -->
 
-<footer class="row">
+  <footer class="row">
     <div class="large-12 columns">
-        <hr>
-        <div class="row">
-            <div class="large-12 columns">
-                <p>Footer</p>
-            </div>
+      <hr>
+      <div class="row">
+        <div class="large-12 columns">
+          <p>Footer</p>
         </div>
+      </div>
     </div>
-</footer>
+  </footer>
 
-<script src="{{page.root}}js/vendor/jquery.js"></script>
-<script src="{{page.root}}js/foundation.min.js"></script>
-<script>
-$(document).foundation();
-var doc = document.documentElement;
-doc.setAttribute('data-useragent', navigator.userAgent);
-</script>
+  <script src="{{page.root}}js/vendor/jquery.js"></script>
+  <script src="{{page.root}}js/foundation.min.js"></script>
+  <script>
+    $(document).foundation();
+    var doc = document.documentElement;
+    doc.setAttribute('data-useragent', navigator.userAgent);
+  </script>
 </body>
+
 </html>
