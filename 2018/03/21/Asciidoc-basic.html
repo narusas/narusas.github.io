@@ -2,6 +2,7 @@
 <!--[if IE 9]>
 <html class="lt-ie10" lang="en"> <![endif]-->
 <html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+
 <head>
 
   <meta charset="utf-8">
@@ -35,34 +36,54 @@
 <script src="../../../js/vendor/jquery.js"></script>
 <script src="../../../js/toc.js"></script>
 
-
+  <!-- Google Tag Manager -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-NHC6HV5');
+  </script>
+  <!-- End Google Tag Manager -->
 </head>
+
 <body>
-
-<!-- Nav Bar -->
-<nav class="top-bar" data-topbar>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NHC6HV5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Nav Bar -->
+  <nav class="top-bar" data-topbar>
     <ul class="title-area">
-        <!-- Title Area -->
-        <li class="name">
-            <h1>
-                <a href="../../../">narusas's blog</a>
+      <!-- Title Area -->
+      <li class="name">
+        <h1>
+          <a href="../../../">narusas's blog</a>
 
-            </h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </h1>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
-</nav>
-<!-- End Nav -->
+  </nav>
+  <!-- End Nav -->
 
 
-<!-- Main Page Content and Sidebar -->
+  <!-- Main Page Content and Sidebar -->
 
-<div class="row">
+  <div class="row">
 
     <!-- Main Blog Content -->
     <div class="large-12 columns" role="content">
 
-        <h1>Asciidoc 기본 사용법</h1>
+      <h1>Asciidoc 기본 사용법</h1>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -2219,11 +2240,15 @@ include::app.rb[]
     </div>
     <span>Tags:
       
-        
-        <a href="/tag/asciidoc"><code class="highligher-rouge"><nobr>asciidoc</nobr></code>&nbsp;</a>
       
-        
-        <a href="/tag/asciidoctor"><code class="highligher-rouge"><nobr>asciidoctor</nobr></code>&nbsp;</a>
+      <a href="/tag/asciidoc"><code class="highligher-rouge">
+          <nobr>asciidoc</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/asciidoctor"><code class="highligher-rouge">
+          <nobr>asciidoctor</nobr>
+        </code>&nbsp;</a>
       
     </span>
 
@@ -2235,34 +2260,35 @@ include::app.rb[]
 
     <!-- End Sidebar -->
 
-<!-- End Main Content and Sidebar -->
+    <!-- End Main Content and Sidebar -->
 
 
-<div id="disqus_thread"></div>
-<script>
+    <div id="disqus_thread"></div>
+    <script>
+      /**
+       *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+       *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+      /*
+      var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function () { // DON'T EDIT BELOW THIS LINE
+        var d = document,
+          s = d.createElement('script');
+        s.src = 'https://narusass-blog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+        Disqus.</a></noscript>
 
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://narusass-blog.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+    <!-- Footer -->
 
-<!-- Footer -->
-
-<footer class="row">
+    <footer class="row">
     <div class="large-12 columns">
         <hr>
         <div class="row">
@@ -2275,7 +2301,7 @@ s.setAttribute('data-timestamp', +new Date());
 </footer>
 
 
-
+    
 <script src="../../../js/foundation.min.js"></script>
 <script>
 $(document).foundation();
@@ -2283,7 +2309,7 @@ var doc = document.documentElement;
 doc.setAttribute('data-useragent', navigator.userAgent);
 </script>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -2294,4 +2320,5 @@ doc.setAttribute('data-useragent', navigator.userAgent);
 </script>
 
 </body>
+
 </html>
