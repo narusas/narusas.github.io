@@ -267,8 +267,8 @@ while true; do
     #echo "$rev to $next"
     r=$(printf "%06d" $rev)
 
-    echo "svnrdump dump $repo -r${rev}:${next} &gt; ${repoSymbol}_${r}_${next}.dump"
-    svnrdump dump $repo -r${rev}:${next} &gt; ${repoSymbol}_${r}_${next}.dump
+    echo "svnrdump dump $repo -r${rev}:${next}  --incremental &gt; ${repoSymbol}_${r}_${next}.dump"
+    svnrdump dump $repo -r${rev}:${next}  --incremental  &gt; ${repoSymbol}_${r}_${next}.dump
     rev=$((rev + 10000))
     if [[ $rev -gt $HEAD ]]; then
         break
