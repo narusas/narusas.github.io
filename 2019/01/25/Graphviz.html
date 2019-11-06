@@ -134,24 +134,24 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>graph	:	[ strict ] (graph | digraph) [ ID ] '{' stmt_list '}'
-stmt_list	:	[ stmt [ ';' ] stmt_list ]
-stmt	:	node_stmt
-|	edge_stmt
-|	attr_stmt
-|	ID '=' ID
-|	subgraph
-attr_stmt	:	(graph | node | edge) attr_list
-attr_list	:	'[' [ a_list ] ']' [ attr_list ]
-a_list	:	ID '=' ID [ (';' | ',') ] [ a_list ]
-edge_stmt	:	(node_id | subgraph) edgeRHS [ attr_list ]
-edgeRHS	:	edgeop (node_id | subgraph) [ edgeRHS ]
-node_stmt	:	node_id [ attr_list ]
-node_id	:	ID [ port ]
-port	:	':' ID [ ':' compass_pt ]
-|	':' compass_pt
-subgraph	:	[ subgraph [ ID ] ] '{' stmt_list '}'
-compass_pt	:	(n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
+<pre class="CodeRay highlight"><code>graph        :        [ strict ] (graph | digraph) [ ID ] '{' stmt_list '}'
+stmt_list        :        [ stmt [ ';' ] stmt_list ]
+stmt        :        node_stmt
+|        edge_stmt
+|        attr_stmt
+|        ID '=' ID
+|        subgraph
+attr_stmt        :        (graph | node | edge) attr_list
+attr_list        :        '[' [ a_list ] ']' [ attr_list ]
+a_list        :        ID '=' ID [ (';' | ',') ] [ a_list ]
+edge_stmt        :        (node_id | subgraph) edgeRHS [ attr_list ]
+edgeRHS        :        edgeop (node_id | subgraph) [ edgeRHS ]
+node_stmt        :        node_id [ attr_list ]
+node_id        :        ID [ port ]
+port        :        ':' ID [ ':' compass_pt ]
+|        ':' compass_pt
+subgraph        :        [ subgraph [ ID ] ] '{' stmt_list '}'
+compass_pt        :        (n | ne | e | se | s | sw | w | nw | c | _)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -186,7 +186,7 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a
+        a
 }</code></pre>
 </div>
 </div>
@@ -204,13 +204,13 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A"]
+        a [label=&quot;Node A&quot;]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-06ce4adc9352d6d1c2a44bceef73de86.png" alt="diag 06ce4adc9352d6d1c2a44bceef73de86" width="112" height="59">
+<img src="/images/diag-06ce4adc9352d6d1c2a44bceef73de86.png" alt="diag 06ce4adc9352d6d1c2a44bceef73de86" width="132" height="59">
 </div>
 </div>
 <div class="paragraph">
@@ -225,8 +225,8 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a
-	b
+        a
+        b
 }</code></pre>
 </div>
 </div>
@@ -241,14 +241,14 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A"]
-	b [label="Node B"]
+        a [label=&quot;Node A&quot;]
+        b [label=&quot;Node B&quot;]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-51589103ef71c19926974ff7acde8579.png" alt="diag 51589103ef71c19926974ff7acde8579" width="239" height="59">
+<img src="/images/diag-51589103ef71c19926974ff7acde8579.png" alt="diag 51589103ef71c19926974ff7acde8579" width="277" height="59">
 </div>
 </div>
 </div>
@@ -260,13 +260,13 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A" color=red]
+        a [label=&quot;Node A&quot; color=red]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-d67b50981eb406b3b9d2d42018e7af8e.png" alt="diag d67b50981eb406b3b9d2d42018e7af8e" width="112" height="59">
+<img src="/images/diag-d67b50981eb406b3b9d2d42018e7af8e.png" alt="diag d67b50981eb406b3b9d2d42018e7af8e" width="132" height="59">
 </div>
 </div>
 <div class="paragraph">
@@ -290,13 +290,13 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A" color="#FF0000"]
+        a [label=&quot;Node A&quot; color=&quot;#FF0000&quot;]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-e9798d98c69e6c4950eb0dc9d6c34a7c.png" alt="diag e9798d98c69e6c4950eb0dc9d6c34a7c" width="112" height="59">
+<img src="/images/diag-e9798d98c69e6c4950eb0dc9d6c34a7c.png" alt="diag e9798d98c69e6c4950eb0dc9d6c34a7c" width="132" height="59">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -320,7 +320,7 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a -- b
+        a -- b
 }</code></pre>
 </div>
 </div>
@@ -337,15 +337,15 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A"]
-	b [label="Node B"]
-	a -- b
+        a [label=&quot;Node A&quot;]
+        b [label=&quot;Node B&quot;]
+        a -- b
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-f9fee6c2cf61e90026e8b143eebb61e9.png" alt="diag f9fee6c2cf61e90026e8b143eebb61e9" width="112" height="155">
+<img src="/images/diag-f9fee6c2cf61e90026e8b143eebb61e9.png" alt="diag f9fee6c2cf61e90026e8b143eebb61e9" width="132" height="155">
 </div>
 </div>
 </div>
@@ -355,17 +355,17 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A"]
-	b [label="Node B"]
-	c [label="Node C"]
-	a -- {b c}
+        a [label=&quot;Node A&quot;]
+        b [label=&quot;Node B&quot;]
+        c [label=&quot;Node C&quot;]
+        a -- {b c}
 
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-e34a39a754bcbee5c1db0cbff5e691d0.png" alt="diag e34a39a754bcbee5c1db0cbff5e691d0" width="239" height="155">
+<img src="/images/diag-e34a39a754bcbee5c1db0cbff5e691d0.png" alt="diag e34a39a754bcbee5c1db0cbff5e691d0" width="280" height="155">
 </div>
 </div>
 </div>
@@ -380,15 +380,15 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>digraph {
-	a [label="Node A"]
-	b [label="Node B"]
-	a -- b
+        a [label=&quot;Node A&quot;]
+        b [label=&quot;Node B&quot;]
+        a -- b
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-21542f57913be647a4ee27a32f6fde2a.png" alt="diag 21542f57913be647a4ee27a32f6fde2a" width="112" height="155">
+<img src="/images/diag-21542f57913be647a4ee27a32f6fde2a.png" alt="diag 21542f57913be647a4ee27a32f6fde2a" width="132" height="155">
 </div>
 </div>
 </div>
@@ -402,15 +402,15 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [label="Node A"]
-	b [label=Node B]
-	a -- b [dir="forward"]
+        a [label=&quot;Node A&quot;]
+        b [label=Node B]
+        a -- b [dir=&quot;forward&quot;]
 }</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/diag-ac443cf7a787ef5bd7f531df8b68cece.png" alt="diag ac443cf7a787ef5bd7f531df8b68cece" width="112" height="155">
+<img src="/images/diag-ac443cf7a787ef5bd7f531df8b68cece.png" alt="diag ac443cf7a787ef5bd7f531df8b68cece" width="132" height="155">
 </div>
 </div>
 <div class="paragraph">
@@ -424,16 +424,16 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a
-	b [shape=box]
-	c [shape=ellipse]
-	d [shape=oval]
-	e [shape=circle]
-	f [shape=point]
-	h [shape=diamond]
-	i [shape=cylinder]
-	j [shape=note]
-	k [shape=tab]
+        a
+        b [shape=box]
+        c [shape=ellipse]
+        d [shape=oval]
+        e [shape=circle]
+        f [shape=point]
+        h [shape=diamond]
+        i [shape=cylinder]
+        j [shape=note]
+        k [shape=tab]
 
 }</code></pre>
 </div>
@@ -463,15 +463,15 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	# 이 그래프에서의 node 기본값 지정
-	node [shape=box]
+        # 이 그래프에서의 node 기본값 지정
+        node [shape=box]
 
-	a
-	b
-	c
-	d
-	e
-	f
+        a
+        b
+        c
+        d
+        e
+        f
 }</code></pre>
 </div>
 </div>
@@ -488,20 +488,20 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	subgraph cluster01 {
-		label="Cluster 1"
-		a -- b
-		a -- c
-		b -- c
-		c
-	}
-	subgraph cluster02 {
-		d
-		e
-		f
-	}
-	# 서브그래프 를 벗어 나는 연결은 바깥쪽에 기술
-	c -- d
+        subgraph cluster01 {
+                label=&quot;Cluster 1&quot;
+                a -- b
+                a -- c
+                b -- c
+                c
+        }
+        subgraph cluster02 {
+                d
+                e
+                f
+        }
+        # 서브그래프 를 벗어 나는 연결은 바깥쪽에 기술
+        c -- d
 }</code></pre>
 </div>
 </div>
@@ -518,17 +518,17 @@ graph {
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	subgraph cluster01 {
-			a -- b
-			a -- c
-			b -- c
-			{rank = same; b; c;}
-	}
-	subgraph cluster02 {
-		d
-		e
-		f
-	}
+        subgraph cluster01 {
+                        a -- b
+                        a -- c
+                        b -- c
+                        {rank = same; b; c;}
+        }
+        subgraph cluster02 {
+                d
+                e
+                f
+        }
 }</code></pre>
 </div>
 </div>
@@ -585,16 +585,16 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	# 기본값이  normal입니다.
-	a -- b1 [dir="forward"]
-	a -- b2 [dir="forward" arrowhead=normal]
-	a -- c [dir="forward" arrowhead=onormal]
-	a -- d [dir="forward" arrowhead=diamond]
-	a -- e [dir="forward" arrowhead=odiamond]
-	a -- f [dir="forward" arrowhead=vee]
-	# 까치발 ^^
-	a -- g [dir="forward" arrowhead=crow]
-	a -- h [dir="forward" arrowhead=dot]
+        # 기본값이  normal입니다.
+        a -- b1 [dir=&quot;forward&quot;]
+        a -- b2 [dir=&quot;forward&quot; arrowhead=normal]
+        a -- c [dir=&quot;forward&quot; arrowhead=onormal]
+        a -- d [dir=&quot;forward&quot; arrowhead=diamond]
+        a -- e [dir=&quot;forward&quot; arrowhead=odiamond]
+        a -- f [dir=&quot;forward&quot; arrowhead=vee]
+        # 까치발 ^^
+        a -- g [dir=&quot;forward&quot; arrowhead=crow]
+        a -- h [dir=&quot;forward&quot; arrowhead=dot]
 }</code></pre>
 </div>
 </div>
@@ -631,11 +631,11 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a [style=solid]
-	b [style=dashed]
-	c [style=dotted]
-	d [style=bold]
-	e [style=filled]
+        a [style=solid]
+        b [style=dashed]
+        c [style=dotted]
+        d [style=bold]
+        e [style=filled]
 }</code></pre>
 </div>
 </div>
@@ -650,10 +650,10 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>graph {
-	a -- b0 [dir="forward" style=solid]
-	a -- b1 [dir="forward" style=dashed]
-	a -- b2 [dir="forward" style=dotted]
-	a -- b3 [dir="forward" style=bold]
+        a -- b0 [dir=&quot;forward&quot; style=solid]
+        a -- b1 [dir=&quot;forward&quot; style=dashed]
+        a -- b2 [dir=&quot;forward&quot; style=dotted]
+        a -- b3 [dir=&quot;forward&quot; style=bold]
 
 }</code></pre>
 </div>
@@ -684,7 +684,7 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>digraph Line {
-  graph [label="Line edges", splines=line, nodesep=0.8]
+  graph [label=&quot;Line edges&quot;, splines=line, nodesep=0.8]
   node [shape=box]
   a-&gt;{b c}
   b-&gt;{d e}
@@ -700,7 +700,7 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>digraph Orthogonal {
-  graph [label="Orthogonal edges", splines=ortho, nodesep=0.8]
+  graph [label=&quot;Orthogonal edges&quot;, splines=ortho, nodesep=0.8]
   node [shape=box]
   a-&gt;{b c}
   b-&gt;{d e}
@@ -716,7 +716,7 @@ rank 같은 속성은 괄호 안에 기술해야함
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>digraph Curved {
-  graph [label="Curved edges", splines=curved, nodesep=0.8]
+  graph [label=&quot;Curved edges&quot;, splines=curved, nodesep=0.8]
   node [shape=box]
   a-&gt;{b c}
   b-&gt;{d e}
