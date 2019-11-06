@@ -503,7 +503,7 @@ public void saveGoodsNames(Connection conn, List&lt;String&gt; names) {
            feedGrain();<span class="keyword">return</span>;
     <span class="keyword">case</span> LION:
           FeedMeet(); <span class="keyword">return</span>;
-    <span class="error">…</span>
+    ...
   }
 }
 function training(<span class="type">enum</span> animalType) {
@@ -512,7 +512,7 @@ function training(<span class="type">enum</span> animalType) {
            trainRun();<span class="keyword">return</span>;
     <span class="keyword">case</span> LION:
           trainHunt(); <span class="keyword">return</span>;
-    <span class="error">…</span>
+    ...
 }</pre></td>
 </tr></table></code></pre>
 </div>
@@ -564,7 +564,7 @@ function training(<span class="type">enum</span> animalType) {
 
 <span class="predefined-type">Class</span> Horse <span class="directive">extends</span> Animal{
   <span class="predefined-type">Void</span> feed(){
-    <span class="error">…</span> <span class="comment">// Eat grain</span>
+    ... <span class="comment">// Eat grain</span>
   }
   <span class="type">void</span> training() {
     .. <span class="comment">// run</span>
@@ -572,7 +572,7 @@ function training(<span class="type">enum</span> animalType) {
 }
 <span class="predefined-type">Class</span> Lion <span class="directive">extends</span> Animal{
   <span class="predefined-type">Void</span> feed(){
-    <span class="error">…</span> <span class="comment">// Eat meat</span>
+    ... <span class="comment">// Eat meat</span>
   }
   <span class="type">void</span> training() {
     .. <span class="comment">// hunt</span>
@@ -606,7 +606,7 @@ function training(<span class="type">enum</span> animalType) {
 <p>관점 지향 프로그래밍(Aspect Oriented Programming)은 시점에 따른 구조화를 수행하는 패러다임 입니다.</p>
 </div>
 <div class="paragraph">
-<p>여기에서 시점이란 메소드를 호출하는 순간, 메소드가 값을 반환하는 순간,  클래스의 필드를 읽으려고 하는 순간, 클래스의 필드에 값을 쓰려고 하는 순간, 예외가 발생한 순간… 등 뭐라 정의 하기는 애매하지만 우리 모두 알고 있는 그 시점입니다.  (Crosscutting concerns이라고 보통 이야기 하지만 crosscutting concerns에 대한 공통의 정의는 없습니다 ^^)</p>
+<p>여기에서 시점이란 메소드를 호출하는 순간, 메소드가 값을 반환하는 순간,  클래스의 필드를 읽으려고 하는 순간, 클래스의 필드에 값을 쓰려고 하는 순간, 예외가 발생한 순간&#8230;&#8203; 등 뭐라 정의 하기는 애매하지만 우리 모두 알고 있는 그 시점입니다.  (Crosscutting concerns이라고 보통 이야기 하지만 crosscutting concerns에 대한 공통의 정의는 없습니다 ^^)</p>
 </div>
 <div class="paragraph">
 <p>특정 시점을 정의하고 (Pointcut), 수행하려고 하는 작업을 정의하고(Advide) , 두 가지것이 묶인것을 관점(Aspect)라고 정의합니다.</p>
@@ -779,7 +779,7 @@ Spring Transaction 설계 사상 자체가 하부 라이브러리의 오류를 D
 <div class="sect4">
 <h5 id="spring_aop는_proxy_기반으로_별도의_객체가_bean을_호출하는_방식이_기본입니다"><a class="link" href="#spring_aop는_proxy_기반으로_별도의_객체가_bean을_호출하는_방식이_기본입니다">Spring AOP는 Proxy 기반으로 별도의 객체가 Bean을 호출하는 방식이 기본입니다.</a></h5>
 <div class="paragraph">
-<p>Client가 대상 Bean의 메소드를 호출할때 중간에 Proxy 객체가 그 메시지를 대신 받아서 트랜잭션을 실행시키고 bean의 메소드를 실행시키는 것인데요…</p>
+<p>Client가 대상 Bean의 메소드를 호출할때 중간에 Proxy 객체가 그 메시지를 대신 받아서 트랜잭션을 실행시키고 bean의 메소드를 실행시키는 것인데요&#8230;&#8203;</p>
 </div>
 <div class="paragraph">
 <p>Bean 객체 생성되면 Bean 객체는 Aspect Proxy 객체에 쌓여서 다른 Client에 주입되어 사용되게 됩니다.</p>
@@ -804,7 +804,7 @@ Spring Transaction 설계 사상 자체가 하부 라이브러리의 오류를 D
 </pre></td>
   <td class="code"><pre>
 <span class="type">class</span> <span class="class">Service</span> {
-  <span class="annotation">@Transactional</span> <span class="directive">public</span> <span class="type">void</span> save(){<span class="error">…</span>};
+  <span class="annotation">@Transactional</span> <span class="directive">public</span> <span class="type">void</span> save(){...};
 }
 
 
@@ -1026,7 +1026,7 @@ class OrderService {
 @Component
 class OrderHistoryService {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void recordOrderComplete() {…}
+  public void recordOrderComplete() {...}
 }</pre>
 </div>
 </div>
@@ -1175,7 +1175,7 @@ Commit ds 2</pre>
 <p>큰 문제는 없어 보이죠?</p>
 </div>
 <div class="paragraph">
-<p>그런데 환경적으로 datasource가 증가되어 2개 이상인데, 모든 Datasource를 XA Datasource로 등록하지 못하는 경우가 있습니다. XA를 지원하지 않는 DB라던가, 성능 문제때문에 XA를 사용할수 없는 경우라던가, XA에 과정에서 오류가 발생한다던가….</p>
+<p>그런데 환경적으로 datasource가 증가되어 2개 이상인데, 모든 Datasource를 XA Datasource로 등록하지 못하는 경우가 있습니다. XA를 지원하지 않는 DB라던가, 성능 문제때문에 XA를 사용할수 없는 경우라던가, XA에 과정에서 오류가 발생한다던가&#8230;&#8203;.</p>
 </div>
 <div class="paragraph">
 <p>하지만 그런 Datasource에서도 Tx는 지원해야 합니다.   따라서 Tx Manager가 여러개가 Spring context에 등록 될 수 있습니다.</p>
@@ -1186,7 +1186,7 @@ Commit ds 2</pre>
 <div class="listingblock">
 <div class="content">
 <pre>@Transactional(txManager=‘txManager1")
-public void action(){ … }</pre>
+public void action(){ ... }</pre>
 </div>
 </div>
 <div class="paragraph">
