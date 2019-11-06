@@ -8,31 +8,34 @@
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SVN 백업/복구, 증분백업/복구</title>
-<meta name="description" content="">
+<meta name="description" content="SVN 백업/복구 및  증분 백업/복구를 다룹니다.">
 <meta name="author" content="Jisung, Ahn">
 <meta name="copyright" content="Creative Commons license">
 
 <meta property="og:site_name"           content="narusas's blog" >
 <meta property="og:title"               content="SVN 백업/복구, 증분백업/복구" >
 <meta property="og:type"                content="article" >
-<meta property="og:description"         content="SW,IT에 대해 끄적입니다" >
-<meta property="og:url"                 content="https://narusas.github.io/2018/05/11/SVN-backup-restore.html" >
+<meta property="og:description"         content="SVN 백업/복구 및  증분 백업/복구를 다룹니다." >
+<meta property="og:url"                 content="https://narusas.github.io/2019/11/06/SVN-backup-restore.html" >
 <meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
 
-<meta property="article:published_time" content="2018-05-11T00:00:00+00:00" >
+<meta property="article:published_time" content="2019-11-06T00:00:00+00:00" >
 <meta property="article:author"         content="https://narusas.github.io/about/" >
 
+<meta property="article:tag"            content="svn" >
+<meta property="article:tag"            content="backup" >
+<meta property="article:tag"            content="restore" >
 
 
 
-<link rel="stylesheet" href="css/foundation.css">
-<link rel="stylesheet" href="css/font-awesome.css">
-<link rel="stylesheet" href="css/coderay.css">
-<link rel="stylesheet" href="css/asciidoctor.css">
-<link rel="stylesheet" href="css/narusas.css">
-<script src="js/vendor/modernizr.js"></script>
-<script src="js/vendor/jquery.js"></script>
-<script src="js/toc.js"></script>
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
 
   <!-- Google Tag Manager -->
   <script>
@@ -64,7 +67,7 @@
       <!-- Title Area -->
       <li class="name">
         <h1>
-          <a href="">narusas's blog</a>
+          <a href="../../../">narusas's blog</a>
 
         </h1>
       </li>
@@ -81,25 +84,37 @@
     <!-- Main Blog Content -->
     <div class="large-12 columns" role="content">
 
-      <div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>v1.1, 2019-11-06
-:showtitle:
-:page-navtitle: SVN 백업 및 복구, 증분백업, 증분복구
-:page-description: SVN 백업/복구 및  증분 백업/복구를 다룹니다.
-:page-tags: ['svn','backup','restore']
-:page-root: ../../../
-:toc:
-:sectnums:</p>
-</div>
-</div>
+      <h1>SVN 백업/복구, 증분백업/복구</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#덤프_받기">1. 덤프 받기</a>
+<ul class="sectlevel2">
+<li><a href="#전체_덤프_받기">1.1. 전체 덤프 받기</a></li>
+<li><a href="#지정_덤프_받기">1.2. 지정 덤프 받기</a></li>
+<li><a href="#구간_덤프_받기">1.3. 구간 덤프 받기</a></li>
+<li><a href="#특정_폴더_덤프_받기">1.4. 특정 폴더 덤프 받기</a></li>
+<li><a href="#특정_폴더를_제외_하고덤프_받기">1.5. 특정 폴더를 제외 하고덤프 받기</a></li>
+<li><a href="#특정_날짜부터_현재까지_덤프_받기">1.6. 특정 날짜부터 현재까지 덤프 받기</a></li>
+<li><a href="#증분_덤프_받기">1.7. 증분 덤프 받기</a></li>
+<li><a href="#백업하면서_압축하기">1.8. 백업하면서 압축하기</a></li>
+<li><a href="#압축_한거_풀기">1.9. 압축 한거 풀기</a></li>
+</ul>
+</li>
+<li><a href="#덤프_복원하기">2. 덤프 복원하기</a>
+<ul class="sectlevel2">
+<li><a href="#복원하기">2.1. 복원하기</a></li>
+<li><a href="#증분_덤프_복원하기">2.2. 증분 덤프 복원하기</a></li>
+<li><a href="#원격에서_덤프_하기">2.3. 원격에서 덤프 하기</a></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="sect1">
-<h2 id="덤프_받기">덤프 받기</h2>
+<h2 id="덤프_받기">1. 덤프 받기</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="전체_덤프_받기">전체 덤프 받기</h3>
+<h3 id="전체_덤프_받기">1.1. 전체 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/  &gt; ~/reposA.svn_dump</pre>
@@ -110,7 +125,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="지정_덤프_받기">지정 덤프 받기</h3>
+<h3 id="지정_덤프_받기">1.2. 지정 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ -r 10  &gt; ~/reposA.svn_dump</pre>
@@ -121,7 +136,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="구간_덤프_받기">구간 덤프 받기</h3>
+<h3 id="구간_덤프_받기">1.3. 구간 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ -r 10:20  &gt; ~/reposA.svn_dump</pre>
@@ -132,7 +147,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="특정_폴더_덤프_받기">특정 폴더 덤프 받기</h3>
+<h3 id="특정_폴더_덤프_받기">1.4. 특정 폴더 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ | svndumpfilter include WORK &gt; ~/reposA.svn_dump</pre>
@@ -143,7 +158,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="특정_폴더를_제외_하고덤프_받기">특정 폴더를 제외 하고덤프 받기</h3>
+<h3 id="특정_폴더를_제외_하고덤프_받기">1.5. 특정 폴더를 제외 하고덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ | svndumpfilter exclude TEMP &gt; ~/reposA.svn_dump</pre>
@@ -154,7 +169,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="특정_날짜부터_현재까지_덤프_받기">특정 날짜부터 현재까지 덤프 받기</h3>
+<h3 id="특정_날짜부터_현재까지_덤프_받기">1.6. 특정 날짜부터 현재까지 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ -r {2014-01-20}:HEAD &gt; ~/reposA.svn_dump</pre>
@@ -165,7 +180,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="증분_덤프_받기">증분 덤프 받기</h3>
+<h3 id="증분_덤프_받기">1.7. 증분 덤프 받기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/ -r 0:1000  &gt; ~/repos-0-1000.svn_dump
@@ -178,7 +193,7 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 </div>
 </div>
 <div class="sect2">
-<h3 id="백업하면서_압축하기">백업하면서 압축하기</h3>
+<h3 id="백업하면서_압축하기">1.8. 백업하면서 압축하기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin dump /var/www/svn/reposA/  | gzip -9 &gt; ~/reposA.svn_dump.gz</pre>
@@ -186,7 +201,7 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 </div>
 </div>
 <div class="sect2">
-<h3 id="압축_한거_풀기">압축 한거 풀기</h3>
+<h3 id="압축_한거_풀기">1.9. 압축 한거 풀기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>gunzip ~/reposA.svn_dump.gz</pre>
@@ -196,7 +211,7 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 </div>
 </div>
 <div class="sect1">
-<h2 id="덤프_복원하기">덤프 복원하기</h2>
+<h2 id="덤프_복원하기">2. 덤프 복원하기</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>덤프를 복원하기 위해서는 기존의 저장소나 빈 저장소가 있어야 합니다.</p>
@@ -205,7 +220,7 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 <p>svnadmin --help create 를 참고 하세요.</p>
 </div>
 <div class="sect2">
-<h3 id="복원하기">복원하기</h3>
+<h3 id="복원하기">2.1. 복원하기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin load /path/to/repo &lt; ~/reposA.svn_dump</pre>
@@ -216,7 +231,7 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 </div>
 </div>
 <div class="sect2">
-<h3 id="증분_덤프_복원하기">증분 덤프 복원하기</h3>
+<h3 id="증분_덤프_복원하기">2.2. 증분 덤프 복원하기</h3>
 <div class="listingblock">
 <div class="content">
 <pre>svnadmin /path/to/repo &lt; ~/repos-0-1000.svn_dump
@@ -229,7 +244,7 @@ svnadmin /path/to/repo &lt; ~/repos-2000-3000.svn_dump</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="원격에서_덤프_하기">원격에서 덤프 하기</h3>
+<h3 id="원격에서_덤프_하기">2.3. 원격에서 덤프 하기</h3>
 <div class="paragraph">
 <p><code>svnrdump</code> 은 원격에서 덤프를 할수 있습니다. 사용법은 동일합니다.</p>
 </div>
@@ -268,6 +283,21 @@ done</pre>
 
     </div>
     <span>Tags:
+      
+      
+      <a href="/tag/svn"><code class="highligher-rouge">
+          <nobr>svn</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/backup"><code class="highligher-rouge">
+          <nobr>backup</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/restore"><code class="highligher-rouge">
+          <nobr>restore</nobr>
+        </code>&nbsp;</a>
       
     </span>
 
@@ -321,7 +351,7 @@ done</pre>
 
 
     
-<script src="js/foundation.min.js"></script>
+<script src="../../../js/foundation.min.js"></script>
 <script>
 $(document).foundation();
 var doc = document.documentElement;
