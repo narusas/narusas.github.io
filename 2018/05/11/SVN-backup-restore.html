@@ -234,9 +234,9 @@ svnadmin dump /var/www/svn/reposA/ -r 2000:3000 --incremental &gt; ~/repos-2000-
 <h3 id="증분_덤프_복원하기">2.2. 증분 덤프 복원하기</h3>
 <div class="listingblock">
 <div class="content">
-<pre>svnadmin /path/to/repo &lt; ~/repos-0-1000.svn_dump
-svnadmin /path/to/repo &lt; ~/repos-1000-2000.svn_dump
-svnadmin /path/to/repo &lt; ~/repos-2000-3000.svn_dump</pre>
+<pre>svnadmin load  /path/to/repo &lt; ~/repos-0-1000.svn_dump
+svnadmin load  /path/to/repo &lt; ~/repos-1000-2000.svn_dump
+svnadmin load  /path/to/repo &lt; ~/repos-2000-3000.svn_dump</pre>
 </div>
 </div>
 <div class="paragraph">
