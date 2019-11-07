@@ -245,15 +245,15 @@
 8
 9
 </pre></td>
-  <td class="code"><pre><span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw);
-Statement stmt = conn.createStatement();
-ResultSet rs = stmt.executeQuery(</span><span class="delimiter">&quot;</span></span>select * from goods<span class="string"><span class="delimiter">&quot;</span><span class="content">);
-while(rs.next()) {
-  log.info(</span><span class="delimiter">&quot;</span></span>Goods: {}<span class="string"><span class="delimiter">&quot;</span><span class="content">,  rs.getString(</span><span class="delimiter">&quot;</span></span>goods_name<span class="string"><span class="delimiter">&quot;</span><span class="content">);
+  <td class="code"><pre><span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw</span><span class="delimiter">&quot;</span></span>);
+<span class="predefined-type">Statement</span> stmt = conn.createStatement();
+<span class="predefined-type">ResultSet</span> rs = stmt.executeQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select * from goods</span><span class="delimiter">&quot;</span></span>);
+<span class="keyword">while</span>(rs.next()) {
+  log.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Goods: {}</span><span class="delimiter">&quot;</span></span>,  rs.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">goods_name</span><span class="delimiter">&quot;</span></span>);
 }
 rs.close();
 stmt.close();
-conn.close();</span></span></pre></td>
+conn.close();</pre></td>
 </tr></table></code></pre>
 </div>
 </div>
@@ -279,19 +279,19 @@ conn.close();</span></span></pre></td>
 14
 </pre></td>
   <td class="code"><pre>
-<span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw);
-conn.setAutoCommit(false);
-Statement stmt1 = conn.createStatement();
-ResultSet rs = stmt1.executeQuery(</span><span class="delimiter">&quot;</span></span>select * from goods<span class="string"><span class="delimiter">&quot;</span><span class="content">);
-while(rs.next()) {
+<span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw</span><span class="delimiter">&quot;</span></span>);
+conn.setAutoCommit(<span class="predefined-constant">false</span>);
+<span class="predefined-type">Statement</span> stmt1 = conn.createStatement();
+<span class="predefined-type">ResultSet</span> rs = stmt1.executeQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select * from goods</span><span class="delimiter">&quot;</span></span>);
+<span class="keyword">while</span>(rs.next()) {
   PraparedStatement stmt2 =  conn.createPreparedStatement();
-  stmt2.execute(</span><span class="delimiter">&quot;</span></span>insert into goods_name_list values (?,?)<span class="string"><span class="delimiter">&quot;</span><span class="content">, rs.getString(</span><span class="delimiter">&quot;</span></span>name<span class="string"><span class="delimiter">&quot;</span><span class="content">), rs.getString(</span><span class="delimiter">&quot;</span></span>label<span class="string"><span class="delimiter">&quot;</span><span class="content">));
+  stmt2.execute(<span class="string"><span class="delimiter">&quot;</span><span class="content">insert into goods_name_list values (?,?)</span><span class="delimiter">&quot;</span></span>, rs.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>), rs.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">label</span><span class="delimiter">&quot;</span></span>));
   stmt2.close();
 }
 rs.close();
 stmt.close();
 conn.commit();
-conn.close();</span></span></pre></td>
+conn.close();</pre></td>
 </tr></table></code></pre>
 </div>
 </div>
@@ -350,42 +350,42 @@ conn.close();</span></span></pre></td>
 37
 </pre></td>
   <td class="code"><pre><span class="directive">public</span> <span class="type">void</span> recordGoodNameList(<span class="predefined-type">String</span> type) {
-  <span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw);
-  conn.setAutoCommit(false);
-  try {
-    List&lt;String&gt; names = findGoodsNames(conn,  type);
+  <span class="predefined-type">Connection</span> conn = <span class="predefined-type">Driver</span>.getConnection(<span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">pw</span><span class="delimiter">&quot;</span></span>);
+  conn.setAutoCommit(<span class="predefined-constant">false</span>);
+  <span class="keyword">try</span> {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; names = findGoodsNames(conn,  type);
     saveGoodsNames(conn, name);
     conn.commit();
-  }catch(Exception ex){
+  }<span class="keyword">catch</span>(<span class="exception">Exception</span> ex){
     conn.rollback();
   }
-  finally {
+  <span class="keyword">finally</span> {
     conn.close();
   }
 
 }
-public List&lt;String&gt; findGoodsNames(Connection conn, String type) {
-  List&lt;String&gt; res = new ArrayList&lt;&gt;();
-  Statement stmt1 = conn.createStatement();
-  ResultSet rs = stmt1.executeQuery(</span><span class="delimiter">&quot;</span></span>select * from goods where type=<span class="string"><span class="delimiter">&quot;</span><span class="content">+type);
-  while(rs.next()) {
-    res.add(rs.getString(</span><span class="delimiter">&quot;</span></span>name<span class="string"><span class="delimiter">&quot;</span><span class="content">));
+<span class="directive">public</span> <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; findGoodsNames(<span class="predefined-type">Connection</span> conn, <span class="predefined-type">String</span> type) {
+  <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; res = <span class="keyword">new</span> <span class="predefined-type">ArrayList</span>&lt;&gt;();
+  <span class="predefined-type">Statement</span> stmt1 = conn.createStatement();
+  <span class="predefined-type">ResultSet</span> rs = stmt1.executeQuery(<span class="string"><span class="delimiter">&quot;</span><span class="content">select * from goods where type=</span><span class="delimiter">&quot;</span></span>+type);
+  <span class="keyword">while</span>(rs.next()) {
+    res.add(rs.getString(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>));
   }
   rs.close();
-  stmt1.close(); // &lt;— 잠재적인 Close 버그 가 있음
-  return res;
+  stmt1.close(); <span class="comment">// &lt;— 잠재적인 Close 버그 가 있음</span>
+  <span class="keyword">return</span> res;
 }
 
-public void saveGoodsNames(Connection conn, List&lt;String&gt; names) {
-  PreparedStatement stmt = conn.preparedStatememt(</span><span class="delimiter">&quot;</span></span>insert into goods_name_list(name) values (?)<span class="string"><span class="delimiter">&quot;</span><span class="content"> );
-  for(String name: names) {
-    stmt.setString(1, name);
+<span class="directive">public</span> <span class="type">void</span> saveGoodsNames(<span class="predefined-type">Connection</span> conn, <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; names) {
+  <span class="predefined-type">PreparedStatement</span> stmt = conn.preparedStatememt(<span class="string"><span class="delimiter">&quot;</span><span class="content">insert into goods_name_list(name) values (?)</span><span class="delimiter">&quot;</span></span> );
+  <span class="keyword">for</span>(<span class="predefined-type">String</span> name: names) {
+    stmt.setString(<span class="integer">1</span>, name);
     stmt.addBatch();
     stmt.clearParameters();
   }
   stmt.executeBatch();
   stmt.close();
-}</span></span></pre></td>
+}</pre></td>
 </tr></table></code></pre>
 </div>
 </div>
