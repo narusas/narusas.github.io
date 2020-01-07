@@ -126,6 +126,9 @@
 기존에 문서 작성에 사용하던 docbook을 대체하는 도구이며, spring,linux 등 여러 곳에서 적용되고 있습니다.</p>
 </div>
 <div class="paragraph">
+<p>markdown이 텍스트 기반 이메일 메시지를 작성하던 규약에서 발전 된 것이라 상대적으로 단순한 표현력만 가지고 있는것에 비해 asciidoc 는 SGML, Dockbook처럼  전문적인 문서를 작성할수 있는 매우 강력한 표현력을 제공합니다.</p>
+</div>
+<div class="paragraph">
 <p>아스키독은 단순 텍스트 일 뿐입니다. 선호하는 텍스트 에디터로 열어서 보고 편집할수 있습니다.</p>
 </div>
 </div>
@@ -262,7 +265,7 @@ WARNING: 위험합니다.</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-참고하고 하세요
+참고 하세요
 </td>
 </tr>
 </table>
@@ -575,10 +578,10 @@ _italic phrase_ &amp; __char__acter__s__
 </div>
 </div>
 <div class="paragraph">
-<p>중첩된 목록을 가지고 싶다면 중첩만큼 <code>*</code>을 입력하면 됩니다. 최대 5단계까지 중첩 가능합니다.
-.소스</p>
+<p>중첩된 목록을 가지고 싶다면 중첩만큼 <code>*</code>을 입력하면 됩니다. 최대 5단계까지 중첩 가능합니다.</p>
 </div>
 <div class="listingblock">
+<div class="title">소스</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="asciidoc">.Possible DefOps manual locations
 * West wood maze
@@ -682,7 +685,7 @@ _italic phrase_ &amp; __char__acter__s__
 </div>
 </div>
 <div class="paragraph">
-<p>만약 숫자를 직접 입력하기로 결정했다면, 숫자는 반드시 일련성을 가져야합니다. 또한 새로운 번호에서 시작하고 싶다면 그 숫자로 시작하면 됩니다.</p>
+<p>만약 정렬된 목록을 만들기 위해 숫자를 사용하기로 하였다면, 숫자는 반드시 일련성을 가져야합니다. 또한 새로운 번호에서 시작하고 싶다면 그 숫자로 시작하면 됩니다.</p>
 </div>
 <div class="listingblock">
 <div class="title">소스</div>
@@ -695,10 +698,18 @@ _italic phrase_ &amp; __char__acter__s__
 <div class="openblock">
 <div class="title">출력</div>
 <div class="content">
-<div class="paragraph">
-<p>\4. Step four
-\5. Step five
-\6. Step six</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Step four</p>
+</li>
+<li>
+<p>Step five</p>
+</li>
+<li>
+<p>Step six</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -857,10 +868,10 @@ converter)</p></td>
 </tbody>
 </table>
 <div class="paragraph">
-<p>넘버링 스타일도 변경할수 있습니다.
-.소스</p>
+<p>넘버링 스타일도 변경할수 있습니다.</p>
 </div>
 <div class="listingblock">
+<div class="title">소스</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="asciidoc">[lowerroman, start=5]
 . Five
@@ -981,37 +992,13 @@ Hard drive:: Permanent storage for operating system and/or user files.
 RAM:: Temporarily stores information the CPU uses during operation.</code></pre>
 </div>
 </div>
-<div class="openblock">
+<div class="listingblock">
 <div class="title">출력</div>
 <div class="content">
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-CPU
-</td>
-<td class="hdlist2">
-<p>The brain of the computer.</p>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-Hard drive
-</td>
-<td class="hdlist2">
-<p>Permanent storage for operating system and/or user files.</p>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-RAM
-</td>
-<td class="hdlist2">
-<p>Temporarily stores information the CPU uses during operation.</p>
-</td>
-</tr>
-</table>
-</div>
+<pre>[horizontal]
+CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.</pre>
 </div>
 </div>
 <div class="paragraph">
