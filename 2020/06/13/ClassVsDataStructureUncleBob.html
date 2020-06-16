@@ -1,0 +1,879 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class VS Data Structure from Uncle Bob</title>
+<meta name="description" content="엉클밥 형님의 Class vs Data Structure 번역">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="Class VS Data Structure from Uncle Bob" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="엉클밥 형님의 Class vs Data Structure 번역" >
+<meta property="og:url"                 content="https://narusas.github.io/2020/06/13/ClassVsDataStructureUncleBob.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2020-06-13T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="class" >
+<meta property="article:tag"            content="data structure" >
+<meta property="article:tag"            content="uncle bob" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  <!-- Google Tag Manager -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-NHC6HV5');
+  </script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NHC6HV5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Nav Bar -->
+  <nav class="top-bar" data-topbar>
+    <ul class="title-area">
+      <!-- Title Area -->
+      <li class="name">
+        <h1>
+          <a href="../../../">narusas's blog</a>
+
+        </h1>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+  </nav>
+  <!-- End Nav -->
+
+
+  <!-- Main Page Content and Sidebar -->
+
+  <div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+      <h1>Class VS Data Structure from Uncle Bob</h1>
+<div class="sect1">
+<h2 id="class_vs_data_structure">Class vs Data Structure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>원본글: <a href="https://blog.cleancoder.com/uncle-bob/2019/06/16/ObjectsAndDataStructures.html" class="bare">https://blog.cleancoder.com/uncle-bob/2019/06/16/ObjectsAndDataStructures.html</a></p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>What is a class?<br>
+클래스가 뭔가요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A class is the specification of a set of similar objects.<br>
+클래스는 비슷한 객체들의 특성을 묶어둔것입니다.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>What is an object?<br>
+객체는 뭔가요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>An object is a set of functions that operate upon encapsulated data elements.<br>
+객체는 숨겨진 자료 요소에 기반한 기능의 목록입니다.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Or rather, an object is a set of functions that operate on implied data elements.<br>
+또는, 내제된 자료 요소에  기반한 기능의 목록일수도 있지요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>What do you mean by implied data elements?<br>
+내제된(Implied) 자료 요소라는게 뭔가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>The functions of an object imply the existence of some data elements; but that data is not directly accessible or visible outside of the object.<br>
+객체의 기능이 내포하는 의미는 어떤 종료의 데이터가 존재한다는 것입니다. 하지만 객체외부에서는 그것을 직접 접근할수도 없고, 볼수도 없죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Isn’t the data inside the object?<br>
+데이터는 객체 내부에 있는거 아닌가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>It could be; but there’s no rule that says it must be. From the point of view of the user, an object is nothing more than a set of functions. The data that those functions operate upon must exist, but the location of that data is unknown to the user.<br>
+그럴수도 있습니다. 하지만 그것이 반드시 따라야 하는 규칙은 아닙니다. 사용자의 관점에서 보자면, 객체는 그냥 기능의 묶음일 뿐입니다. 그 기능이 동작히기 위한 데이터는 반드시 필요하지만, 데이터의 위치를  사용자는 알수 없습니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Hmmm. OK, I’ll buy that for the moment.<br>
+흠. 지금까지는 알겠어요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Good. Now, what is a data structure?<br>
+좋아요. 그럼 자료 구조는 뭔가요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>A data structure is a cohesive set of data elements.<br>
+자료 구조는 데이터 요소의 응집적 묶음입니다.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Or, in other words, a data structure is a set of data elements operated upon by implied functions.<br>
+또는  다른 말로, 자료 구조는 내재된 기능에 의해 수행되는 자료 요소의 묶음이라고 할수도 있죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, OK. I get it. The functions that operate on the data structure are not specified by the data structure but the existence of the data structure implies that some operations must exist.<br>
+네, 네 알았아요. 자료 구조에 대해 수행되는 기능들을 특정하지는 않았지만, 자료 구조가 존재한다는 사실 자체가 자체가 어떤 동작을 수행한다는 것을 암시한다는 것이죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. Now what do you notice about those two definitions?<br>
+좋아요. 이제 두개의 차이에 대해 뭘 알았나요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>They are sort of the opposite of each other.<br>
+두개가 서로 반대되는 종류의 것이라는것이요.</p>
+</div>
+<div class="paragraph">
+<p>Indeed. They are complements of each other. They fit together like a hand in a glove.<br>
+사실 두개는 서로를 보완하는 것들입니다. 서로는 장갑과 손처럼 딱 들어 맞죠</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An Object is a set of functions that operate upon implied data elements.<br>
+객체는 내제된 자료 구조에 기반해 동작하는 기능의 묶음입니다.</p>
+</li>
+<li>
+<p>A Data Structure is a set of data elements operated upon by implied functions<br>
+자료 구조는 내재된 기능들이 동작 기반이 되는 자료 요소입니다.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Wow, so objects aren’t data structures.<br>
+와, 그럼 객체는 자료구조가 아니군요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Correct. Objects are the opposite of data structures.<br>
+맞아요. 객체는 자료구조의 정반대입니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So a DTO – a Data Transfer Object – is not an object?<br>
+그럼 DTO - Data Transfer Object -는 객체가 아닌거죠?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Correct. DTOs are data structures.<br>
+네 DTO는 자료구조에요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And so database tables aren’t objects either are they?<br>
+그리고 데이터베이스 테이블도 객체가 아닌거고요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Correct again. Databases contain data structures, not objects.<br>
+네. 데이터베이스는 자료구조를 포함하지, 객체를 포함하는게 아닙니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>But wait. Doesn’t an ORM – And Object Relational Mapper – map database tables to objects?<br>
+잠깐만요, ORM(Object Relation Mapper)이 데이터베이스 테이블을 객체로 매핑해주는거 아니였어요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Of course not. There is no mapping between database tables and objects. Database tables are data structures, not objects.<br>
+당연히 아닙니다. 데이터베이스 테이블과 객체 사이에는 매핑이라는 것이 존재하지 않아요. 데이터베이스 테이블은 객체가 아니고 자료구조에요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So then what do ORMs do?<br>
+그럼 ORM은 뭘 하는거죠?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>They transfer data between data structures.<br>
+ORM은 자료구조 사이에서 데이터를 전달하는 역활을 해줍니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So they don’t have anything to do with Objects?<br>
+그럼 ORM은 객체에 대해서 무언가 해주고 있는게 아무것도 없는건가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Nothing whatever. There is no such thing as an Object Relational Mapper; because there is no mapping between database tables and objects.<br>
+아무것도 없습니다. 사실 객체-관계-매퍼 라는건 존재하지 않아요. 객체와 테이블 사이에는 매핑이라는것이  존재 하지 않거든요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>But I thought ORMs built our business objects for us.<br>
+하지만, 저는 ORM이 비지니스 객체를 생성해 준다고 생각하고 있었는데요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>No, ORMs extract the data that our business objects operate upon. That data is contained in a data structure loaded by the ORM.<br>
+아니에요. ORM은 우리의 비지니스 객체가 동작히기 위한 데이터를 추출해주는 겁니다.  그 데이터는 ORM에 의해 일어들여진 자료구조를 포함하고 있지요. 하지만 \</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>But then doesn’t the business object contain that data structure?<br>
+그럼 비지니스 객체는 자료구조를 포함하고 있지 않은건가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>It might. It might not. That’s not the business of the ORM.+
+그럴수도 있지요. 하지만 그건 ORM의 상관할 바가 아니죠</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>That seems like a minor semantic point.<br>
+뭔가 의미론적으로만 가치있는, 별 쓰잘데기 없는 구분 같은데요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Not at all. The distinction has significant implications.<br>
+천만에요. 이 구분은 거대한 함의를 가지고 있습니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Such as?<br>
+예를들면?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Such as the design of the database schema vs. the design of the business objects. Business objects define the structure of the business behavior. Database schemas define the structure of the business data. Those two structures are constrained by very different forces. The structure of the business data is not necessarily the best structure for the business behavior.<br>
+데이터베이스 스키마 설계 vs 비지니스 객체의 설계같은 것이 예가 되겠죠. 비지니스 객체는 비지니스 행동의 구조를 정의합니다. 데이터베이스 스키마는 비지니스 자료의 구조를 정의합니다. 이 두개의 구조는 매우 다른 힘에 의해 제약받게 됩니다. 비지니스 자료구조는 비지니스 행동을 위한 최선의 구조를 가질 필요가 없습니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Hmmm. That’s confusing.<br>
+음.. 조금 헷갈리네요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Think of it this way. The database schema is not tuned for just one application; it must serve the entire enterprise. So the structure of that data is a compromise between many different applications.<br>
+이렇게 생각해보죠. 데이터베이스 스키마는 딱 하나의 어플리케이션만을 위해 튜닝되지 않습니다. 스키마는 반드시 기업 전체의 요구에 맞춰져야합니다. 그렇기때문에 자료의 구조는 서로다른 여러 어플리케이션들의 타협점입니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, I get that.<br>
+그건 이해 되네요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Good. But now consider each individual application. The Object model of each application describes the way the behavior of those applications are structured. Each application will have a different object model, tuned to that application’s behavior.<br>
+좋아요. 히지만 각각의 개별 어플리케이션에 대해 생각해봅니다. 각 어플리케이션의 객체 모델은 그 어플리케이션의 행위의 구조를 기술하게 됩니다. 각 어플리케이션은 자신의 행위에 최적화된 객체모델을 가지게 됩니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Oh, I see. Since the database schema is a compromise of all the various applications, that schema will not conform to the object model of any particular application.<br>
+아, 알겠어요. 데이터베이스 스키마가 여러 어플리케이션의 타협이기 때문에, 스키마는 어떤 특정 어플리케이션의 객체모델과 일치시킬수 없는거군요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right! Objects and Data Structures are constrained by very different forces. They seldom line up very nicely. People used to call this the Object/Relational impedance mismatch.<br>
+맞습니다!. 객체와 자료구조는 서로다른 힘에 의해 제약 받습니다. 두개가 멋지게 일치하는 일은 거의 일어나지 않습니다. 사람들은 이것을 객체-관계 임피던스 불일치라고 부르죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I’ve heard of that. But I thought that impedance mismatch was solved by ORMs.<br>
+들어본거 같아요. 하지만 저는 그 문제가 ORM으로 해결 되는거라고 생각했어요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>And now you now differently. There is no impedance mismatch because objects and data structures are complementary, not isomorphic.<br>
+이제 다르다른것을 알았죠. 임피던스 불일치라는것은 존재하지 않아요. 객체와 자료구조는 보완관계에 있지, 비슷한 동형관계가 아니거든요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Say what?<br>
+뭐라고요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>They are opposites, not similar entities.<br>
+객체와 자료구조는 반대이지, 비슷한게 것들이 아니에요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Opposites?<br>
+반대라고요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Yes, in a very interesting way. You see, objects and data structures imply diametrically opposed control structures.<br>
+네, 흥미로운 방식으로 서로 반대입니다. 아시겠지만, 객체와 자료구조는 완전히 정 반대의 제어 구조를 의미해요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Wait, what?<br>
+잠깐만요,  뭐라고요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Consider a set of object classes that all conform to a common interface. For example, imagine classes that represent two dimensional shapes that all have functions for calculating the area and perimeter of the shape.<br>
+공통의 사용방법(인터페이스)을 만족하는 일련의 객체 클래스를 생각해봅시다. 예를들어 넚이와 직경을 구할수 있는 기능을 제공하는 2차원 형태를 표현하는 클래스를 생각해보죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Why does every software example always involve shapes?<br>
+소프트웨어 예제들은 왜  그리도 Shape를 좋아하는것까요? 항상 Shape가 나오네요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Let’s just consider two different types: Squares and Circles. It should be clear that the area and permimeter functions of these two classes operate on different implied data structures. It should also be clear that the way those operations are called is via dynamic polymorphism.<br>
+두개의 다른 타입을 고려해보죠. 사각형과 원형. 이것은 누가봐도 명백하게 서로 다른 자료구조에 기반해서 동작하는 넓이와 직경 계산을 수행하겠죠. 또, 두개 객체는 동적 다형성에 기반에 행동하게 될겁니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Wait. Slow down. What?<br>
+아휴, 좀 천천히 하시죠. 뭐라고요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>There are two different area functions; one for Square, the other for Circle. When the caller invokes the area function on a particular object, it is that object that knows what function to call. We call that dynamic polymorphism.<br>
+넓이 계산 함수가  두개 있겠죠? 하나는 사작형을 계산하는거, 하나는 원형을 계산하는거. 호출자가 특정 객체의 넙이(are) 함수를  호출해야만, 실제로 함수가 결정될지는 호출되는 객체에 따라 달라질겁니다. 이걸 동적 다형성이라고 부릅니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK. Sure. The object knows the implementation of its methods. Sure.<br>
+아, 그거요. 객체가 메소드 구현체를 안다는 거죠. 당연하죠</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Now let’s turn those objects into data structures. We’ll use Discriminated Unions.<br>
+자 이제 자료구로로 들어가보죠. 우리는 구별된 공용 구조체(Discriminated Unions)를 사용할겁니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Discoominated whats?<br>
+구별된 뭐요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Discriminated Unions. In our case that’s just two different data structures. One for Square and the other for Circle. The Circle data structure has a center point, and a radius for data elements. It’s also got a type code that identifies it as a Circle.<br>
+구별된 공용 구조체(Discriminated Unions)입니다. 우리의 경우 단순히 서로 다른 자료구조일뿐이죠. 하나는 정사각형, 하나는 원형을 위한 자료구조 일겁니다. 원형 자료구조는 중심점, 반경을 자료 요소로 가질것입니다. 그리고 원형이라는 것을 나타내기 위한 타입 코드를 하나 가질급니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>You mean like an enum?<br>
+enum 같은 걸 이야기 하는건가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Sure. The Square data structure has the top left point, and the length of the side. It also has the type discriminator – the enum. <br>
+네. 정사각형 자료구조는 좌상단 점, 면의 길이, 그리고 타입 식별자 - enum을 가질겁니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK. Two data structures with a type code.<br>
+네. 타입코드를 가지는 두개의 자료구조. 알겠어요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. Now consider the area function. Its going to have a switch statement in it, isn’t it?<br>
+좋아요. 자 이제 면적(area) 함수에 대해 생각해봅시다.  이제 switch 문으로 가려는거 같죠?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Um. Sure, for the two different cases. One for Square and the other for Circle. And the perimeter function will need a similar switch statement<br>
+확실히 그렇죠. 두개의 다른 경우를 처리해야 하니까요. 하나는 정사각형, 하나는 원형. 그리고 직경(Perimeter) 함수도 비슷하겠죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right again. Now think about the structure of those two scenarios. In the object scenarios the two implementations of the area function are independent of each other and belong (in some sense of the word) to the type. Square’s area function belongs to Square and Circle’s area function belongs to Circle.<br>
+네 맞았요. 이제 두 시나리오에 대해 생각해보죠. 객체 시나리오에서는 두개의 구현이 있었지만, 타입에 상관업는 넓이(area) 함수가 있었지요. 정사각형의 넓이(area) 함수는 정사각형에 있었고, 원형의 것은 원형에 있었죠</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, I see where you are going with this. In the data structure scenario the two implementations of the area function are together in the same function, they don’t “belong” (however you mean that word) to the type.<br>
+네, 이제 무슨 말을 하는지 알겠어요. 자료주고 시나리오에서는 두개의 구현이 같은 함수에 있었고, 그 함수는 타입에 속해 있지 않았죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>It gets better. If you want to add the Triangle type to the object scenario, what code must change?<br>
+훨씬 나아졌네요. 이제 당신이 삼각형을 객체 시나리오에 추가한다면, 어떤 코드가 변경되어야 하나요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>No code changes. You just create the new Triangle class. Oh, I suppose the creator of the instance has to be changed.<br>
+변경될게 없죠. 새로운 클래스를 만들면 되죠. 아, 객체 인스턴스를  생성하는 곳은 좀 바꾸어야 겠네요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. So when you add a new type, very little changes. Now suppose you want to add a new function - say the center function.<br>
+맞아요. 새로운 타입을 추가하고, 아주 조금의 수정을 가하고. 자 이제 새로운 함수를 추가 한다고 생각해보죠. 중심점 함수를 추가해볼까요</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Well then you’d have to add that to all three types, Circle, Square ,and Triangle.<br>
+그럼 원형, 정사각형, 삼각형 모두에 함수를 추가해야 되죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Good. So adding new functions is hard, you have to change each class.<br>
+네. 새로운 함수를 추가하는것은 모든 클래스를 변경해야 하기 때문에  힘들죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>But with data structures it’s different. In order to add Triangle you have to change each function to add the Triangle case to the switch statements.<br>
+하지만 자료구조는 다르잖아요. 삼각형을 추가하려면 모든 함수를 변경해야 하니까 힘들죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. Adding new types is hard, you have to change each function.<br>
+맞아요. 새로운 타입을 추가하는것은 각각의 함수를 변경해야 하니까 힘들죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>But when you add the new center function, nothing has to change.<br>
+하지만 새로운 중심점 함수를 추가할때는 변경할게 없잖아요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Yup. Adding new functions is easy.<br>
+네 새 함수를 추가하는것 쉽죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Wow. It’s the exact opposite.<br>
+와 정확히 반대네요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>It certainly is. Let’s review:
+확실히 그렇죠. 리뷰해볼까요</p>
+</div>
+</blockquote>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Adding new functions to a set of classes is hard, you have to change each class.<br>
+클래스들에 함수를 추가하는것, 모든 클래스를 변경해야 하기 때문에 어렵다</p>
+</li>
+<li>
+<p>Adding new functions to a set of data structures is easy, you just add the function, nothing else changes.<br>
+자료 구조는 새로운 함수를 추가하는것은 쉽니다. 그냥 추가하면된다.</p>
+</li>
+<li>
+<p>Adding new types to a set of classes is easy, you just add the new class.<br>
+객체 구조에서 새로운 타입을 추가하는것은 쉽다. 그냥 추가하면 된다.</p>
+</li>
+<li>
+<p>Adding new types to a set of data structures is hard, you have to change each function.<br>
+새로운 타입을 자료구조에 추가하는 것은 어렵다. 각 함수를 모두 수정해야 한다.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Yeah. Opposites. Opposites in an interesting way. I mean, if you know that you are going to be adding new functions to a set of types, you’d want to use data structures. But if you know you are going to be adding new types then you want to use classes.<br>
+와, 완전히 반대네요. 흥미로운정도로 정반대군요. 그러니까, 새로운 많은 함수를 추가할 예정이 있다면 자료구조를 사용하는게 좋고, 많은 타입을 추가할 예정이 있다면 클래스를 쓰면 좋다는거네요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Good observation! But there’s one last thing for us to consider today. There’s yet another way in which data structures and classes are opposites. It has to do with dependencies.<br>
+제대로 봤어요! 하지만 오늘날에는 하나 더 고려할게 있습니다. 클래스와 자료구조가 정반대인 것에 의존성도 존재합니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Dependencies?<br>
+의존성이요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Yes, the direction of the source code dependencies.<br>
+네, 소스코드의 의존성의 방향말입니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, I’ll bite. What’s the difference? <br>
+아하, 뭐가 다른거죠?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Consider the data structure case. Each function has a switch statement that selects the appropriate implementation based upon the type code within the discriminated union.<br>
+자료구조에서 시작해보죠. 각각의 함수에 포함된 스위치문은 구별된 공용 구조체(Discriminated Unions)에 포함된 타입 코드를 보고 적절한 구현을 선택하게 될겁니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, that’s true. But so what?<br>
+네 그렇죠. 그래서 어떻게 되나요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Consider a call to the area function. The caller depends upon the area function, and the area function depends upon every specific implementation.<br>
+넓이 함수를 호출할때를 생각해보죠. 호출자는 넓이(area) 함수에 의존하고, 넓이 함수는 각 특정 구현에 의존하죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>What do you mean by “depends”?<br>
+의존한다는게 어떤 의미죠?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Imagine that each of the implementations of area is written into it’s own function. So there’s circleArea and squareArea and triangleArea.<br>
+각 넓이 함수의 구현은 각자만의 개별 함수로 쓰여져 있을겁니다. circleArea, squareArea, triangleArea 같은 함수겠죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, so the switch statement just calls those functions.<br>
+네, 그래서 스위치문에 그 함수들을 호출하겠죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Imagine those functions are in different source files.<br>
+그 함수들이 서로 개별적인 소스 파일에 저장되어있다고 생각해보세요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Then the source file with the switch statement would have to import, or use, or include, all those source files.<br>
+그럼 switch문이 있는 파일은 각각의 파일을 import/use/include 해야 겠네요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. That’s a source code dependency. One source file depends upon another source file. What is the direction of that dependency?<br>
+맞아요. 그게 바로 소스코드 의존성입니다. 하나의 소스 파일이 다른 소스 파일에 의존하고 있죠. 그 의존성의 방향은 어떻게 되죠?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The source file with the switch statement depends upon the source files that contain all the implementations.<br>
+switch문이 있는 소스파일이 나머지 구현이 있는 소스 방향으로 의존하고 있지요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>And what about the caller of the area function?<br>
+그리고 넓이 함수의 호출자는 어떤가요?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The caller of the area function depends upon the source file with the switch statement which depends upon all the implementations.<br>
+넓이함수의 호출자는 switch 문이 들어 있는 함수의 소스파일에 의존하고 있어요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Correct. All the source file dependencies point in the direction of the call, from the caller to the implementation. So if you make a tiny change to one of those implementations…<br>
+맞아요. 모든 소스 파일의 의존성은 호출하는 방향에에 따르고 있지요. 호출자로부터 구현까지. 그래서 만약 당신이 구현체에 조그마한 수정을 한다면&#8230;&#8203;</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, I see where you are going with this. A change to any one of the implementations will cause the source file with the switch statement to be recompiled, which will cause everyone who calls that switch statement – the area function in our case – to be recompiled.<br>
+네, 이제 이떻게 흘러가는지 알겠네요. 구현체중 하나에 작은 변경을 가하면, swtich문을 가진 함수도  재컴파일해야하고, 그 함수를 호출하는 호출자 소스도 재컴파일 해야하죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. At least that’s true for language systems that depend upon the dates of source files to figure out which modules should be compiled.<br>
+맞아요. 최소한 소스파일의 날자 변경을 알아내서 컴파일을 수행하는 언어 체계에서는 맞는 말입니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>That’s pretty much all of them that use static typing, right? <br>
+정적 타이핑을 사용하기 때문에 말이죠. 그렇죠?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Yes, and some that don’t.<br>
+그렇기도 하고 아니기도 합니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>That’s a lot of recompiling. <br>
+컴파일이 많이 일어나겠군요</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>And a lot of redeploying.<br>
+재배포도 필요하겠죠</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, but this is reversed in the case of classes?<br>
+네 그럼 반대로 클래스의 경우는 어떤가요?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Yes, because the caller of the area function depends upon an interface, and the implementation functions also depend upon that interface.<br>
+네 들어가 보죠. 넓이함수의 호출자는 인터페이스에 의존하고 있을겁니다. 그리고 구현체도 인터페이스에 의존하고 있죠.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>I see what you mean. The source file of the Square class imports, or uses, or includes the source file of the Shape interface.<br>
+네 뭘 말하고 싶은이 알겠어요. 정사각형(Square) 클래스의 소스 파일은 도형(Shape) 인터페이스의 소스 파일을 import/use/include 하겠지요.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. The source files of the implementation point in the opposite direction of the call. They point from the implementation to the caller. At least that’s true for statically typed languages. For dynamically typed languages the caller of the area function depends upon nothing at all. The linkages get worked out at run time.<br>
+맞아요. 구현체의 소스파일은 호출의 반대지점에 있어요. 구현체에서 호출자로 의존성이 흐르게 되죠.최소한 정적 타이핑 언어에는 그렇죠. 동적 타이핑 언어에서는 더 심하죠. 아무것에도 의존하지 않아요. 연결(Linking)을 런타임에 진행하거든요.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Right. OK. So if you make a change to one of the implementations…<br>
+그렇네요. 그럼 내가 구현에 무언가 변경을 가하게 되면&#8230;&#8203;</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Only the changed file needs to be recompiled or redeployed.<br>
+변경된 파일만 재컴파일하고 재배포 하면 됩니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>And that’s because the dependencies between the source files point against the direction of the call.<br>
+그리고 그렇기 때문에 의존성의 방향이 호출하는 쪽으로 향하게 되죠.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Right. We call that Dependency Inversion.<br>
+네 이것을 의존성 역전이라고 부릅니다.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>OK, so let me see if I can wrap this up. Classes and Data Structures are opposites in at least three different ways.<br>
+좋아요, 이제 좀 정리좀 해볼까요. 클래스와 자료구조는 여러가지 방향에서 서로 정반대이다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Classes make functions visible while keeping data implied. Data structures make data visible while keeping functions implied.<br>
+클래스는 함수만 볼수 있고, 데이터의 존재를 암시한다. 자료구조는 자료를 볼수 있고, 함수의 존재를 암시한다.</p>
+</li>
+<li>
+<p>Classes make it easy to add types but hard to add functions. Data structures make it easy to add functions but hard to add types.<br>
+클래스는 타입을 추가하기 쉬운 반면, 함수를 추가하기 어렵다. 자료구조는 함수를 추가하기는 쉽지만, 타입을 추가하기 어렵니다.</p>
+</li>
+<li>
+<p>Data Structures expose callers to recompilation and redeployment. Classes isolate callers from recompilation and redeployment.<br>
+자료구조는 호출자에게 재컴파일과 재배포를 강요합니다. 클래스는 호출자를 재컴파일과 재배포에서 고립시킬수 있습니다.</p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>You got it. These are issues that every good software designer and architect needs to keep in mind.<br>
+맞아요. 모든 소프트웨어 디자이너과 아키텍트가 명심해야 하는 내용이죠.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+      
+      <a href="/tag/class"><code class="highligher-rouge">
+          <nobr>class</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/data structure"><code class="highligher-rouge">
+          <nobr>data structure</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/uncle bob"><code class="highligher-rouge">
+          <nobr>uncle bob</nobr>
+        </code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+    <!-- End Main Content and Sidebar -->
+
+
+    <div id="commento"></div>
+    <script src="https://cdn.commento.io/js/commento.js"></script>
+
+
+    <!-- Footer -->
+
+    <footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+
+</html>
