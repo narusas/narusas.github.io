@@ -691,13 +691,13 @@ switch문이 있는 소스파일이 나머지 구현이 있는 소스 방향으�
 <blockquote>
 <div class="paragraph">
 <p>Correct. All the source file dependencies point in the direction of the call, from the caller to the implementation. So if you make a tiny change to one of those implementations…<br>
-맞아요. 모든 소스 파일의 의존성은 호출하는 방향에에 따르고 있지요. 호출자로부터 구현까지. 그래서 만약 당신이 구현체에 조그마한 수정을 한다면&#8230;&#8203;</p>
+맞아요. 모든 소스 파일의 의존성은 호출하는 방향에 따르고 있지요. 호출자로부터 구현까지. 그래서 만약 당신이 구현체에 조그마한 수정을 한다면&#8230;&#8203;</p>
 </div>
 </blockquote>
 </div>
 <div class="paragraph">
 <p>OK, I see where you are going with this. A change to any one of the implementations will cause the source file with the switch statement to be recompiled, which will cause everyone who calls that switch statement – the area function in our case – to be recompiled.<br>
-네, 이제 이떻게 흘러가는지 알겠네요. 구현체중 하나에 작은 변경을 가하면, swtich문을 가진 함수도  재컴파일해야하고, 그 함수를 호출하는 호출자 소스도 재컴파일 해야하죠.</p>
+네, 이제 어떻게 흘러가는지 알겠네요. 구현체중 하나에 작은 변경을 가하면, swtich문을 가진 함수도  재컴파일해야 하고, 그 함수를 호출하는 호출자 소스도 재컴파일 해야 하죠.</p>
 </div>
 <div class="quoteblock">
 <blockquote>
@@ -739,7 +739,7 @@ switch문이 있는 소스파일이 나머지 구현이 있는 소스 방향으�
 <blockquote>
 <div class="paragraph">
 <p>Yes, because the caller of the area function depends upon an interface, and the implementation functions also depend upon that interface.<br>
-네 들어가 보죠. 넓이함수의 호출자는 인터페이스에 의존하고 있을겁니다. 그리고 구현체도 인터페이스에 의존하고 있죠.</p>
+네 들어가 보죠. 넓이함수의 호출자는 인터페이스에 의존하고 있을 겁니다. 그리고 구현체도 인터페이스에 의존하고 있죠.</p>
 </div>
 </blockquote>
 </div>
@@ -791,11 +791,11 @@ switch문이 있는 소스파일이 나머지 구현이 있는 소스 방향으�
 </li>
 <li>
 <p>Classes make it easy to add types but hard to add functions. Data structures make it easy to add functions but hard to add types.<br>
-클래스는 타입을 추가하기 쉬운 반면, 함수를 추가하기 어렵다. 자료구조는 함수를 추가하기는 쉽지만, 타입을 추가하기 어렵니다.</p>
+클래스는 타입을 추가하기 쉽지만, 함수를 추가하기 어렵다. 자료구조는 함수를 추가하기는 쉽지만, 타입을 추가하기 어렵다.</p>
 </li>
 <li>
 <p>Data Structures expose callers to recompilation and redeployment. Classes isolate callers from recompilation and redeployment.<br>
-자료구조는 호출자에게 재컴파일과 재배포를 강요합니다. 클래스는 호출자를 재컴파일과 재배포에서 고립시킬수 있습니다.</p>
+자료구조는 호출자에게 재컴파일과 재배포를 강요한다. 클래스는 호출자를 재컴파일과 재배포에서 고립시킬수 있다.</p>
 </li>
 </ul>
 </div>
@@ -803,7 +803,7 @@ switch문이 있는 소스파일이 나머지 구현이 있는 소스 방향으�
 <blockquote>
 <div class="paragraph">
 <p>You got it. These are issues that every good software designer and architect needs to keep in mind.<br>
-맞아요. 모든 소프트웨어 디자이너과 아키텍트가 명심해야 하는 내용이죠.</p>
+맞아요. 모든 소프트웨어 디자이너와 아키텍트가 명심해야 하는 내용이죠.</p>
 </div>
 </blockquote>
 </div>
