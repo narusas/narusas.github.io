@@ -1,0 +1,401 @@
+<!doctype html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html class="no-js" lang="en" data-useragent="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)">
+
+<head>
+
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVN 유저를 위한 GIT 소개</title>
+<meta name="description" content="이미 svn을 잘 사용하던 사람들을 위한 git 소개">
+<meta name="author" content="Jisung, Ahn">
+<meta name="copyright" content="Creative Commons license">
+
+<meta property="og:site_name"           content="narusas's blog" >
+<meta property="og:title"               content="SVN 유저를 위한 GIT 소개" >
+<meta property="og:type"                content="article" >
+<meta property="og:description"         content="이미 svn을 잘 사용하던 사람들을 위한 git 소개" >
+<meta property="og:url"                 content="https://narusas.github.io/2020/12/11/Git-for-svn-user.html" >
+<meta property="og:image"               content="https://narusas.github.io/images/narusas-logo.png" >
+
+<meta property="article:published_time" content="2020-12-11T00:00:00+00:00" >
+<meta property="article:author"         content="https://narusas.github.io/about/" >
+
+<meta property="article:tag"            content="git" >
+<meta property="article:tag"            content="tutorial" >
+<meta property="article:tag"            content="svn" >
+<meta property="article:tag"            content="verion control" >
+
+
+
+<link rel="stylesheet" href="../../../css/foundation.css">
+<link rel="stylesheet" href="../../../css/font-awesome.css">
+<link rel="stylesheet" href="../../../css/coderay.css">
+<link rel="stylesheet" href="../../../css/asciidoctor.css">
+<link rel="stylesheet" href="../../../css/narusas.css">
+<script src="../../../js/vendor/modernizr.js"></script>
+<script src="../../../js/vendor/jquery.js"></script>
+<script src="../../../js/toc.js"></script>
+
+  <!-- Google Tag Manager -->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-NHC6HV5');
+  </script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NHC6HV5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Nav Bar -->
+  <nav class="top-bar" data-topbar>
+    <ul class="title-area">
+      <!-- Title Area -->
+      <li class="name">
+        <h1>
+          <a href="../../../">narusas's blog</a>
+
+        </h1>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+  </nav>
+  <!-- End Nav -->
+
+
+  <!-- Main Page Content and Sidebar -->
+
+  <div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-12 columns" role="content">
+
+      <h1>SVN 유저를 위한 GIT 소개</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>이 글의 대상은 이미 svn을 잘 사용해온 개발자들이며, 이들에게 git 의 개념을 소개하고 익숙하게 하는것이 목적입니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git_기초">1. Git 기초</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="svn도_로컬_파일_시스템을_저장소로_사용할수_있다">1.1. SVN도 로컬 파일 시스템을 저장소로 사용할수 있다.</h3>
+<div class="sect3">
+<h4 id="저장소_만들기">1.1.1. 저장소 만들기</h4>
+<div class="paragraph">
+<p><code>svnadmin init c:\svnrepo</code></p>
+</div>
+<div class="paragraph">
+<p>로컬 파일 시스템에 svn 저장소를 만듭니다.</p>
+</div>
+<div class="paragraph">
+<p>&#8658; <code>git init</code></p>
+</div>
+<div class="paragraph">
+<p>현재 폴더에 <code>.git</code> 이름을 가지는 git 저장소를 만듭니다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="저장소_내용_내려_받기">1.1.2. 저장소 내용 내려 받기</h4>
+<div class="paragraph">
+<p><code>cd c:\work; svn checkout c:\svnrepo</code></p>
+</div>
+<div class="paragraph">
+<p>svn 저장소에서 체크아웃 합니다.<br>
+체크아웃 받은 폴더의 루트에  저장소와 연동하기 위한 메타정보를 저장하는 <code>.svn</code> 폴더를 생성합니다.</p>
+</div>
+<div class="paragraph">
+<p>&#8658; <code>git init</code></p>
+</div>
+<div class="paragraph">
+<p>현재 폴더가 git으로 관리되는 폴더가 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>SVN의 실제 저장소는 다른 곳을 사용하지만 git 저장소는 소스의 루트 폴더에 만들어지는 차이가 있습니다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="파일_추가하기">1.1.3. 파일 추가하기</h4>
+<div class="paragraph">
+<p><code>svn add file</code></p>
+</div>
+<div class="paragraph">
+<p><code>.svn</code> 내의 데이터 파일에 file이 관리 대상이 되었다는 정보를 <code>.svn</code> 안에 저장해둡니다.</p>
+</div>
+<div class="paragraph">
+<p>&#8658; <code>git add file</code></p>
+</div>
+<div class="paragraph">
+<p>git 저장소중에 커밋할 파일들을 별도로 관리하는 stage에 추가합니다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="커밋">1.1.4. 커밋</h4>
+<div class="paragraph">
+<p><code>svn commit file</code></p>
+</div>
+<div class="paragraph">
+<p><code>c:\svnrepo</code> 저장소에 file 을 전송함. 저장소의 revision을 하나 증가 시키게 됩니다.</p>
+</div>
+<div class="paragraph">
+<p>&#8658;
+<code>git commit</code></p>
+</div>
+<div class="paragraph">
+<p>Stage에 추가된 파일들을 <code>.git</code> 저장소에 저장함. 커밋되는 파일 내용들을 SHA-1로 해싱하여 체크섬을 부여 합니다. 이 체크섬이 커밋에 대한 id로 사용됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="어디에서_달라지는가">1.2. 어디에서 달라지는가?</h3>
+<div class="paragraph">
+<p>여러 사람이 같이 작업하기 위해 저장소를 공유해야 할때 부터 달라집니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SVN은 단일 저장소를 여러 사람이 공유하는 모델입니다.<br>
+파일 저장소든, SSH 저장소든, 웹 저장소든 상관없이 하나의 저장소를 개발자들이 공유하게 됩니다.<br>
+누구든 커밋을 하면 단일 저장소의 내용이 바뀌고, 리비전이 올라갑니다.</p>
+</li>
+<li>
+<p>GIT는 분산된 저장소를 지원합니다.
+내가 커밋하는 모든 내용은 여전히 로컬 내 소스 폴더 루트에 있는 <code>.git</code> 으로만 커밋됩니다.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>내가 다른 사람과 소스를 공유하기 위해서는 별도의 공유용 저장소를 네트워크 상에 만들어야 합니다.<br></p>
+</div>
+<div class="paragraph">
+<p><code>git remote add foo <a href="https://github.com/user1/foo" class="bare">https://github.com/user1/foo</a></code> 원격 저장소를 내 로컬 저장소에 연결하고</p>
+</div>
+<div class="paragraph">
+<p><code>git push foo</code> 현재 브랜치 커밋들을 공유 저장소에 밀어넣을수(Push) 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>원격 저장소는 여러 개를 가질수 있습니다</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>git remote add bar https://github.com/user2/bar
+git push bar
+
+git remote add buzz https://github.com/user3/buzz
+git push buzz</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>이렇게 변경 사항을 push 할때에만 실제로 소스를 공유할수 있게 됩니다.</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git의_주요_개념">2. Git의 주요 개념</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="로컬_저장소">2.1. 로컬 저장소</h3>
+<div class="paragraph">
+<p>git이 빠른 이유는 모든 동작이 로컬 파일로만 수행하기 때문입니다.</p>
+</div>
+<div class="paragraph">
+<p><code>git init</code> 를 실행하면 현재 디렉토리에 <code>.git</code> 폴더가 생성되고, git 관련 파일들이 만들어집니다.</p>
+</div>
+<div class="paragraph">
+<p>이 폴더에 있는 파일들이 사실 우리가 다룰 전체 정보가 담기는 저장소입니다.</p>
+</div>
+<div class="paragraph">
+<p>소스를 작성하고 git으로 commit을 하면, 그냥 <code>.git</code> 폴더에 데이터가 추가 되는것입니다.</p>
+</div>
+<div class="paragraph">
+<p>원격 git 저장소의 정보 역시 매번 소스단위로 비교 하는것이 아닌 원격 저장소의 정보를 그냥 모두 가져와서 <code>.git</code> 에 저장해둡니다.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">NOTE</dt>
+<dd>
+<p>당연히 원격 저장소의 정보를 내려받는것은 네트워크와 용량에 따라 느릴수 있습니다.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>파일을 비교하면 이렇게 내려받은 로컬 파일로만 수행합니다.</p>
+</div>
+<div class="paragraph">
+<p>서버와의 연동이 전혀 없이 로컬 파일로만 작업하기 때문에 빨리 동작하죠.</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>.git</code> 파일 목록</div>
+<div class="content">
+<pre>./.git
+./.git/config
+./.git/objects
+./.git/objects/pack
+./.git/objects/info
+./.git/HEAD
+./.git/info
+./.git/info/exclude
+./.git/description
+./.git/hooks
+./.git/hooks/commit-msg.sample
+./.git/hooks/pre-rebase.sample
+./.git/hooks/pre-commit.sample
+./.git/hooks/applypatch-msg.sample
+./.git/hooks/fsmonitor-watchman.sample
+./.git/hooks/pre-receive.sample
+./.git/hooks/prepare-commit-msg.sample
+./.git/hooks/post-update.sample
+./.git/hooks/pre-merge-commit.sample
+./.git/hooks/pre-applypatch.sample
+./.git/hooks/pre-push.sample
+./.git/hooks/update.sample
+./.git/refs
+./.git/refs/heads
+./.git/refs/tags</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="git_커밋">2.2. Git 커밋</h3>
+
+</div>
+<div class="sect2">
+<h3 id="git_브랜치">2.3. Git 브랜치</h3>
+
+</div>
+<div class="sect2">
+<h3 id="추가만_되는_key_value_db">2.4. 추가만 되는 Key - value DB</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git_기초_사용법">3. Git 기초 사용법</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="svn과_달라지는_것">4. SVN과 달라지는 것</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="소스_버전_관리_방식의_차이">5. 소스 버전 관리 방식의 차이</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="중앙_저장소">5.1. 중앙 저장소</h3>
+
+</div>
+<div class="sect2">
+<h3 id="분산_저장소">5.2. 분산 저장소</h3>
+<div class="paragraph">
+<p>흔히 svn을 사용하던것처럼 원격 git 서버의 소스들을 내 소스를 동기화는 어떻게 하지? 라고 생각이 드실겁니다.</p>
+</div>
+<div class="paragraph">
+<p>git에서는 <code>git fetch</code> 명령으로 원격 git 서버의 소소들의 변경내역을 그냥 .git에 내려 받는것만 합니다.</p>
+</div>
+<div class="paragraph">
+<p>그럼 <code>.git</code> 폴더내에 원격 서버의 정보들에 죽 추가가 되죠.</p>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    <span>Tags:
+      
+      
+      <a href="/tag/git"><code class="highligher-rouge">
+          <nobr>git</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/tutorial"><code class="highligher-rouge">
+          <nobr>tutorial</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/svn"><code class="highligher-rouge">
+          <nobr>svn</nobr>
+        </code>&nbsp;</a>
+      
+      
+      <a href="/tag/verion control"><code class="highligher-rouge">
+          <nobr>verion control</nobr>
+        </code>&nbsp;</a>
+      
+    </span>
+
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+
+
+
+    <!-- End Sidebar -->
+
+    <!-- End Main Content and Sidebar -->
+
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v7.0&appId=716866795548320&autoLogAppEvents=1" nonce="Cx68J3f0"></script>
+    <div class="fb-comments" data-href="https://narusas.github.io" data-numposts="10" data-width=""></div>
+
+
+    <!-- Footer -->
+
+    <footer class="row">
+    <div class="large-12 columns">
+        <hr>
+        <div class="row">
+            <div class="large-12 columns">
+                  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><br /><br /><br />
+                  이 저작물은 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">크리에이티브 커먼즈 저작자표시 4.0 국제 라이선스</a>에 따라 이용할 수 있습니다.
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    
+<script src="../../../js/foundation.min.js"></script>
+<script>
+$(document).foundation();
+var doc = document.documentElement;
+doc.setAttribute('data-useragent', navigator.userAgent);
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117947705-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-117947705-1');
+</script>
+
+</body>
+
+</html>
